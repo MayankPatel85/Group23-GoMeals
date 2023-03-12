@@ -18,7 +18,7 @@ import {
 import "../styles/Navbar.css";
 export default function NavbarComponent() {
   const cookies = new Cookies();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const loggedInUser = cookies.get("loggedInUser");
   console.log(loggedInUser);
@@ -29,17 +29,17 @@ export default function NavbarComponent() {
   };
 
   const logout = () => {
-cookies.remove('loggedInUser');
-navigate("/");
+    cookies.remove("loggedInUser");
+    navigate("/");
   };
 
   const getProfileName = () => {
-    if(loggedInUser.userType === 'customer'){
-      return loggedInUser.cust_fname +" "+ loggedInUser.cust_lname;
-    }else if(loggedInUser.userType === 'supplier'){
+    if (loggedInUser.userType === "customer") {
+      return loggedInUser.cust_fname + " " + loggedInUser.cust_lname;
+    } else if (loggedInUser.userType === "supplier") {
       return loggedInUser.supName;
     }
-  }
+  };
 
   return (
     <>
@@ -51,6 +51,8 @@ navigate("/");
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#features">Profile</Nav.Link>
               <Nav.Link href="#pricing">Customers</Nav.Link>
+              <Nav.Link href="/complainTracker">Complain</Nav.Link>
+              <Nav.Link href="/customerOrders">Orders</Nav.Link>
               <Nav.Link onClick={toggleNotifications}>
                 <FontAwesomeIcon icon={faBell} />
 

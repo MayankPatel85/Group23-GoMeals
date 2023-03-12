@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/delivery")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DeliveryController {
 
     private final DeliveryService deliveryService;
@@ -17,7 +18,6 @@ public class DeliveryController {
     public DeliveryController(DeliveryService deliveryService) {
         this.deliveryService = deliveryService;
     }
-
 
     @GetMapping("/get/{id}")
     public Delivery getDeliveryById(@PathVariable("id") int id) {
@@ -41,7 +41,7 @@ public class DeliveryController {
 
     @PutMapping("/update-status/")
     public ResponseEntity<Delivery> updateDeliveryStatus(@RequestParam int deliveryId, String orderStatus) {
-        Delivery deliveryToUpdate= deliveryService.updateDeliveryStatus(deliveryId, orderStatus);
+        Delivery deliveryToUpdate = deliveryService.updateDeliveryStatus(deliveryId, orderStatus);
         if (deliveryToUpdate == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
