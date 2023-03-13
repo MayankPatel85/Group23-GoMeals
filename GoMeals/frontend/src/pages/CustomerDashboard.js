@@ -35,5 +35,6 @@ export default function CustomerDashboard() {
       {/*  <h3>©Go Meals</h3>*/}
       {/*</Navbar>*/}
     </div>
+
   );
 }

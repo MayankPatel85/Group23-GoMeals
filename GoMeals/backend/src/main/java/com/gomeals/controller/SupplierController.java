@@ -41,7 +41,7 @@ public class SupplierController {
         return supplierService.deleteSupplier(id);
     }
     @PostMapping("/login")
-    public String loginSupplier(@RequestBody Supplier supplier) { return supplierService.loginSupplier(supplier);}
+    public Supplier loginSupplier(@RequestBody Supplier supplier) { return supplierService.loginSupplier(supplier);}
 }
 
 

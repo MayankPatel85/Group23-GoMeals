@@ -10,6 +10,8 @@ function SupplierRegister() {
   const [supContactNumber, setContactNumber] = useState("");
   const [govtIssuedId, setGovtIssueId] = useState("");
   const [password, setPassword] = useState("");
+  const [mealPrice, setMealPrice] = useState("");
+  const [paypalLink, setPaypalLink] = useState("");
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,6 +22,8 @@ function SupplierRegister() {
       govtIssuedId: govtIssuedId,
       supContactNumber: supContactNumber,
       password: password,
+      mealPrice: mealPrice,
+      paypalLink: paypalLink
     };
     axios
       .post("http://localhost:8080/supplier/create", supplier)
@@ -34,7 +38,7 @@ function SupplierRegister() {
           const { data } = error.response;
           alert(`Registration failed: ${data.message}`);
         } else {
-        console.log(supplier);
+          console.log(supplier);
           alert("Registration failed. Please try again later.");
         }
       });
@@ -93,14 +97,22 @@ function SupplierRegister() {
                           />
                         </Form.Group>
 
-                         <Form.Group className="mb-3" controlId="LName">
-                                                  <Form.Control
-                                                    type="text"
-                                                    placeholder="Enter Government Issued ID"
-                                                    value={govtIssuedId}
-                                                    onChange={(e) => setGovtIssueId(e.target.value)}
-                                                  />
-                                                </Form.Group>
+                        <Form.Group className="mb-3" controlId="LName">
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Government Issued ID"
+                            value={govtIssuedId}
+                            onChange={(e) => setGovtIssueId(e.target.value)}
+                          />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="MealPrice">
+                          <Form.Control type="text" placeholder="Enter meal price" value={mealPrice} onChange={(e) => setMealPrice(e.target.value)}></Form.Control>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="PaypalLink">
+                          <Form.Control type="text" placeholder="Enter Paypal link" value={paypalLink} onChange={(e) => setPaypalLink(e.target.value)}></Form.Control>
+                        </Form.Group>
 
                         <Form.Group
                           className="mb-3"

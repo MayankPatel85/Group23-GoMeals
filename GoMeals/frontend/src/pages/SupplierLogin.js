@@ -24,14 +24,14 @@ function Login() {
                 console.log(response.data);
                 const supplierData = {
                     ...response.data,
-                            userType: 'supplier'
-                          };
-                          const cookieValue = JSON.stringify(supplierData);
-                          cookies.set('loggedInUser', cookieValue, { path: '/' });
+                    userType: 'supplier'
+                };
+                const cookieValue = JSON.stringify(supplierData);
+                cookies.set('loggedInUser', cookieValue, { path: '/' });
                 navigate("/supplierDashboard");
                 const loggedInUser = cookies.get('loggedInUser');
-                          console.log("current user's ID: " + loggedInUser.sup_id);
-                          console.log("current user's type: " + loggedInUser.userType);
+                console.log("current user's ID: " + loggedInUser.supId);
+                console.log("current user's type: " + loggedInUser.userType);
 }
             })
             .catch((error) => {
@@ -93,7 +93,7 @@ function Login() {
                                                     <NavLink
                                                         className=""
                                                         activeClassName="is-active"
-                                                        to="/register"
+                                                        to="/supplierRegister"
                                                         exact
                                                     >
                                                         Register
