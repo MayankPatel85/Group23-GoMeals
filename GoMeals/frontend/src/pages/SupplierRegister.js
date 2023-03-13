@@ -29,7 +29,7 @@ function SupplierRegister() {
       .post("http://localhost:8080/supplier/create", supplier)
       .then((response) => {
         console.log(response.data);
-        navigate("/login");
+        navigate("/supplierLogin");
         alert("Supplier registration was succesful");
       })
       .catch((error) => {

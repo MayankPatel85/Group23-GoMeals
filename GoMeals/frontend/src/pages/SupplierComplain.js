@@ -17,7 +17,7 @@ export default function SupplierComplain() {
         // http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}
         setIsLoading(true);
         axios
-            .get("http://localhost:8080/complain/get/all-supplier/3")
+            .get(`http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}`)
             .then((response) => {
                 setComplains(response.data);
             })
@@ -30,12 +30,8 @@ export default function SupplierComplain() {
     }, []);
 
     function handleComplain(index) {
-        console.log("iii" + index);
         setSelectedComplainIndex(index);
-        console.log(selectedComplainIndex);
-        console.log("settttt");
         setSupplierComment(complains[index].supplierComment);
-        console.log(supplierComment);
 
         console.log("ss" + supplierComment);
         setShowComplainDetail(true);
@@ -47,10 +43,11 @@ export default function SupplierComplain() {
             return;
         }
         setIsLoading(true);
-        if (complains.length !== 0 && complains[selectedComplainIndex].status !== "Initiated") {
+        if (complains.length !== 0) {
             complains[selectedComplainIndex].supplierComment = supplierComment;
             complains[selectedComplainIndex].status = "Resolved";
         }
+        console.log(complains[selectedComplainIndex]);
         axios
             .put("http://localhost:8080/complain/update", complains[selectedComplainIndex])
             .catch((e) => {
@@ -120,28 +117,32 @@ export default function SupplierComplain() {
             </Modal>
 
             <Container className="my-5 mx-xs-2 mx-auto customerlist-table">
-                <Table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Complain Date</th>
-                            <th>Complain Comment</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {complains?.map((complain, index) => {
-                            return (
-                                <tr key={complain.complainId} onClick={() => handleComplain(index)}>
-                                    <td>{index + 1}</td>
-                                    <td>{complain.date}</td>
-                                    <td>{complain.customerComment}</td>
-                                    <td>{complain.status}</td>
+                {complains.length === 0 ? (<div><h4>No Complains</h4></div>) :
+                    (
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Complain Date</th>
+                                    <th>Complain Comment</th>
+                                    <th>Status</th>
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                </Table>
+                            </thead>
+                            <tbody>
+                                {complains?.map((complain, index) => {
+                                    return (
+                                        <tr key={complain.complainId} onClick={() => handleComplain(index)}>
+                                            <td>{index + 1}</td>
+                                            <td>{complain.date}</td>
+                                            <td>{complain.customerComment}</td>
+                                            <td>{complain.status}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </Table>
+                    )
+                }
                 {/* {
                     showComplainDetail &&
                     <Modal.Dialog>
