@@ -88,7 +88,7 @@ public class SupplierServiceImplementation implements SupplierService {
             throw new RuntimeException("Supplier not Registered");
         }
         else{
-            String password = customerRepository.passwordMatch(supplier.getSupEmail());
+            String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
             if (Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
                 return supplierData;
             }
