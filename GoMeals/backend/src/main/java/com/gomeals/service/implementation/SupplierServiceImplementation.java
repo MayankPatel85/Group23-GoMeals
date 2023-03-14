@@ -6,6 +6,8 @@ import com.gomeals.repository.SubscriptionRepository;
 import com.gomeals.repository.supplierRepository;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
+import com.gomeals.utils.UserSecurity;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,8 @@ public class SupplierServiceImplementation implements SupplierService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    UserSecurity userSecurity = new UserSecurity();
 
 
     public Supplier getSupplierDetails(int id){
@@ -54,6 +58,10 @@ public class SupplierServiceImplementation implements SupplierService {
     }
 
     public Supplier registerSupplier(Supplier supplier){
+        if(supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
+            throw new RuntimeException("Email already exists");
+        }
+        supplier.setPassword(userSecurity.encryptData(supplier.getPassword()));
         return  supplierRepository.save(supplier);
     }
 
@@ -74,19 +82,18 @@ public class SupplierServiceImplementation implements SupplierService {
         supplierRepository.deleteById(id);
         return "Supplier deleted";
     }
-    public String loginSupplier(Supplier supplier){
-        if (supplierRepository.findSupplierByEmail(supplier.getSupEmail()) == null) {
+    public Supplier loginSupplier(Supplier supplier){
+        Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
+        if (supplierData == null) {
             throw new RuntimeException("Supplier not Registered");
         }
         else{
-            String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
-            if(Objects.equals(password, supplier.getPassword())){
-                return "Login Successful";
-            }
-            else{
-                return "Incorrect Password";
+            String password = customerRepository.passwordMatch(supplier.getSupEmail());
+            if (Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
+                return supplierData;
             }
         }
+        return supplierData;
     }
 
     private static Customer unwrapCustomer(Optional<Customer> entity){

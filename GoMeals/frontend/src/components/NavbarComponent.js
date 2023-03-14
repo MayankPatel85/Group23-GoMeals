@@ -41,6 +41,12 @@ export default function NavbarComponent() {
     }
   };
 
+  function handleProfile() {
+    if (loggedInUser.userType === "customer") {
+      navigate("/customerProfile");
+    }
+  }
+
   return (
     <>
       <Navbar bg="primary" variant="light">
@@ -50,9 +56,19 @@ export default function NavbarComponent() {
             <Nav className="me-auto">
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#features">Profile</Nav.Link>
-              <Nav.Link href="#pricing">Customers</Nav.Link>
-              <Nav.Link href="/complainTracker">Complain</Nav.Link>
-              <Nav.Link href="/customerOrders">Orders</Nav.Link>
+              {loggedInUser.userType === "supplier" ? (
+                <>
+                  <Nav.Link href="#pricing">Customers</Nav.Link>
+                  <Nav.Link href="/supplierComplain">Complains</Nav.Link>
+                  <Nav.Link href="/supplierPolling">Polling</Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link href="/complainTracker">Complain</Nav.Link>
+                  <Nav.Link href="/customerOrders">Orders</Nav.Link>
+                  <Nav.Link href="/customerPollVote">Meal Poll</Nav.Link>
+                </>
+              )}
               <Nav.Link onClick={toggleNotifications}>
                 <FontAwesomeIcon icon={faBell} />
 
@@ -72,7 +88,9 @@ export default function NavbarComponent() {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-2">Profile</Dropdown.Item>
+                    <Dropdown.Item onClick={handleProfile}>
+                      Profile
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

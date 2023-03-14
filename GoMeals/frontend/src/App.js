@@ -13,6 +13,9 @@ import CustomerDeliveries from "./pages/CustomerDeliveries";
 import CustomerRaiseComplain from "./pages/CustomerRaiseComplain";
 import CustomerComplainTracker from "./pages/CustomerComplainTracker";
 import SupplierPolling from "./pages/SupplierPolling";
+import CustomerProfile from "./pages/CustomerProfile";
+import SupplierComplain from "./pages/SupplierComplain";
+import CustomerPolls from "./pages/CustomerPolls";
 
 function App() {
   return (
@@ -21,12 +24,13 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/SupplierRegister" element={<SupplierRegister />} />
+          <Route path="/supplierRegister" element={<SupplierRegister />} />
           <Route path="/" element={<Register />} />
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
           <Route path="/customerOrders" element={<CustomerDeliveries />} />
+          <Route path="/customerPollVote" element={<CustomerPolls />} />
           <Route
             path="/customerRaiseComplain/:id"
             element={<CustomerRaiseComplain />}
@@ -37,6 +41,11 @@ function App() {
           />
 
           <Route path="/supplierPolling" element={<SupplierPolling />} />
+          <Route path="/customerProfile" element={<CustomerProfile />} />
+          <Route
+            path="/supplierComplain"
+            element={<SupplierComplain />}
+          ></Route>
         </Routes>
       </Router>
     </div>
