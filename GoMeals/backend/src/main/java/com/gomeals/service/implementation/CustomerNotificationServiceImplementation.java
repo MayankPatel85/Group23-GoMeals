@@ -19,8 +19,8 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
     }
 
     @Override
-    public CustomerNotification createNotification(CustomerNotification sustomerNotification) {
-        return customerNotificationRepository.save(sustomerNotification);
+    public CustomerNotification createNotification(CustomerNotification customerNotification) {
+        return customerNotificationRepository.save(customerNotification);
     }
 
     @Override
