@@ -1,6 +1,8 @@
 package com.gomeals.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gomeals.model.Addons;
 import com.gomeals.service.AddonsService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -41,6 +45,15 @@ public class AddOnController {
     @DeleteMapping("/delete/{addonId}")
     public String deleteAddon(@PathVariable("addonId") int id) {
         return addonsService.deleteAddon(id);
+    }
+
+    @GetMapping("/get/all-supplier/{supplierId}")
+    public ResponseEntity<List<Addons>> getAllSupplierAddons(@PathVariable("supplierId") int supplierId) {
+        List<Addons> supplierAddons = addonsService.getAllSupplierAddons(supplierId);
+        if(supplierAddons == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(supplierAddons, HttpStatus.OK);
     }
 
 }

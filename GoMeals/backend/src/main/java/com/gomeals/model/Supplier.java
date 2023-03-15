@@ -119,7 +119,6 @@ public class Supplier {
     public void setSubscriptions(List<Subscriptions> subscriptions) {
         this.subscriptions = subscriptions;
     }
-
     public Double getMealPrice() {
         return mealPrice;
     }

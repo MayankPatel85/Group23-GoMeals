@@ -86,7 +86,7 @@ export default function NavbarComponent() {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-2">Profile</Dropdown.Item>
+                    <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

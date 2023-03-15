@@ -12,6 +12,9 @@ import React, { useState } from "react";
 import MealAccordion from "./pages/Meals";
 import NavbarComponent from "./components/NavbarComponent";
 import AddOns from "./pages/AddOns";
+import React from "react";
+import CustomerProfile from "./pages/CustomerProfile";
+import SupplierComplain from "./pages/SupplierComplain";
 
 function App() {
   // const navigate = useNavigate();
@@ -29,13 +32,15 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/SupplierRegister" element={<SupplierRegister />} />
+          <Route path="/supplierRegister" element={<SupplierRegister />} />
           <Route path="/" element={<Register />} />
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
           <Route path="/meals" element={<MealAccordion />} exact/>
           {/* <Route path="/addons" element={<AddOns />} exact/> */}
+          <Route path="/customerProfile" element={<CustomerProfile />} />
+          <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
         </Routes>
       </Router>
     </div>
