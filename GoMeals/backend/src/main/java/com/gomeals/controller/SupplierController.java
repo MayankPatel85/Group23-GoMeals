@@ -2,6 +2,7 @@ package com.gomeals.controller;
 import com.gomeals.model.Customer;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class SupplierController {
         return supplierService.deleteSupplier(id);
     }
     @PostMapping("/login")
-    public String loginSupplier(@RequestBody Supplier supplier) { return supplierService.loginSupplier(supplier);}
+    public Supplier loginSupplier(@RequestBody Supplier supplier, HttpServletResponse response) { return supplierService.loginSupplier(supplier,response);}
 }
 
 

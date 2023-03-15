@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/delivery")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DeliveryController {
 
     private final DeliveryService deliveryService;
@@ -18,12 +19,12 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
-
+    @CrossOrigin
     @GetMapping("/get/{id}")
     public Delivery getDeliveryById(@PathVariable("id") int id) {
         return deliveryService.getDeliveryById(id);
     }
-
+    @CrossOrigin
     @GetMapping("/get/customer/{id}")
     public List<Delivery> getByCustomerId(@PathVariable int id) {
         return deliveryService.getByCustId(id);

@@ -1,4 +1,5 @@
 package com.gomeals.service.implementation;
+
 import com.gomeals.model.Customer;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.repository.CustomerRepository;
@@ -6,6 +7,7 @@ import com.gomeals.repository.SubscriptionRepository;
 import com.gomeals.repository.supplierRepository;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,16 +30,16 @@ public class SupplierServiceImplementation implements SupplierService {
     CustomerRepository customerRepository;
 
 
-    public Supplier getSupplierDetails(int id){
+    public Supplier getSupplierDetails(int id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
-        if(supplier != null){
+        if (supplier != null) {
             List<Customer> customers = new ArrayList<>();
             List<Subscriptions> subscriptions = new ArrayList<>();
 
-            subscriptionRepository.findSubscriptionsBySupplierIdAndActiveStatus(id,1).forEach(
+            subscriptionRepository.findSubscriptionsBySupplierIdAndActiveStatus(id, 1).forEach(
                     subscribedCustomer -> {
                         Optional<Customer> customer = customerRepository.findById(subscribedCustomer.getCustomerId());
-                        customers.add( unwrapCustomer(customer));
+                        customers.add(unwrapCustomer(customer));
                         // Store the subscription details
                         subscriptions.add(subscribedCustomer);
                     });
@@ -47,18 +49,18 @@ public class SupplierServiceImplementation implements SupplierService {
         return supplier;
     }
 
-    public List<Supplier> getAllSuppliers(){
+    public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
         supplierRepository.findAll().forEach(supplier -> suppliers.add(supplier));
         return suppliers;
     }
 
-    public Supplier registerSupplier(Supplier supplier){
-        return  supplierRepository.save(supplier);
+    public Supplier registerSupplier(Supplier supplier) {
+        return supplierRepository.save(supplier);
     }
 
-    public Supplier updateSupplier(@RequestBody Supplier supplier){
-        Supplier s=supplierRepository.findById(supplier.getSupId()).orElse(null);
+    public Supplier updateSupplier(@RequestBody Supplier supplier) {
+        Supplier s = supplierRepository.findById(supplier.getSupId()).orElse(null);
         s.setSupName(supplier.getSupName());
         s.setSupContactNumber(supplier.getSupContactNumber());
         s.setSupEmail(supplier.getSupEmail());
@@ -70,26 +72,28 @@ public class SupplierServiceImplementation implements SupplierService {
 
     }
 
-    public String deleteSupplier(int id){
+    public String deleteSupplier(int id) {
         supplierRepository.deleteById(id);
         return "Supplier deleted";
     }
-    public String loginSupplier(Supplier supplier){
-        if (supplierRepository.findSupplierByEmail(supplier.getSupEmail()) == null) {
+
+    public Supplier loginSupplier(Supplier supplier, HttpServletResponse response) {
+        Supplier currentSupplier = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
+        if (currentSupplier == null) {
             throw new RuntimeException("Supplier not Registered");
-        }
-        else{
+        } else {
             String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
-            if(Objects.equals(password, supplier.getPassword())){
-                return "Login Successful";
-            }
-            else{
-                return "Incorrect Password";
+            if (Objects.equals(password, supplier.getPassword())) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                return currentSupplier;
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
+        return currentSupplier;
     }
 
-    private static Customer unwrapCustomer(Optional<Customer> entity){
+    private static Customer unwrapCustomer(Optional<Customer> entity) {
         return entity.orElse(null);
     }
 
