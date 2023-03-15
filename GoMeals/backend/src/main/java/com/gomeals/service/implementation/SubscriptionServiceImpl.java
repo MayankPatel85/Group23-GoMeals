@@ -1,5 +1,7 @@
 package com.gomeals.service.implementation;
 
+import com.gomeals.model.Customer;
+import com.gomeals.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +11,18 @@ import com.gomeals.service.SubscriptionService;
 
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Autowired
 	SubscriptionRepository subscriptioRepository;
+
+	@Autowired
+	CustomerRepository customerRepository;
 
 	@Transactional
 	public String addSubscription(Subscriptions subscription) {
@@ -29,6 +38,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Transactional
 	public String updateSubscription(Subscriptions subscription) {
 		Subscriptions latestSubscription = subscriptioRepository.findById(subscription.getSub_id()).orElse(null);
+		latestSubscription.setActiveStatus(subscription.getActiveStatus());
+		latestSubscription.setStatus(subscription.getStatus());
 		latestSubscription.setMeals_remaining(subscription.getMeals_remaining());
 		latestSubscription.setSub_date(subscription.getSub_date());
 		subscriptioRepository.save(latestSubscription);
@@ -40,6 +51,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		subscriptioRepository.deleteById(sub_id);
 		return "Subscription deleted successfully.";
 
+	}
+
+	@Override
+	public List<Subscriptions> getPendingSubscription(int supplierId) {
+		List<Subscriptions> pendingSubscriptions = subscriptioRepository.findByActiveStatusAndStatusAndSupplierId(0, "Pending", supplierId);
+		if(pendingSubscriptions.isEmpty()) {
+			return Collections.emptyList();
+		}
+		pendingSubscriptions.forEach(pendingSubscription -> {
+			Customer currentCustomer = customerRepository.findById(pendingSubscription.getCustomerId()).orElse(null);
+			pendingSubscription.setCustomer(currentCustomer);
+		});
+		return pendingSubscriptions;
 	}
 
 }

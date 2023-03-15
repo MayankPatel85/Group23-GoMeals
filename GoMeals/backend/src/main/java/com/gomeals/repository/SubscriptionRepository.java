@@ -12,6 +12,6 @@ public interface SubscriptionRepository extends CrudRepository<Subscriptions, In
     Subscriptions findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(Integer customerId, Integer supplierId,
                                                                             Integer activeStatus);
 
-
+    List<Subscriptions> findByActiveStatusAndStatusAndSupplierId(Integer activeStatus, String status, Integer supplierId);
 
 }

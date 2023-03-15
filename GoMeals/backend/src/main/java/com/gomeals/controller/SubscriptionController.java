@@ -1,5 +1,6 @@
 package com.gomeals.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.service.SubscriptionService;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/subscription")
-public class SubscriptionController {
+public class 	SubscriptionController {
 
 	@Autowired
 	SubscriptionService subscriptionService;
@@ -45,6 +48,11 @@ public class SubscriptionController {
 	public String deleteSubscriptions(@PathVariable("subId") int sub_Id) {
 
 		return subscriptionService.deleteSubscription(sub_Id);
+	}
+
+	@GetMapping("/get/pending/{supplierId}")
+	public List<Subscriptions> getPendingSubscription(@PathVariable("supplierId") int supplierId) {
+		return subscriptionService.getPendingSubscription(supplierId);
 	}
 
 }
