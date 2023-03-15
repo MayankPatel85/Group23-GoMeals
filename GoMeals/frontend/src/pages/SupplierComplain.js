@@ -27,7 +27,7 @@ export default function SupplierComplain() {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [loggedInUser.supId]);
 
     function handleComplain(index) {
         setSelectedComplainIndex(index);

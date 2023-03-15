@@ -47,6 +47,10 @@ export default function NavbarComponent() {
     }
   }
 
+  function handleSubscirptionRequests() {
+    navigate("/subscriptionRequests");
+  }
+
   return (
     <>
       <Navbar bg="primary" variant="light">
@@ -78,6 +82,7 @@ export default function NavbarComponent() {
 
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+                    {loggedInUser.userType === 'supplier' && <Dropdown.Item onClick={handleSubscirptionRequests}>Subscription Requests</Dropdown.Item> }
                     <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
