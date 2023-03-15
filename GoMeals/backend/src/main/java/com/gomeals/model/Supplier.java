@@ -25,20 +25,29 @@ public class Supplier {
     private String password;
     @Transient
     private List<Customer> customers = new ArrayList<>();
+    @Transient
+    private List<Subscriptions> subscriptions= new ArrayList<>();
+    @Column (name = "meal_price")
+    private Double mealPrice;
+    @Column (name = "paypal_link")
+    private String paypalLink;
 
     //    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     //    List<mealchart> supIdList= new ArrayList<>();
     public Supplier() {
     }
 
-    public Supplier(int sup_id, String sup_address, String sup_contact_number, String sup_name, String sup_email, String govt_issued_id, String sup_password) {
+    public Supplier(int sup_id, String sup_address, String sup_contact_number, String sup_name, String sup_email,
+                    String govt_issued_id, String sup_password, Double meal_price, String paypal_link) {
         this.supId = sup_id;
         this.supAddress = sup_address;
         this.supContactNumber = sup_contact_number;
         this.supName = sup_name;
         this.supEmail = sup_email;
         this.govtIssuedId = govt_issued_id;
-        this.password =sup_password;
+        this.password = sup_password;
+        this.mealPrice = meal_price;
+        this.paypalLink = paypal_link;
     }
 
     public int getSupId() {
@@ -102,5 +111,27 @@ public class Supplier {
 
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
+    }
+
+    public List<Subscriptions> getSubscriptions() {
+        return subscriptions;
+    }
+    public void setSubscriptions(List<Subscriptions> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+    public Double getMealPrice() {
+        return mealPrice;
+    }
+
+    public void setMealPrice(Double mealPrice) {
+        this.mealPrice = mealPrice;
+    }
+
+    public String getPaypalLink() {
+        return paypalLink;
+    }
+
+    public void setPaypalLink(String paypalLink) {
+        this.paypalLink = paypalLink;
     }
 }

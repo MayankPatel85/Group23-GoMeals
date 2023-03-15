@@ -13,29 +13,31 @@ public class Complain {
     @Column( name = "complain_id")
     private Integer complainId;
     private Date date;
-    private String meal;
-
     @Column( name = "cust_comment", nullable = false)
     private String customerComment;
+    @Column( name = "sup_comment", nullable = false)
+    private String supplierComment;
     private String status;
-
     @Column( name = "cust_id", nullable = false)
     private int customerId; // customer FK
-
-    @Column( name = "sup_id")
+    @Column( name = "sup_id" )
     private int supplierId; // supplier FK
+    @Column(name = "delivery_id")
+    private Integer deliveryId; // delivery FK
 
     public Complain(){
     }
 
-    public Complain(Integer complain_id, String meal, Date date, String cust_comment, String status, int cust_id, int sup_id){
+    public Complain(Integer complain_id, Date date, String cust_comment, String sup_comment, String status,
+                    int cust_id, int sup_id, int delivery_id){
         this.complainId = complain_id;
         this.date = date;
-        this.meal = meal;
         this.customerComment = cust_comment;
+        this.supplierComment = sup_comment;
         this.status = status;
         this.customerId=cust_id;
         this.supplierId=sup_id;
+        this.deliveryId = delivery_id;
     }
 
     public int getComplainId() {
@@ -54,20 +56,20 @@ public class Complain {
         this.date = date;
     }
 
-    public String getMeal() {
-        return meal;
-    }
-
-    public void setMeal(String meal) {
-        this.meal = meal;
-    }
-
     public String getCustomerComment() {
         return customerComment;
     }
 
     public void setCustomerComment(String customerComment) {
         this.customerComment = customerComment;
+    }
+
+    public String getSupplierComment() {
+        return supplierComment;
+    }
+
+    public void setSupplierComment(String supplierComment) {
+        this.supplierComment = supplierComment;
     }
 
     public String getStatus() {
@@ -92,5 +94,12 @@ public class Complain {
 
     public void setSupplierId(int supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public Integer getDeliveryId() {
+        return deliveryId;
+    }
+    public void setDeliveryId(Integer deliveryId) {
+        this.deliveryId = deliveryId;
     }
 }

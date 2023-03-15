@@ -13,8 +13,11 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ComplainServiceImplementation implements ComplainService {
-    @Autowired
-    ComplainRepository complainRepository;
+    private final ComplainRepository complainRepository;
+
+    public ComplainServiceImplementation(ComplainRepository complainRepository) {
+        this.complainRepository = complainRepository;
+    }
 
     @Override
     public Complain createComplain(Complain complain){
@@ -51,7 +54,8 @@ public class ComplainServiceImplementation implements ComplainService {
     @Override
     public List<Complain> getComplainsByCustomerIdAndSupplierId(Integer customerId, Integer supplierId) {
         List<Complain> complains = new ArrayList<>();
-        complainRepository.findComplainsByCustomerIdAndSupplierId(customerId,supplierId).forEach(complain -> complains.add(complain));
+        complainRepository.findComplainsByCustomerIdAndSupplierId(customerId,supplierId).forEach(complain ->
+                complains.add(complain));
         return complains;
     }
 

@@ -3,6 +3,7 @@ import com.gomeals.model.Customer;
 import com.gomeals.model.Customer;
 import com.gomeals.service.CustomerService;
 import com.gomeals.service.CustomerService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +28,5 @@ public class CustomerController {
         return CustomerService.createCustomer(Customer);
     }
     @PostMapping("/login")
-    public String loginCustomer(@RequestBody Customer customer) { return CustomerService.loginCustomer(customer);}
+    public Customer loginCustomer(@RequestBody Customer customer,HttpServletResponse response) { return CustomerService.loginCustomer(customer,response);}
 }

@@ -3,6 +3,11 @@ import {Button, Card, Container, Nav, Navbar} from "react-bootstrap";
 import axios from "axios";
 import food from "../resources/food.jpg"
 import {Modal} from "react-bootstrap";
+import NavbarComponent from "../components/NavbarComponent";
+import { Cookies } from 'react-cookie';
+import { useNavigate } from "react-router-dom";
+import SupplierProfile from "./SupplierProfile";
+import { Link } from 'react-router-dom';
 
 export default function CustomerDashboard(children, func) {
     const [data,setdata]=useState({});
@@ -16,14 +21,24 @@ export default function CustomerDashboard(children, func) {
     const [show, setShowModal] = useState(false);
     const[mealchart,setMealChart]=useState({});
     const[supName, setSupName]=useState("");
+    const[supId, setSupId]=useState("");
     const fetchdata = () => {
         axios.get("http://localhost:8080/supplier/get/all")
             .then((response) => {
                 setdata(response.data)
             })
     }
+    const navigate=useNavigate();
+    const handleNavigate=()=>{
+        navigate('/supplierProfile',{state:{id:supId}})
+    }
+
+//     const history = useHistory();
     useEffect(() => {
         fetchdata()
+        const cookies = new Cookies();
+        const loggedInUser = cookies.get('loggedInUser');
+        console.log(loggedInUser);
     }, []);
 
     const handleClick=(param, e)=>{
@@ -31,6 +46,7 @@ export default function CustomerDashboard(children, func) {
         axios.get(`http://localhost:8080/supplier/get/${id}`)
             .then((response) => {
                 setSupName(response.data)
+                setSupId(id)
             })
         const data1 = { day: "monday", supId: param };
         axios.post("http://localhost:8080/meal_chart/get",data1)
@@ -131,14 +147,10 @@ export default function CustomerDashboard(children, func) {
                     <h3>Sunday: {datasun.item1}, {datasun.item2}, {datasun.item3}, {datasun.item4}, {datasun.item5}, </h3><br/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary">Subscribe</Button>
+                    <Button variant="secondary" onClick={handleNavigate}>Subscribe</Button>
                     <Button variant="secondary" onClick={handleClick}>Close</Button>
                 </Modal.Footer>
             </Modal>}
-
-
-
-
             <br/>
             <br/>
             <br/>

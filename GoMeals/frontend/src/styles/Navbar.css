@@ -1,0 +1,22 @@
+.notifications {
+    position: absolute;
+    top: 80%;
+    right: 10%;
+    /* transform: translateY(-50%); */
+    background-color: white;
+
+    padding: 10px;
+    border: 1px solid black;
+  }
+  
+
+ 
+.navbar-icons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-profile{
+    display: flex;
+    align-items: baseline;
+}

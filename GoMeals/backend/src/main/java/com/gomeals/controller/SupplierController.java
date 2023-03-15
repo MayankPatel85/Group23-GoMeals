@@ -15,7 +15,7 @@ import java.util.List;
 public class SupplierController {
     @Autowired
     SupplierService supplierService;
-
+    @CrossOrigin
     @PostMapping("/create")
     public Supplier registerSupplier(@RequestBody Supplier supplier) {
         return supplierService.registerSupplier(supplier);
@@ -41,7 +41,7 @@ public class SupplierController {
         return supplierService.deleteSupplier(id);
     }
     @PostMapping("/login")
-    public String loginSupplier(@RequestBody Supplier supplier) { return supplierService.loginSupplier(supplier);}
+    public Supplier loginSupplier(@RequestBody Supplier supplier) { return supplierService.loginSupplier(supplier);}
 }
 
 

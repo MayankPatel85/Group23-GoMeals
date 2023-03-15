@@ -3,11 +3,14 @@ import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Cookies } from 'react-cookie';
 
 function Login() {
+  const cookies = new Cookies();
   const [cust_email, setEmail] = useState("");
   const [cust_password, setCustPassword] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const user = {
@@ -19,19 +22,28 @@ function Login() {
       cust_contact_number: "N/A",
       cust_password: cust_password,
     };
-    axios
-      .post("http://localhost:8080/customer/login", user)
+    axios.post("http://localhost:8080/customer/login", user)
       .then((response) => {
-        console.log(response.data);
-        alert("login successful");
-        navigate("/dashboard");
-        
+        if (response.status === 200) {
+        console.log(response.data)
+          const userData = {
+            ...response.data,
+            userType: 'customer'
+          };
+          const cookieValue = JSON.stringify(userData);
+          cookies.set('loggedInUser', cookieValue, { path: '/' });
+          navigate("/dashboard");
+          const loggedInUser = cookies.get('loggedInUser');
+          console.log("current user's ID: " + loggedInUser.cust_id);
+          console.log("current user's type: " + loggedInUser.userType);
+        }
       })
       .catch((error) => {
         console.log(error);
         alert("login failed");
       });
   };
+
 
   return (
     <>

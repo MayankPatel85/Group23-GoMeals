@@ -39,14 +39,13 @@ public class DeliveryController {
         return deliveryService.updateDelivery(delivery);
     }
 
-    @PutMapping("/update/{id}") // /cancel/id
-    public ResponseEntity<Delivery> updateStatusToCancelledById(@PathVariable("id") int deliveryId) {
-        Delivery deliveryToCancel = deliveryService.updateStatusToCancelledById(deliveryId);
-        if (deliveryToCancel == null) {
-            // Investigar controller advice para manejo de excepciones
+    @PutMapping("/update-status/")
+    public ResponseEntity<Delivery> updateDeliveryStatus(@RequestParam int deliveryId, String orderStatus) {
+        Delivery deliveryToUpdate= deliveryService.updateDeliveryStatus(deliveryId, orderStatus);
+        if (deliveryToUpdate == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(deliveryToCancel, HttpStatus.OK);
+            return new ResponseEntity<>(deliveryToUpdate, HttpStatus.OK);
         }
     }
 

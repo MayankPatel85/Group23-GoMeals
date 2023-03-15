@@ -3,8 +3,10 @@ import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Cookies } from 'react-cookie';
 
 function Login() {
+  const cookies = new Cookies();
     const [sup_email, setEmail] = useState("");
     const [sup_password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -17,10 +19,20 @@ function Login() {
         axios
             .post("http://localhost:8080/supplier/login", supplier)
             .then((response) => {
-                console.log(response.data);
-                alert("login successful");
-                navigate("/supplierDashboard");
+            if(response.status===200){
 
+                console.log(response.data);
+                const supplierData = {
+                    ...response.data,
+                    userType: 'supplier'
+                };
+                const cookieValue = JSON.stringify(supplierData);
+                cookies.set('loggedInUser', cookieValue, { path: '/' });
+                navigate("/supplierDashboard");
+                const loggedInUser = cookies.get('loggedInUser');
+                console.log("current user's ID: " + loggedInUser.supId);
+                console.log("current user's type: " + loggedInUser.userType);
+}
             })
             .catch((error) => {
                 console.log(error);
@@ -81,7 +93,7 @@ function Login() {
                                                     <NavLink
                                                         className=""
                                                         activeClassName="is-active"
-                                                        to="/register"
+                                                        to="/supplierRegister"
                                                         exact
                                                     >
                                                         Register

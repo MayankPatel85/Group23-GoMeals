@@ -65,16 +65,28 @@ public class DeliveryServiceImplementation implements DeliveryService {
 
     @Transactional
     @Override
-    public Delivery updateStatusToCancelledById(int id) {
+    public Delivery updateDeliveryStatus(int id, String status) {
         Delivery delivery = deliveryRepository.findById(id).orElse(null);
         if (delivery == null) {
             return null;
         }
-
-        if (!IN_PROGRESS.getStatusName().equals(delivery.getOrderStatus())) {
-            System.out.println("Can't cancel an order that it's not in progress.");
+        if(status == null || status.isEmpty()){
             return null;
         }
+
+        String newStatus = status.toLowerCase();
+
+        if(!CANCELLED.getStatusName().equals(newStatus) &&
+                !COMPLETED.getStatusName().equals(newStatus)){
+            System.out.println("Invalid status type.");
+            return null;
+        }
+
+        if (!IN_PROGRESS.getStatusName().equals(delivery.getOrderStatus())) {
+            System.out.println("Can't update the status of an order that it's not in progress.");
+            return null;
+        }
+
         Subscriptions subscription = subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(
                 delivery.getCustId(), delivery.getSupId(), 1);
         if (subscription == null) {
@@ -82,13 +94,18 @@ public class DeliveryServiceImplementation implements DeliveryService {
             return null;
         }
         // If the user has an active subscription with that supplier
-        // Set delivery status to cancelled
-        delivery.setOrderStatus(cancelled.getStatusName());
-        // Update the remaining meals on the subscription table
-        subscription.setMeals_remaining(subscription.getMeals_remaining()  +1);
-
+        // Modify the delivery status to either cancelled or completed
+        if(CANCELLED.getStatusName().equals(newStatus)){
+            delivery.setOrderStatus(CANCELLED.getStatusName());
+        }else{
+            // Update the remaining meals on the subscription table
+            subscription.setMeals_remaining(subscription.getMeals_remaining() - 1);
+            delivery.setOrderStatus(COMPLETED.getStatusName());
+        }
+        // Saving changes to the delivery and the new sub meal count
         deliveryRepository.save(delivery);
         subscriptionRepository.save(subscription);
+        System.out.println("Order status successfully updated.");
 
         return delivery;
     }

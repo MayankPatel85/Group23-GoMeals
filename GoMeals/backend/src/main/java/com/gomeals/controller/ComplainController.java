@@ -11,10 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/complain")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ComplainController {
 
-    @Autowired
-    ComplainService complainService;
+    private final ComplainService complainService;
+
+    public ComplainController(ComplainService complainService) {
+        this.complainService = complainService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Complain> createComplain(@RequestBody Complain complain) {
