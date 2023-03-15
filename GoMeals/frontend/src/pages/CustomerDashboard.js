@@ -6,8 +6,7 @@ import {Modal} from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
 import { Cookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
-import SupplierProfile from "./SupplierProfile";
-import { Link } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function CustomerDashboard(children, func) {
     const [data,setdata]=useState({});
@@ -22,20 +21,33 @@ export default function CustomerDashboard(children, func) {
     const[mealchart,setMealChart]=useState({});
     const[supName, setSupName]=useState("");
     const[supId, setSupId]=useState("");
-    const fetchdata = () => {
+    const [clicked, setClicked] = useState(false);
+    const [filter,setFilter]=useState("");
+    const fetchdata = (param) => {
+        console.log(param)
         axios.get("http://localhost:8080/supplier/get/all")
             .then((response) => {
-                setdata(response.data)
+                if(param=="normal") {
+                    setdata(response.data)
+                }
+                if(param=="lth"){
+                setdata(response.data.sort((a, b) => a.mealPrice - b.mealPrice));
+              }
+                if(param=="htl"){
+                    setdata(response.data.sort((a, b) => b.mealPrice - a.mealPrice));
+                }
             })
     }
     const navigate=useNavigate();
     const handleNavigate=()=>{
         navigate('/supplierProfile',{state:{id:supId}})
     }
+    const handleFilter=(param)=>{
+        console.log(param);
+    }
 
-//     const history = useHistory();
     useEffect(() => {
-        fetchdata()
+        fetchdata("normal")
         const cookies = new Cookies();
         const loggedInUser = cookies.get('loggedInUser');
         console.log(loggedInUser);
@@ -115,6 +127,17 @@ export default function CustomerDashboard(children, func) {
             <br/>
             <h3>Vendors in your city</h3>
             <br />
+            <Dropdown onClick={() => setClicked(true)}>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Filter
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                    <Dropdown.Item onClick={()=>fetchdata("lth")}>Price :Low to high</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>fetchdata("htl")}>Price :High to low</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>fetchdata("normal")}>Something else</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
             <div className="containers">
                 <div className="card-containers">
                     { Object.keys(data).map((key) => (
