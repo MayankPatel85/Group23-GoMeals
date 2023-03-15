@@ -9,6 +9,8 @@ import com.gomeals.service.AddonsService;
 
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 @Service
 public class AddonsServiceImpl implements AddonsService {
 
@@ -43,6 +45,16 @@ public class AddonsServiceImpl implements AddonsService {
     public String deleteAddon(int addonId) {
         addonsRepository.deleteById(addonId);
         return "Addon deleted successully";
+    }
+
+    @Override
+    public List<Addons> getAllSupplierAddons(int supplierId){
+        List<Addons> supplierAddons = addonsRepository.findAllBySupplierId(supplierId);
+        if(supplierAddons.isEmpty()){
+            System.out.println("No addons found for that supplier.");
+            return null;
+        }
+        return supplierAddons;
     }
 
 }
