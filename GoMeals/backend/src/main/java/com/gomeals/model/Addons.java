@@ -14,7 +14,8 @@ public class Addons {
 
     private float price;
 
-    private int sup_id;
+    @Column (name = "sup_id")
+    private int supplierId;
 
     public int getAddonId() {
         return this.addonId;
@@ -40,19 +41,19 @@ public class Addons {
         this.price = price;
     }
 
-    public int getSup_id() {
-        return this.sup_id;
+    public int getSupplierId() {
+        return this.supplierId;
     }
 
-    public void setSup_id(int sup_id) {
-        this.sup_id = sup_id;
+    public void setSupplierId(int sup_id) {
+        this.supplierId = sup_id;
     }
 
-    public Addons(int addon_id, String item, float price, int sup_id) {
+    public Addons(int addon_id, String item, float price, int supplierId) {
         this.addonId = addon_id;
         this.item = item;
         this.price = price;
-        this.sup_id = sup_id;
+        this.supplierId = supplierId;
     }
 
     public Addons() {
@@ -64,7 +65,7 @@ public class Addons {
                 " addon_id='" + getAddonId() + "'" +
                 ", item='" + getItem() + "'" +
                 ", price='" + getPrice() + "'" +
-                ", sup_id='" + getSup_id() + "'" +
+                ", sup_id='" + getSupplierId() + "'" +
                 "}";
     }
 

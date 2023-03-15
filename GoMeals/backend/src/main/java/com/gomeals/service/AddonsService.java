@@ -2,13 +2,19 @@ package com.gomeals.service;
 
 import com.gomeals.model.Addons;
 
+import java.util.List;
+
 public interface AddonsService {
 
-    public Addons getAddon(int addonId);
+    Addons getAddon(int addonId);
 
-    public String createAddon(Addons addon);
+    String createAddon(Addons addon);
 
-    public String updateAddon(Addons addon);
+    String updateAddon(Addons addon);
 
-    public String deleteAddon(int addonId);
+    String deleteAddon(int addonId);
+
+    List<Addons> getAllSupplierAddons(int supplierId);
+
+
 }
