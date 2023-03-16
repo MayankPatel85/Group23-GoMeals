@@ -23,3 +23,9 @@ test-services:
     - chmod +x ./gradlew
     - ./gradlew test
     - echo "Test stage completed!"
+
+code-quality:
+  stage: designite
+  script:
+    - wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
+    - java -jar DesigniteJava.jar -i $CI_PROJECT_DIR -o $CI_PROJECT_DIR
