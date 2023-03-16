@@ -14,3 +14,12 @@ build:
     - ./gradlew build
     - java -version
     - echo "Build complete!"
+
+test-services:
+  stage: test
+  script:
+    - cd GoMeals/backend
+    - echo "Starting test stage . . ."
+    - chmod +x ./gradlew
+    - ./gradlew test
+    - echo "Test stage completed!"
