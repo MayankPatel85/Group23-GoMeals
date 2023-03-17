@@ -38,7 +38,7 @@ function Profile(props){
                        Licence number : {supDetails.govtIssuedId}<br/>
                        Paypal link : {supDetails.paypalLink}<br/>
                     </Card.Text>
-                    <Button variant="primary" >Pay</Button>
+                    <Button variant="primary" >Notify</Button>
                 </Card.Body>
             </Card>
         </div>
