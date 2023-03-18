@@ -6,7 +6,7 @@ import java.util.List;
 public interface SupplierReviewService {
 
     SupplierReview createSupplierReview(SupplierReview supplierReview);
-    List<Integer>  get5StarSupplier();
+    List<Integer>  get4upStarSupplier();
     List<Integer>  get3UpStarSupplier();
 
 

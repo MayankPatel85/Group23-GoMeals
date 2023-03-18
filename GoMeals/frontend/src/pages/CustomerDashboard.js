@@ -23,13 +23,13 @@ export default function CustomerDashboard(children, func) {
     const[supId, setSupId]=useState("");
     const [clicked, setClicked] = useState(false);
     const [filter,setFilter]=useState("");
-    const [s5list,sets5List]=useState();
+    const [s4list,sets4List]=useState();
     const [s3list,sets3List]=useState();
     const fetchdata = (param) => {
-        axios.get("http://localhost:8080/supplierReview/get/5s")
+        axios.get("http://localhost:8080/supplierReview/get/4us")
             .then((response)=>{
                 // console.log(response.data)
-                sets5List(response.data)
+                sets4List(response.data)
             })
         axios.get("http://localhost:8080/supplierReview/get/3us")
             .then((response)=>{
@@ -49,8 +49,8 @@ export default function CustomerDashboard(children, func) {
                 if(param=="htl"){
                     setdata(response.data.sort((a, b) => b.mealPrice - a.mealPrice));
                 }
-                if(param=="5star"){
-                    const filteredData = response.data.filter(obj => s5list.includes(obj.supId));
+                if(param=="4ustar"){
+                    const filteredData = response.data.filter(obj => s4list.includes(obj.supId));
                     setdata(filteredData);
                 }
                 if(param=="3ustar"){
@@ -156,8 +156,8 @@ export default function CustomerDashboard(children, func) {
                 <Dropdown.Menu>
                     <Dropdown.Item onClick={()=>fetchdata("lth")}>Price :Low to high</Dropdown.Item>
                     <Dropdown.Item onClick={()=>fetchdata("htl")}>Price :High to low</Dropdown.Item>
-                    <Dropdown.Item onClick={()=>fetchdata("5star")}>Rating : 5 Stars</Dropdown.Item>
-                    <Dropdown.Item onClick={()=>fetchdata("3ustar")}>Rating : 3 Stars and up</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>fetchdata("4ustar")}>Rating Average: Above 4 Stars</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>fetchdata("3ustar")}>Rating Average:Above 3 Stars</Dropdown.Item>
                     <Dropdown.Item onClick={()=>fetchdata("normal")}>Recommended Suppliers</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>

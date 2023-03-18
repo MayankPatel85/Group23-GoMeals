@@ -17,7 +17,7 @@ public class SupplierReviewServiceImplementation implements SupplierReviewServic
     @Override
     public SupplierReview createSupplierReview(SupplierReview supplierReview) {return supplierReviewRepository.save(supplierReview);}
     @Override
-    public List<Integer> get5StarSupplier(){return supplierReviewRepository.find5supId();}
+    public List<Integer> get4upStarSupplier(){return supplierReviewRepository.find4supId();}
     @Override
     public List<Integer> get3UpStarSupplier(){return supplierReviewRepository.find3supId();}
 

@@ -1,5 +1,4 @@
 package com.gomeals.controller;
-import com.gomeals.model.Delivery;
 import com.gomeals.model.SupplierReview;
 import com.gomeals.service.SupplierReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ public class SupplierReviewController {
     public SupplierReview createSupplierReview(@RequestBody SupplierReview supplierReview) {
         return supplierReviewService.createSupplierReview(supplierReview);
     }
-    @GetMapping("/get/5s")
-    public List<Integer> get5StarSupplier(){
-        return  supplierReviewService.get5StarSupplier();
+    @GetMapping("/get/4us")
+    public List<Integer> get4upStarSupplier(){
+        return  supplierReviewService.get4upStarSupplier();
     }
     @GetMapping("/get/3us")
     public List<Integer> get3UpStarSupplier(){
