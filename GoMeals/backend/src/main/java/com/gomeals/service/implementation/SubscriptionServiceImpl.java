@@ -1,5 +1,8 @@
 package com.gomeals.service.implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +43,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		subscriptioRepository.deleteById(sub_id);
 		return "Subscription deleted successfully.";
 
+	}
+
+	@Override
+	public List<Integer> getAllCustomerSubscriptions(int cust_id) {
+		List<Integer> listOfSuppliersForCustomers = new ArrayList<>();
+		subscriptioRepository.findSubscriptionsByCustomerIdAndActiveStatus(cust_id, 1)
+				.forEach(subscription -> listOfSuppliersForCustomers.add(subscription.getSupplierId()));
+
+		return listOfSuppliersForCustomers;
 	}
 
 }

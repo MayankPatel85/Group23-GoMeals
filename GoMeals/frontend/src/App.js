@@ -16,6 +16,8 @@ import SupplierPolling from "./pages/SupplierPolling";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
 import CustomerPolls from "./pages/CustomerPolls";
+import CustomerPaymentHistory from "./pages/CustomerPaymentHistory";
+import FooterComponent from "./components/FooterComponent";
 
 function App() {
   return (
@@ -39,7 +41,10 @@ function App() {
             path="/complainTracker"
             element={<CustomerComplainTracker />}
           />
-
+          <Route
+            path="/customerPaymentHistory"
+            element={<CustomerPaymentHistory />}
+          />
           <Route path="/supplierPolling" element={<SupplierPolling />} />
           <Route path="/customerProfile" element={<CustomerProfile />} />
           <Route
@@ -48,6 +53,7 @@ function App() {
           ></Route>
         </Routes>
       </Router>
+      <FooterComponent />
     </div>
   );
 }

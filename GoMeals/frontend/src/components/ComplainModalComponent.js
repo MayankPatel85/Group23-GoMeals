@@ -14,7 +14,7 @@ const ComplainModalComponent = (props) => {
           </h4>
           <h4>Raised on : {props.complain.date}</h4>
         </div>
-        <div className="modal-body">
+        <div className="modal-body m-2 text-start">
           <h5>Status: {props.complain.status}</h5>
           <h5>Meal Name: {props.delivery.deliveryMeal}</h5>
           <h5>Delivery Date: {props.delivery.deliveryDate}</h5>

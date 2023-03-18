@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import ComplainCard from "./CustomerComplainCard";
+import NavbarComponent from "../components/NavbarComponent";
 
 function CustomerComplainTracker() {
   const cookies = new Cookies();
@@ -32,7 +33,8 @@ function CustomerComplainTracker() {
 
   return (
     <div>
-      <Container>
+      <NavbarComponent />
+      <div class="container row p-5">
         {complainList.map((complain) =>
           deliveries.map((delivery) =>
             complain.deliveryId == delivery.deliveryId ? (
@@ -42,7 +44,7 @@ function CustomerComplainTracker() {
             )
           )
         )}
-      </Container>
+      </div>
     </div>
   );
 }

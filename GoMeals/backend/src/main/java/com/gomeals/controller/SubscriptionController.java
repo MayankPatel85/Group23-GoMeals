@@ -1,5 +1,7 @@
 package com.gomeals.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,10 +25,13 @@ public class SubscriptionController {
 	SubscriptionService subscriptionService;
 
 	@GetMapping("/get/{subId}")
-	public Subscriptions getSubscription(@PathVariable("subId") int sub_id) {
+	public Subscriptions getSubscription(@PathVariable("subId") int subId) {
+		return subscriptionService.getSubscription(subId);
+	}
 
-		return subscriptionService.getSubscription(sub_id);
-
+	@GetMapping("/get/customersSubscriptions/{custId}")
+	public List<Integer> getAllSuppliersForCustomer(@PathVariable int custId) {
+		return subscriptionService.getAllCustomerSubscriptions(custId);
 	}
 
 	@PostMapping("/add")

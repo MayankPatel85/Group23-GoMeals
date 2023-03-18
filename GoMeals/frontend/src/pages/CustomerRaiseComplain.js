@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import NavbarComponent from "../components/NavbarComponent";
 
 function CustomerRaiseComplain() {
   const cookies = new Cookies();
@@ -89,43 +90,47 @@ function CustomerRaiseComplain() {
 
   return (
     <div>
+      <NavbarComponent />
       <Container>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
-            <Form onSubmit={raiseComplain}>
-              <Form.Label>Date</Form.Label>
+            <Form onSubmit={raiseComplain} className="form-container">
+              <Form.Label className="form-label">Date</Form.Label>
               <Form.Control
                 type="text"
                 placeholder={delivery.deliveryDate}
                 aria-label="Order"
                 disabled
+                className="form-control"
                 readOnly
               />
               <Form.Group
-                className="mb-3"
+                className="mb-3 form-group"
                 controlId="exampleForm.ControlInput1"
               >
-                <Form.Label>Meal</Form.Label>
+                <Form.Label className="form-label">Meal</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder={delivery.deliveryMeal}
                   disabled
+                  className="form-control"
                   readOnly
                 />
               </Form.Group>
               <Form.Group
-                className="mb-3"
+                className="mb-3 form-group"
                 controlId="exampleForm.ControlTextarea1"
               >
-                <Form.Label>Enter Complain</Form.Label>
+                <Form.Label className="form-label">Enter Complain</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={cust_comment}
+                  onChange={(e) => setCustomerComment(e.target.value)}
+                  className="form-control"
+                />
               </Form.Group>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={cust_comment}
-                onChange={(e) => setCustomerComment(e.target.value)}
-              />
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" className="btn-primary">
                 Complain
               </Button>
             </Form>

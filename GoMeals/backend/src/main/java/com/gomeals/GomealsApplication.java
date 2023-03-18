@@ -9,5 +9,4 @@ public class GomealsApplication {
     public static void main(String[] args) {
         SpringApplication.run(GomealsApplication.class, args);
     }
-
-}   
+}

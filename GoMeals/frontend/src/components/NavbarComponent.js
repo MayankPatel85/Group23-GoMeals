@@ -47,28 +47,40 @@ export default function NavbarComponent() {
     }
   }
 
+  function handlePollVote() {
+    navigate("/customerPollVote");
+  }
+
+  function handlePaymentHistory() {
+    navigate("/customerPaymentHistory");
+  }
+
+  function handleOrders() {
+    navigate("/customerOrders");
+  }
+
+  function handleComplain() {
+    navigate("/complainTracker");
+  }
+
+  function handleSupplierComplain() {
+    navigate("/supplierComplain");
+  }
+
+  function handleSupplierPolling() {
+    navigate("/supplierPolling");
+  }
+
   return (
     <>
       <Navbar bg="primary" variant="light">
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
+          <Navbar.Brand href="/dashboard">Go Meals</Navbar.Brand>
           <div>
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link href="/dashboard">Home</Nav.Link>
               <Nav.Link href="#features">Profile</Nav.Link>
-              {loggedInUser.userType === "supplier" ? (
-                <>
-                  <Nav.Link href="#pricing">Customers</Nav.Link>
-                  <Nav.Link href="/supplierComplain">Complains</Nav.Link>
-                  <Nav.Link href="/supplierPolling">Polling</Nav.Link>
-                </>
-              ) : (
-                <>
-                  <Nav.Link href="/complainTracker">Complain</Nav.Link>
-                  <Nav.Link href="/customerOrders">Orders</Nav.Link>
-                  <Nav.Link href="/customerPollVote">Meal Poll</Nav.Link>
-                </>
-              )}
+
               <Nav.Link onClick={toggleNotifications}>
                 <FontAwesomeIcon icon={faBell} />
 
@@ -91,6 +103,32 @@ export default function NavbarComponent() {
                     <Dropdown.Item onClick={handleProfile}>
                       Profile
                     </Dropdown.Item>
+                    {loggedInUser.userType === "supplier" ? (
+                      <>
+                        <Dropdown.Item>Customers</Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierComplain}>
+                          Complains
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierPolling}>
+                          Polling
+                        </Dropdown.Item>
+                      </>
+                    ) : (
+                      <>
+                        <Dropdown.Item onClick={handleComplain}>
+                          Complain
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleOrders}>
+                          Orders
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePaymentHistory}>
+                          Payment History
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePollVote}>
+                          Meal Poll
+                        </Dropdown.Item>
+                      </>
+                    )}
                     <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

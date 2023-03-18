@@ -1,10 +1,11 @@
 import { React, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import ComplainModalComponent from "../components/ComplainModalComponent";
+
 function ComplainCard(props) {
   const [show, setShow] = useState(false);
   return (
-    <Card border="dark" style={{ width: "18rem" }}>
+    <Card border="dark" style={{ width: "18rem" }} className="m-5">
       <Card.Header>Complain raised on : {props.complain.date} </Card.Header>
       <Card.Body>
         <Card.Title>Complain Status : {props.complain.status}</Card.Title>
@@ -13,7 +14,7 @@ function ComplainCard(props) {
           Meal Delivery date : {props.delivery.deliveryDate}
         </Card.Text>
       </Card.Body>
-      <Button variant="info" onClick={() => setShow(true)}>
+      <Button variant="info" className="m-lg-4" onClick={() => setShow(true)}>
         View Complain
       </Button>
       <ComplainModalComponent
