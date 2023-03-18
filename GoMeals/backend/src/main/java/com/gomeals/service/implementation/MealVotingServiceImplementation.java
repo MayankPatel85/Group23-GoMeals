@@ -13,6 +13,7 @@ public class MealVotingServiceImplementation implements MealVotingService {
     public MealVotingServiceImplementation(MealVotingRepository mealVotingRepository) {
         this.mealVotingRepository = mealVotingRepository;
     }
+
     @Override
     public MealVoting createMealVoting(MealVoting mealVoting) {
         return mealVotingRepository.save(mealVoting);
@@ -21,5 +22,10 @@ public class MealVotingServiceImplementation implements MealVotingService {
     @Override
     public MealVoting getMealVotingByPollingId(int pollingId) {
         return mealVotingRepository.findByPollingId(pollingId);
+    }
+
+    @Override
+    public MealVoting getMealVotingForCustomerByPollId(int pollId, int custId) {
+        return mealVotingRepository.getMealVotingForCustomerByPollId(pollId,custId);
     }
 }

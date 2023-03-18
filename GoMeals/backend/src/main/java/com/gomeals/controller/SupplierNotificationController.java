@@ -13,7 +13,7 @@ public class SupplierNotificationController {
 
     private final SupplierNotificationService supplierNotificationService;
 
-    public SupplierNotificationController(SupplierNotificationService supplierNotificationService){
+    public SupplierNotificationController(SupplierNotificationService supplierNotificationService) {
         this.supplierNotificationService = supplierNotificationService;
     }
 
@@ -21,18 +21,21 @@ public class SupplierNotificationController {
     public ResponseEntity<SupplierNotification> createNotification(@RequestBody SupplierNotification notification) {
         return new ResponseEntity<>(supplierNotificationService.createNotification(notification), HttpStatus.CREATED);
     }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<SupplierNotification> getNotificationById(@PathVariable("id") Integer notificationId) {
         return new ResponseEntity<>(supplierNotificationService.getNotificationById(notificationId), HttpStatus.OK);
     }
 
     @GetMapping("/get/all-supplier/{id}")
-    public ResponseEntity<List<SupplierNotification>> getAllNotificationsBySupplierId(@PathVariable("id") Integer supplierId) {
-        return new ResponseEntity<>(supplierNotificationService.getAllNotificationsBySupplierId(supplierId), HttpStatus.OK);
+    public ResponseEntity<List<SupplierNotification>> getAllNotificationsBySupplierId(
+            @PathVariable("id") Integer supplierId) {
+        return new ResponseEntity<>(supplierNotificationService.getAllNotificationsBySupplierId(supplierId),
+                HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<SupplierNotification> updateNotification(@RequestBody SupplierNotification notification){
+    public ResponseEntity<SupplierNotification> updateNotification(@RequestBody SupplierNotification notification) {
         return new ResponseEntity<>(supplierNotificationService.updateNotification(notification), HttpStatus.OK);
     }
 

@@ -3,6 +3,8 @@ package com.gomeals.service.implementation;
 import com.gomeals.model.CustomerNotification;
 import com.gomeals.repository.CustomerNotificationRepository;
 import com.gomeals.service.CustomerNotificationService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
 
     private final CustomerNotificationRepository customerNotificationRepository;
 
+    @Autowired
     public CustomerNotificationServiceImplementation(CustomerNotificationRepository customerNotificationRepository) {
         this.customerNotificationRepository = customerNotificationRepository;
     }
@@ -31,9 +34,8 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
     @Override
     public List<CustomerNotification> getAllNotificationsByCustomerId(Integer customerId) {
         List<CustomerNotification> notifications = new ArrayList<>();
-        customerNotificationRepository.findAllByCustomerId(customerId).forEach(notification ->
-                notifications.add(notification)
-        );
+        customerNotificationRepository.findAllByCustomerId(customerId)
+                .forEach(notification -> notifications.add(notification));
         return notifications;
     }
 
@@ -50,9 +52,9 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
 
     @Override
     public void deleteNotification(Integer notificationId) {
-        if(customerNotificationRepository.findById(notificationId).isEmpty()){
-            throw new NoSuchElementException("Notification not found with id: "+notificationId );
-        }else{
+        if (customerNotificationRepository.findById(notificationId).isEmpty()) {
+            throw new NoSuchElementException("Notification not found with id: " + notificationId);
+        } else {
             customerNotificationRepository.deleteById(notificationId);
         }
     }
