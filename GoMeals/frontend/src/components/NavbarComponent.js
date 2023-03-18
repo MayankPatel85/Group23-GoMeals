@@ -40,7 +40,9 @@ export default function NavbarComponent() {
    customerUser = loggedInUser.userType === "customer";
    supplierUser = loggedInUser.userType === "supplier";
   }
-
+const handleProfile = () => {
+  
+}
   const getProfileName = () => {
     //boolean to see which type of user has logged in
 

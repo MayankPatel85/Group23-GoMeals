@@ -7,10 +7,7 @@ import com.gomeals.repository.SubscriptionRepository;
 import com.gomeals.repository.supplierRepository;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
-<<<<<<< HEAD
-=======
 import com.gomeals.utils.UserSecurity;
->>>>>>> 72f5829576f423daebcabdc894db9032878fe7bd
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,17 +58,12 @@ public class SupplierServiceImplementation implements SupplierService {
         return suppliers;
     }
 
-<<<<<<< HEAD
-    public Supplier registerSupplier(Supplier supplier) {
-        return supplierRepository.save(supplier);
-=======
     public Supplier registerSupplier(Supplier supplier){
         if(supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
             throw new RuntimeException("Email already exists");
         }
         supplier.setPassword(userSecurity.encryptData(supplier.getPassword()));
         return  supplierRepository.save(supplier);
->>>>>>> 72f5829576f423daebcabdc894db9032878fe7bd
     }
 
     public Supplier updateSupplier(@RequestBody Supplier supplier) {
@@ -91,23 +83,6 @@ public class SupplierServiceImplementation implements SupplierService {
         supplierRepository.deleteById(id);
         return "Supplier deleted";
     }
-<<<<<<< HEAD
-
-    public Supplier loginSupplier(Supplier supplier, HttpServletResponse response) {
-        Supplier currentSupplier = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
-        if (currentSupplier == null) {
-            throw new RuntimeException("Supplier not Registered");
-        } else {
-            String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
-            if (Objects.equals(password, supplier.getPassword())) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                return currentSupplier;
-            } else {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        }
-        return currentSupplier;
-=======
     public Supplier loginSupplier(Supplier supplier){
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
@@ -120,7 +95,6 @@ public class SupplierServiceImplementation implements SupplierService {
             }
         }
         return supplierData;
->>>>>>> 72f5829576f423daebcabdc894db9032878fe7bd
     }
 
     private static Customer unwrapCustomer(Optional<Customer> entity) {

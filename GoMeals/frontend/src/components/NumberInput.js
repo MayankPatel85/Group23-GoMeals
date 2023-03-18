@@ -4,7 +4,7 @@ import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function NumberInput(props) {
-  const { name, min, max, step, initialValue } = props;
+  const { name, min, max, step, initialValue,addonId } = props;
   const [value, setValue] = useState(initialValue);
 
   function handleInputChange(event) {
@@ -48,6 +48,7 @@ export default function NumberInput(props) {
         <input
           type="text"
           className="form-control input-number"
+          id={addonId}
           name={name}
           value={value}
           min={min}

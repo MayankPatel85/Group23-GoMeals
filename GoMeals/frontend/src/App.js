@@ -12,7 +12,6 @@ import React, { useState } from "react";
 import MealAccordion from "./pages/Meals";
 import NavbarComponent from "./components/NavbarComponent";
 import AddOns from "./pages/AddOns";
-import React from "react";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
 
