@@ -1,5 +1,7 @@
 package com.gomeals.service;
 
+import java.util.List;
+
 import com.gomeals.model.Polling;
 
 public interface PollingService {
@@ -11,4 +13,6 @@ public interface PollingService {
     Polling updatePoll(Polling polling);
 
     String deletePollById(int id);
+
+    List<Polling> getActivePollForSupplier(int[] supId);
 }
