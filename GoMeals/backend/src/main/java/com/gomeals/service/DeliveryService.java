@@ -16,6 +16,8 @@ public interface DeliveryService {
 
     List<Delivery> getByCustId(int id);
 
+    List<Delivery> getBySupId(int id);
+
     Delivery updateDeliveryStatus(int id, String status);
 
 }

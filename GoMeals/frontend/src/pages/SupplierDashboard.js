@@ -13,6 +13,7 @@ export default function SupplierDashboard() {
     const [showCustomerList, setShowCustomerList] = useState(false);
     const [customerList, setCustomerList] = useState([]);
     const [subscriptionList, setSubscriptionList] = useState([]);
+    const [deliveryData,setDeliveryData]=useState();
     const cookies = new Cookies();
     const loggedInUser = cookies.get('loggedInUser');
     console.log("logged" + loggedInUser);
@@ -20,6 +21,32 @@ export default function SupplierDashboard() {
         showmealchart(true);
         alterstate(param)
     };
+    const handleDelivery=()=>{
+        axios.get(`http://localhost:8080/subscription/get/sup/12`)
+            .then((response)=> {
+                   response.data.forEach(custId=> {
+                           const delivery = {
+                               "deliveryId": 8,
+                               "deliveryDate": "2023-02-25",
+                               "deliveryMeal": "Samosas",
+                               "orderStatus": "inprogress",
+                               "supId": loggedInUser.supId,
+                               "custId": custId
+                           }
+                           console.log(delivery)
+                       axios.post("http://localhost:8080/delivery/create",delivery)
+                       }
+                   )
+                }
+            )
+
+        axios.get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
+            .then((response)=> {
+                    setDeliveryData(response.data);
+                console.log(response.data);
+                }
+            )
+    }
     function handleShowCustomers() {
         setIsLoading(true);
         console.log("supId" + JSON.stringify(loggedInUser));
@@ -45,7 +72,7 @@ export default function SupplierDashboard() {
         const mealChart = [{
             id: {
                 day: "monday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("monday1").value,
             item2: document.getElementById("monday2").value,
@@ -58,7 +85,7 @@ export default function SupplierDashboard() {
         {
             id: {
                 day: "tuesday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("tuesday1").value,
             item2: document.getElementById("tuesday2").value,
@@ -71,7 +98,7 @@ export default function SupplierDashboard() {
         {
             id: {
                 day: "wednesday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("wednesday1").value,
             item2: document.getElementById("wednesday2").value,
@@ -84,7 +111,7 @@ export default function SupplierDashboard() {
         {
             id: {
                 day: "thursday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("thursday1").value,
             item2: document.getElementById("thursday2").value,
@@ -97,7 +124,7 @@ export default function SupplierDashboard() {
         {
             id: {
                 day: "friday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("friday1").value,
             item2: document.getElementById("friday2").value,
@@ -110,7 +137,7 @@ export default function SupplierDashboard() {
         {
             id: {
                 day: "saturday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("saturday1").value,
             item2: document.getElementById("saturday2").value,
@@ -123,7 +150,7 @@ export default function SupplierDashboard() {
         {
             id: {
                 day: "sunday",
-                supId: 2
+                supId: loggedInUser.supId
             },
             item1: document.getElementById("sunday1").value,
             item2: document.getElementById("sunday2").value,
@@ -171,7 +198,9 @@ export default function SupplierDashboard() {
             <br />
             <h2 >Welcome Supplier</h2>
             <br />
-            <Button variant="outline-primary" onClick={handleClick}>Create Meal Chart</Button>{' '}
+            <Button variant="outline-primary" onClick={()=>handleClick('create')}>Create Meal Chart</Button>{' '}
+            <Button variant="outline-primary" onClick={()=>handleClick('update')}>Update Meal Chart</Button>{' '}
+            <Button variant="outline-primary" onClick={()=>handleDelivery('update')}>Delivery</Button>{' '}
             <Button variant="outline-primary" onClick={handleShowCustomers}>View Customers</Button>
             {mealchart &&
                 <div><Card className="mechco">

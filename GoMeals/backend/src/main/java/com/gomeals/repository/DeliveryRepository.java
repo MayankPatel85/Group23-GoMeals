@@ -8,5 +8,6 @@ import java.util.List;
 public interface DeliveryRepository extends CrudRepository<Delivery, Integer> {
 
     List<Delivery> findByCustId(int custId);
+    List<Delivery> findBySupId(int supId);
 
 }

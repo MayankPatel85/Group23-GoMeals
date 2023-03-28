@@ -109,5 +109,8 @@ public class DeliveryServiceImplementation implements DeliveryService {
 
         return delivery;
     }
-
+    @Override
+    public List<Delivery> getBySupId(int id) {
+        return deliveryRepository.findBySupId(id);
+    }
 }
