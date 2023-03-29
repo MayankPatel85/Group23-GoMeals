@@ -76,3 +76,27 @@ h3{
 .profile-item hr {
   margin: 1% 0% 1.5% 0%;
 }
+
+.my-notifications-container {
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.my-notifications-header {
+  background-color: #f0f0f0;
+  color: #333;
+  
+}
+
+.my-notifications-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.my-notifications-item:last-child {
+  border-bottom: none;
+}
+
+.my-notification{
+  position: absolute;
+}

@@ -151,7 +151,7 @@ export default function SupplierDashboard() {
 
     return (
         <div>
-            <NavbarComponent />
+            {/* <NavbarComponent /> */}
             <br />
             <h2 >Welcome Supplier</h2>
             <br />

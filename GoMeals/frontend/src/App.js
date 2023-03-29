@@ -14,6 +14,7 @@ import NavbarComponent from "./components/NavbarComponent";
 import AddOns from "./pages/AddOns";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
+import Hero from "./pages/Hero";
 
 function App() {
   // const navigate = useNavigate();
@@ -32,7 +33,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/supplierRegister" element={<SupplierRegister />} />
-          <Route path="/" element={<Register />} />
+          <Route path="/" element={<Hero />} />
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
@@ -40,6 +41,7 @@ function App() {
           {/* <Route path="/addons" element={<AddOns />} exact/> */}
           <Route path="/customerProfile" element={<CustomerProfile />} />
           <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
+          
         </Routes>
       </Router>
     </div>

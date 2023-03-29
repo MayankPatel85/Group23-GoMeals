@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Accordion,
   Button,
@@ -7,142 +7,117 @@ import {
   Row,
   Form,
   InputGroup,
-  FormControl,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+
 import NumberInput from "../components/NumberInput";
 import Swal from "sweetalert2";
 import { Cookies } from "react-cookie";
 import axios from "axios";
-
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const MealAccordion = () => {
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
-  const [expanded, setExpanded] = useState([]);
   const [deliveries, setDeliveries] = useState([]);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const navigate = useNavigate();
   const [activeKey, setActiveKey] = useState(null); // Declare and define the activeKey state variable and the setActiveKey function
   const [showAddOnsForm, setShowAddOnsForm] = useState(false);
-  const [addOnsText, setAddOnsText] = useState("");
-  const [isDeliveryAddons, setIsDeliveryAddons] = useState([]);
+  const [updatingAddons, setUpdatingAddons] = useState(false);
 
   const customerId = loggedInUser.cust_id;
   useEffect(() => {
-    if (customerId) {
-      console.log("customer id:" + customerId);
-      axios
-        .get(`http://localhost:8080/delivery/get/customer/${customerId}`)
-        .then((response) => {
-    
-          const sortedDeliveries = [...response.data].sort((a, b) => {
-            if (a.deliveryDate < b.deliveryDate) {
-              return -1;
-            } else if (a.deliveryDate > b.deliveryDate) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          setDeliveries(sortedDeliveries);
-        })
-        .catch((error) => {
-          console.log(error);
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/delivery/get/customer/${customerId}`
+        );
+        const sortedDeliveries = [...response.data].sort((a, b) => {
+          if (a.deliveryDate < b.deliveryDate) {
+            return -1;
+          } else if (a.deliveryDate > b.deliveryDate) {
+            return 1;
+          } else {
+            return 0;
+          }
         });
+        setDeliveries(sortedDeliveries);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (customerId) {
+      fetchData();
     }
   }, [customerId]);
+  useEffect(() => {
+    return () => {};
+  }, [deliveries]);
 
-  const [showModal, setShowModal] = useState(false);
-
-  const handleDelete = () => {
-    // TODO: Implement the delete functionality
-    // ...
-    setShowModal(false);
-  };
-
-  const handleCancel = () => {
-    setShowModal(false);
-  };
-
-  const handleClick = () => {
-    setShowModal(true);
-  };
-
-  const handleAddOnsFormSubmit = (e) => {
-    e.preventDefault();
-    // handle form submission here
-    setShowAddOnsForm(false);
-  };
-
-  const handleAddOnsClick = (deliveryId, sup_id) => {
-    getDeliveryAddons(deliveryId, sup_id);
-    setShowAddOnsForm(!showAddOnsForm);
-  };
-
-  const groupedMeals = deliveries.reduce((acc, meal) => {
-    const key =
-      meal.deliveryDate === new Date().toISOString().slice(0, 10)
-        ? "Today"
-        : meal.deliveryDate;
-    // console.log(new Date().toISOString().slice(0, 10))
-    if (!acc[key]) {
-      acc[key] = [];
+  const handleAddOnsFormSubmit = (event) => {
+    setUpdatingAddons(true);
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+      const field = document.querySelector(`[name="${key}"]`);
+      if (field) {
+        data[key] = { value, id: field.id };
+      } else {
+        data[key] = value;
+      }
     }
-    acc[key].push(meal);
-    return acc;
-  }, {});
-
-  const renderMealCards = (groupedMeals) => {
-    return Object.keys(groupedMeals).map((date) => {
-      return (
-        <div key={date}>
-          <h3>{date}</h3>
-          <Accordion>
-            {groupedMeals[date].map((meal) => (
-              <Accordion.Item
-                key={meal.deliveryId}
-                eventKey={meal.deliveryId}
-                onSelect={() => {
-                  if (expanded.includes(meal.deliveryId)) {
-                    setExpanded(
-                      expanded.filter((id) => id !== meal.deliveryId)
-                    );
-                  } else {
-                    setExpanded([...expanded, meal.deliveryId]);
-                  }
-                }}
-              >
-                <Accordion.Header>
-                  <div>
-                    <h5>{meal.title}</h5>
-                    <p>Delivery Status: {meal.orderStatus}</p>
-                  </div>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <div>
-                    <p>Items:</p>
-                    <ul>
-                      {meal.items.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Button
-                    variant="primary"
-                    onClick={() =>
-                      handleAddOnsClick(meal.deliveryId, meal.supId)
-                    }
-                  >
-                    Add Add-Ons
-                  </Button>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
-        </div>
-      );
-    });
+    const custId = data.custId.value;
+    const deliveryId = data.deliveryId.value;
+    for (let [key, value] of Object.entries(data)) {
+      if (key !== "custId" && key !== "deliveryId") {
+        const addonId = value.id;
+        const quantity = value.value;
+        const payload = {
+          customerId: custId,
+          addonId: addonId,
+          deliveryId: deliveryId,
+          quantity: quantity,
+        };
+        if (quantity > 0) {
+          fetch("http://localhost:8080/deliveryAddons/update", {
+            method: "PUT",
+            body: JSON.stringify(payload),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then(() => setUpdatingAddons(false))
+            .catch((error) => console.error(error));
+        } else {
+          continue;
+        }
+      }
+    }
   };
+
+  const handleAddOnsClick = useCallback(
+    async (deliveryId, sup_id) => {
+     await getDeliveryAddons(deliveryId, sup_id);
+      setShowAddOnsForm((showAddOnsForm) => !showAddOnsForm);
+    },
+    [getDeliveryAddons]
+  );
+
+  const groupedMeals = useMemo(() => {
+    return deliveries.reduce((acc, meal) => {
+      const key =
+        meal.deliveryDate === new Date().toISOString().slice(0, 10)
+          ? "Today"
+          : meal.deliveryDate;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(meal);
+      return acc;
+    }, {});
+  }, [deliveries]);
+
   function deleteMealById(deliveryId) {
     const endpoint = `http://localhost:8080/delivery/delete/${deliveryId}`;
     axios
@@ -151,14 +126,18 @@ const MealAccordion = () => {
         console.log(
           `Meal with delivery ID ${deliveryId} deleted successfully.`
         );
-        setIsDeleting(true);
-        // handle success response here
+        // Remove deleted meal from deliveries state variable
+        const updatedDeliveries = deliveries.filter(
+          (delivery) => delivery.deliveryId !== deliveryId
+        );
+        // Update deliveries state variable
+        setDeliveries(updatedDeliveries);
       })
+
       .catch((error) => {
         console.error(
           `Error deleting meal with delivery ID ${deliveryId}: ${error}`
         );
-        setIsDeleting(false);
 
         // handle error response here
       });
@@ -167,13 +146,12 @@ const MealAccordion = () => {
     try {
       const endpoint = `http://localhost:8080/deliveryAddons/get/${deliveryId}`;
       const response1 = await axios.get(endpoint);
-   
 
       const updatedDeliveries1 = deliveries.map((delivery) => {
         const matchingAddons = response1.data.filter(
           (addon) => addon.deliveryId === delivery.deliveryId
         );
-        
+
         return {
           ...delivery,
           addons: matchingAddons,
@@ -194,7 +172,7 @@ const MealAccordion = () => {
         };
       });
 
-      setDeliveries(updatedDeliveries2);
+      await setDeliveries(updatedDeliveries2);
     } catch (error) {
       console.error(`Error: ${error}`);
     }
@@ -212,12 +190,8 @@ const MealAccordion = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // Calling API to delete the meal here
-        console.log("Delivery ID in handleDeleteClick"+deliveryId)
+        console.log("Delivery ID in handleDeleteClick" + deliveryId);
         deleteMealById(deliveryId);
-        setIsDeleting(true);
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 500);
       }
     });
   };
@@ -239,16 +213,16 @@ const MealAccordion = () => {
               </Row>
               <Row>
                 <Col>
-                  <Accordion activeKey={activeKey} >
+                  <Accordion activeKey={activeKey}>
                     {groupedMeals[date].map((meal) => (
                       <Accordion.Item
                         key={meal.deliveryId}
                         eventKey={meal.deliveryId.toString()}
-                        onClick={() => {
+                        onClick={async() => {
                           setActiveKey(meal.deliveryId.toString());
-                          getDeliveryAddons(meal.deliveryId, meal.supId)
+                          await getDeliveryAddons(meal.deliveryId, meal.supId);
                         }}
-                        style={{backgroundColor: '#f5f5f5'}}
+                        style={{ backgroundColor: "#f5f5f5" }}
                       >
                         <Accordion.Header>
                           <div>
@@ -260,13 +234,6 @@ const MealAccordion = () => {
                           <div className="d-flex">
                             <p>Items: </p>
                             <div className="ms-1 d-flex">
-                              {/* {meal.deliveryMeal.map((item, index) => (
-                                <React.Fragment key={item}>
-                                  {index !== 0 && ", "}{" "}
-                                  <p>{item}</p>
-                                </React.Fragment>
-                              ))} */}
-
                               {meal.deliveryMeal}
                             </div>
                           </div>
@@ -274,11 +241,11 @@ const MealAccordion = () => {
                           <div className="d-flex">
                             <Button
                               variant="primary"
-                              onClick={() =>
-                                handleAddOnsClick(meal.deliveryId, meal.supId)
-                              }
+                              onClick={() => {
+                                handleAddOnsClick(meal.deliveryId, meal.supId);
+                              }}
                             >
-                              AddOns
+                              Add ons
                             </Button>
 
                             <Button
@@ -294,6 +261,7 @@ const MealAccordion = () => {
                           {showAddOnsForm && activeKey == meal.deliveryId && (
                             <>
                               <div className="d-flex">
+                                {console.log(meal.addons)}
                                 {meal.addons && <p>Addons: </p>}
                                 <div className="ms-1 d-flex">
                                   {meal.addons &&
@@ -303,16 +271,19 @@ const MealAccordion = () => {
                                         meal.availableAddons.find(
                                           (a) => a.addonId === addon.addonId
                                         );
-                                      return (
-                                        <React.Fragment key={addon.addonId}>
-                                          {index !== 0 && ", "}
-                                          <p>
-                                            {availableAddon
-                                              ? availableAddon.item
-                                              : ""}
-                                          </p>
-                                        </React.Fragment>
-                                      );
+                                      console.log(availableAddon);
+                                      if (addon.quantity > 0) {
+                                        return (
+                                          <React.Fragment key={addon.addonId}>
+                                            {index !== 0 && ", "}
+                                            <p>
+                                              {availableAddon
+                                                ? availableAddon.item
+                                                : ""}
+                                            </p>
+                                          </React.Fragment>
+                                        );
+                                      }
                                     })}
                                 </div>
                               </div>
@@ -331,27 +302,44 @@ const MealAccordion = () => {
                                           const initialValue = addon
                                             ? addon.quantity.toString()
                                             : "";
-                                          // console.log(addon.addonId + ": comparing with :"+availableAddon.addonId)
                                           return (
                                             <NumberInput
                                               name={availableAddon.item}
+                                              id={availableAddon.addonId}
+                                              key={availableAddon.addonId}
                                               min={0}
                                               max={100}
                                               step={1}
-                                              
-                                              initialValue={initialValue ? parseInt(
+                                              initialValue={
                                                 initialValue
-                                              ) : 0}
+                                                  ? parseInt(initialValue)
+                                                  : 0
+                                              }
                                             />
                                           );
                                         }
                                       )}
+                                  <input
+                                    type="hidden"
+                                    name="deliveryId"
+                                    value={meal.deliveryId}
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="custId"
+                                    value={customerId}
+                                  />
+
                                   <Button
                                     variant="outline-primary"
                                     type="submit"
                                     className="mt-3"
                                   >
-                                    Submit
+                                    {updatingAddons ? (
+                                      <FontAwesomeIcon icon={faSpinner} spin />
+                                    ) : (
+                                      "Submit"
+                                    )}
                                   </Button>
                                 </InputGroup>
                               </Form>
