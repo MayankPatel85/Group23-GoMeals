@@ -7,6 +7,17 @@ import axios from "axios";
 function Profile(props){
     const location=useLocation();
     const [supDetails,setSupDetails]=useState("");
+    // const currentDate=new date();
+    const handleClick=()=>{
+        const notify={
+            "message": `${location.state.cname} requested subscription`,
+            "eventType": "review",
+            "supplierId": location.state.id
+        }
+        axios.post("http://localhost:8080/supplier-notification/create",notify)
+            .then(alert("Notification sent to the supplier"))
+        // axios.post("http://localhost:8080/subscription/add")
+    }
     useEffect(()=>{
         axios.get(`http://localhost:8080/supplier/get/${location.state.id}`)
             .then((response) => {
@@ -26,6 +37,7 @@ function Profile(props){
                 </Container>
             </Navbar>
             <h3>Supplier details</h3>
+            <h4>customer id {console.log(location.state.cname)}</h4>
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={chef}/>
                 <Card.Body>
@@ -38,7 +50,7 @@ function Profile(props){
                        Licence number : {supDetails.govtIssuedId}<br/>
                        Paypal link : {supDetails.paypalLink}<br/>
                     </Card.Text>
-                    <Button variant="primary" >Notify</Button>
+                    <Button variant="primary" onClick={handleClick}>Notify</Button>
                 </Card.Body>
             </Card>
         </div>

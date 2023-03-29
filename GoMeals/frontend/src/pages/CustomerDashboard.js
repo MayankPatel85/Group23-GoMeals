@@ -25,6 +25,7 @@ export default function CustomerDashboard(children, func) {
     const [filter,setFilter]=useState("");
     const [s4list,sets4List]=useState();
     const [s3list,sets3List]=useState();
+    const [loggedInUser, setLoggedInUser] = useState(null);
     const fetchdata = (param) => {
         axios.get("http://localhost:8080/supplierReview/get/4us")
             .then((response)=>{
@@ -61,17 +62,19 @@ export default function CustomerDashboard(children, func) {
     }
     const navigate=useNavigate();
     const handleNavigate=()=>{
-        navigate('/supplierProfile',{state:{id:supId}})
+        navigate('/supplierProfile',{state:{id:supId,cname:loggedInUser.cust_fname}})
+        console.log(loggedInUser)
     }
     const handleFilter=(param)=>{
         console.log(param);
     }
 
     useEffect(() => {
-        fetchdata("normal")
+        fetchdata("normal");
         const cookies = new Cookies();
-        const loggedInUser = cookies.get('loggedInUser');
-        console.log(loggedInUser);
+        const user = cookies.get("loggedInUser");
+        setLoggedInUser(user);
+
     }, []);
 
     const handleClick=(param, e)=>{
@@ -81,6 +84,7 @@ export default function CustomerDashboard(children, func) {
                 setSupName(response.data)
                 setSupId(id)
             })
+        console.log(loggedInUser.cust_id);
         const data1 = { day: "monday", supId: param };
         axios.post("http://localhost:8080/meal_chart/get",data1)
             .then((response) => {

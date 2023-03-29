@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, FormGroup, Container, Navbar, Spinner } from 'react-bootstrap';
+import {Button, Card, FormGroup, Container, Navbar, Spinner, Table} from 'react-bootstrap';
 import axios from "axios";
 import { Label, Input } from 'reactstrap';
 import CustomerList from './CustomerList';
@@ -281,6 +281,36 @@ export default function SupplierDashboard() {
             }
             <br />
             <br />
+            <Table striped bordered hover>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Customer id</th>
+                    <th>Meal</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {/*{deliveryData}*/}
+                <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td colSpan={2}>Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+                </tbody>
+            </Table>
             <Navbar bg="primary" variant="light" className="justify-content-center align-items-center">
                 <h3>©Go Meals</h3>
             </Navbar>
