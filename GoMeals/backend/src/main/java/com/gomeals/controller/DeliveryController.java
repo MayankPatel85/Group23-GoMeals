@@ -30,7 +30,7 @@ public class DeliveryController {
     }
 
     @PostMapping("/create")
-    public Delivery createDelivery(@RequestBody Delivery delivery) {
+    public String createDelivery(@RequestBody Delivery delivery) {
         return deliveryService.createDelivery(delivery);
     }
 

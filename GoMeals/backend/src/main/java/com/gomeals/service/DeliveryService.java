@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DeliveryService {
 
-    Delivery createDelivery(Delivery delivery);
+    String createDelivery(Delivery delivery);
 
     Delivery getDeliveryById(int id);
 

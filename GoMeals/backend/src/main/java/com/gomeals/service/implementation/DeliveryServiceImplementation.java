@@ -1,17 +1,19 @@
 package com.gomeals.service.implementation;
 
-import com.gomeals.constants.DeliveryStatus;
-import com.gomeals.model.Delivery;
-import com.gomeals.model.Subscriptions;
-import com.gomeals.repository.DeliveryRepository;
-import com.gomeals.repository.SubscriptionRepository;
+import com.gomeals.model.*;
+import com.gomeals.repository.*;
 import com.gomeals.service.DeliveryService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.gomeals.constants.DeliveryStatus.*;
 
@@ -19,20 +21,97 @@ import static com.gomeals.constants.DeliveryStatus.*;
 public class DeliveryServiceImplementation implements DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
-
     private final SubscriptionRepository subscriptionRepository;
+    private final SupplierRepository supplierRepository;
+    private final MealChartRepository mealChartRepository;
+    private final PollingRepository pollingRepository;
 
     public DeliveryServiceImplementation(DeliveryRepository deliveryRepository,
-                                         SubscriptionRepository subscriptionRepository) {
+                                         SubscriptionRepository subscriptionRepository, PollingRepository pollingRepository, MealChartRepository mealChartRepository, SupplierRepository supplierRepository) {
         this.deliveryRepository = deliveryRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.pollingRepository = pollingRepository;
+        this.mealChartRepository = mealChartRepository;
+        this.supplierRepository = supplierRepository;
     }
 
-
+    @Transactional
     @Override
-    public Delivery createDelivery(Delivery delivery) {
-        return deliveryRepository.save(delivery);
+    public String createDelivery(Delivery delivery) {
+
+        int supplierId = delivery.getSupId();
+        int customerId = delivery.getCustId();
+
+        LocalDateTime todayDate = LocalDateTime.now();
+        LocalDateTime tomorrowDate = todayDate.plusDays(1);
+
+        // Verify that there is no active delivery for that date
+        Delivery newDelivery = deliveryRepository.findBySupIdAndCustIdAndDeliveryDate(supplierId,customerId,
+                tomorrowDate.toLocalDate());
+        if(newDelivery != null){
+            System.out.println("A delivery has already been created for that customer and date");
+            return null;
+        }
+        newDelivery = delivery;
+
+        // Verify if there are enough meals remaining in the user subscription before creating a delivery
+        Subscriptions subscriptions = subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(
+                customerId, supplierId,1);
+        if(subscriptions == null){
+            System.out.println("User has no active subscription with the supplier.");
+            return null;
+        }
+        if(subscriptions.getMeals_remaining() == 0){
+            System.out.println("User has 0 meals remaining on the subscription.");
+            return null;
+        }
+
+        // get the suppliers mealchart
+        List<Object[]> mealChart = mealChartRepository.findMealChartBySupplierId(supplierId);
+        if(mealChart.isEmpty()){
+            System.out.println("Meal chart not found");
+            return null;
+        }
+
+        String tomorrow = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH).format(tomorrowDate);
+        StringBuilder deliveryMeal = new StringBuilder();
+        for(Object[] object : mealChart){
+
+            Date date = (Date) object[7];
+            String specialDate = date.toString();
+            String day = (String) object[0];
+            DayOfWeek tomorrowDay = tomorrowDate.getDayOfWeek();
+
+            if(tomorrow.equals(specialDate)){ // special meal day, take most voted meal on the poll
+                Polling polling = pollingRepository.findBySupIdAndStatus(supplierId,true);
+                if(polling == null){
+                    System.out.println("Poll not found.");
+                    return null;
+                }
+                if(polling.getVote() == null){
+                    System.out.println("Voted meal not found.");
+                    return null;
+                }
+                deliveryMeal.append(polling.getVote());
+            }else if(day.equals(tomorrowDay.toString().toLowerCase())){ // normal day, take the meal for that day
+                for(int i = 1; i < 6; i++){
+                    String mealChartMeal = (String) object[i];
+                    if(mealChartMeal == null || mealChartMeal.isEmpty()){
+                        continue;
+                    }
+                    deliveryMeal.append(mealChartMeal).append(";");
+                }
+            }
+            break;
+        }
+        System.out.println(deliveryMeal);
+        newDelivery.setDeliveryMeal(deliveryMeal.toString());
+        newDelivery.setDeliveryDate(tomorrowDate.toLocalDate());
+
+        deliveryRepository.save(newDelivery);
+        return null;
     }
+
 
     @Override
     public Delivery getDeliveryById(int id) {
@@ -100,6 +179,9 @@ public class DeliveryServiceImplementation implements DeliveryService {
         }else{
             // Update the remaining meals on the subscription table
             subscription.setMeals_remaining(subscription.getMeals_remaining() - 1);
+            if(subscription.getMeals_remaining() == 0){
+                subscription.setActiveStatus(0);
+            }
             delivery.setOrderStatus(COMPLETED.getStatusName());
         }
         // Saving changes to the delivery and the new sub meal count
