@@ -9,6 +9,7 @@ function Profile(props){
     const [supDetails,setSupDetails]=useState("");
     // const currentDate=new date();
     const handleClick=()=>{
+        console.log(location.state.cusId)
         const notify={
             "message": `${location.state.cname} requested subscription`,
             "eventType": "review",
@@ -16,13 +17,24 @@ function Profile(props){
         }
         axios.post("http://localhost:8080/supplier-notification/create",notify)
             .then(alert("Notification sent to the supplier"))
-        // axios.post("http://localhost:8080/subscription/add")
+        const subscription=
+        {
+            "meals_remaining": 30,
+            "sub_date":"2023-03-29",
+            "activeStatus": 0,
+            "customerId": location.state.cusId,
+            "supplierId": location.state.id
+        }
+
+        axios.post("http://localhost:8080/subscription/add",subscription)
+            .then(console.log(subscription))
     }
     useEffect(()=>{
         axios.get(`http://localhost:8080/supplier/get/${location.state.id}`)
             .then((response) => {
                 setSupDetails(response.data)
             })
+
     });
     return(
         <div>
@@ -37,7 +49,6 @@ function Profile(props){
                 </Container>
             </Navbar>
             <h3>Supplier details</h3>
-            <h4>customer id {console.log(location.state.cname)}</h4>
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={chef}/>
                 <Card.Body>

@@ -62,7 +62,7 @@ export default function CustomerDashboard(children, func) {
     }
     const navigate=useNavigate();
     const handleNavigate=()=>{
-        navigate('/supplierProfile',{state:{id:supId,cname:loggedInUser.cust_fname}})
+        navigate('/supplierProfile',{state:{id:supId,cname:loggedInUser.cust_fname,cusId:loggedInUser.custId}})
         console.log(loggedInUser)
     }
     const handleFilter=(param)=>{
