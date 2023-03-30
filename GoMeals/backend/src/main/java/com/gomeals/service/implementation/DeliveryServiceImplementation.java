@@ -109,7 +109,8 @@ public class DeliveryServiceImplementation implements DeliveryService {
         newDelivery.setDeliveryDate(tomorrowDate.toLocalDate());
 
         deliveryRepository.save(newDelivery);
-        return null;
+
+        return "Delivery Created";
     }
 
 

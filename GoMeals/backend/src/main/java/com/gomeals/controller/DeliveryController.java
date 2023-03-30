@@ -30,8 +30,13 @@ public class DeliveryController {
     }
 
     @PostMapping("/create")
-    public String createDelivery(@RequestBody Delivery delivery) {
-        return deliveryService.createDelivery(delivery);
+    public ResponseEntity<String> createDelivery(@RequestBody Delivery delivery) {
+        String createDelivery = deliveryService.createDelivery(delivery);
+        if(createDelivery == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body("Delivery created successfully.\n");
+        }
     }
 
     @PutMapping("/update")
