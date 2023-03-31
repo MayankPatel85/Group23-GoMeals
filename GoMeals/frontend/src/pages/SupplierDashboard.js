@@ -7,6 +7,8 @@ import {
   Navbar,
   Spinner,
   Table,
+  DropdownButton,
+  Dropdown,
 } from "react-bootstrap";
 import axios from "axios";
 import { Label, Input } from "reactstrap";
@@ -22,34 +24,21 @@ export default function SupplierDashboard() {
   const [customerList, setCustomerList] = useState([]);
   const [subscriptionList, setSubscriptionList] = useState([]);
   const [deliveryData, setDeliveryData] = useState([]);
+  const [showDelivery, setshowDelivery] = useState(true);
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
   console.log("logged" + loggedInUser);
+  
   const handleClick = (param) => {
     showmealchart(true);
+    setShowCustomerList(false);
+    setshowDelivery(false);
     alterstate(param);
   };
   const handleDelivery = () => {
-    // axios.get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
-    //     .then((response)=> {
-    //            response.data.forEach(custId=> {
-    //                console.log(custId)
-    //                    const delivery = {
-    //                        "deliveryId": 8,
-    //                        "deliveryDate": "",
-    //                        "deliveryMeal": "",
-    //                        "orderStatus": "inprogress",
-    //                        "supId": loggedInUser.supId,
-    //                        "custId": custId
-    //                    }
-    //                    console.log(delivery)
-    //                axios.post("http://localhost:8080/delivery/create",delivery)
-    //                    .then(alert("Deliveries initiated"))
-    //                }
-    //            )
-    //         }
-    //     )
-
+    setshowDelivery(!showDelivery);
+    setShowCustomerList(false);
+    showmealchart(false);
     axios
       .get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
       .then((response) => {
@@ -59,6 +48,7 @@ export default function SupplierDashboard() {
   };
   function handleShowCustomers() {
     setIsLoading(true);
+    setshowDelivery(false);
     console.log("supId" + JSON.stringify(loggedInUser));
     axios
       .get(`http://localhost:8080/supplier/get/${loggedInUser.supId}`)
@@ -193,10 +183,42 @@ export default function SupplierDashboard() {
         });
     }
   };
+  const DeliveryColumns = [
+    { header: "Customer ID", accessor: "custId" },
+    { header: "Delivery ID", accessor: "deliveryId" },
+    { header: "Delivery Date", accessor: "deliveryDate" },
+    { header: "Meal", accessor: "deliveryMeal" },
+    {
+      header: "Order status",
+      accessor: "orderStatus",
+      Cell: ({ value, deliveryId }) => (
+        <DropdownButton
+          title={value}
+          onSelect={(eventKey) => {
+            handleOrderStatusChange(deliveryId, eventKey);
+            value=''
+          }}
+        >
+          <Dropdown.Item eventKey="completed">completed</Dropdown.Item>
+        </DropdownButton>
+      ),
+    },
+  ];
+  const handleOrderStatusChange = (deliveryId, orderStatus) => {
+    axios
+      .put(
+        `http://localhost:8080/delivery/update-status/?deliveryId=${deliveryId}&orderStatus=${orderStatus}`
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div>
-      <NavbarComponent />
       <br />
       <h2>Welcome Supplier</h2>
       <br />
@@ -373,35 +395,9 @@ export default function SupplierDashboard() {
       ) : null}
       <br />
       <br />
-      {/* <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Customer id</th>
-                    <th>Meal</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td colSpan={2}>Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </Table> */}
+      {showDelivery && (
+        <DeliveryTable columns={DeliveryColumns} data={deliveryData} />
+      )}
       <Navbar
         bg="primary"
         variant="light"
@@ -410,5 +406,40 @@ export default function SupplierDashboard() {
         <h3>©Go Meals</h3>
       </Navbar>
     </div>
+  );
+}
+
+function DeliveryTable(props) {
+  return (
+    <Table striped bordered hover>
+      <thead>
+        <tr>
+          {props.columns.map((column) => (
+            <th key={column.accessor}>{column.header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {props.data.map((row) => {
+          return (
+            <tr key={row.cust_id}>
+              {props.columns.map((column) => (
+                <td key={column.accessor}>
+                  {column.Cell ? (
+                    <column.Cell
+                      value={row[column.accessor]}
+                      deliveryId={row.deliveryId}
+                    />
+                  ) : (
+                    row[column.accessor]
+                  )}
+                </td>
+              ))}
+            </tr>
+          );
+          return null;
+        })}
+      </tbody>
+    </Table>
   );
 }

@@ -26,39 +26,52 @@ public class UserSecurity {
     }
 
     public String encryptData(String plainText) {
-        try {
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
+        String encryptedText = null;
+        if (plainText != null) {
+            try {
+                cipher.init(Cipher.ENCRYPT_MODE, key);
+            } catch (InvalidKeyException e) {
+                throw new RuntimeException(e);
+            }
+            byte[] encryptedBytes = new byte[0];
+            try {
+                encryptedBytes = cipher.doFinal(plainText.getBytes());
+            } catch (IllegalBlockSizeException e) {
+                throw new RuntimeException(e);
+            } catch (BadPaddingException e) {
+                throw new RuntimeException(e);
+            }
+            encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
+            return encryptedText;
+        } else {
+            System.out.println("Plaintext cannot be null");
         }
-        byte[] encryptedBytes = new byte[0];
-        try {
-            encryptedBytes = cipher.doFinal(plainText.getBytes());
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException(e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException(e);
-        }
-        String encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
         return encryptedText;
     }
 
     public String decryptData(String cipherText) {
-        try {
-            cipher.init(Cipher.DECRYPT_MODE, key);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
+        String decryptedText = null;
+        if (cipherText != null) {
+            try {
+                cipher.init(Cipher.DECRYPT_MODE, key);
+            } catch (InvalidKeyException e) {
+                throw new RuntimeException(e);
+            }
+            byte[] decryptedBytes = new byte[0];
+            try {
+                decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(cipherText));
+            } catch (IllegalBlockSizeException e) {
+                throw new RuntimeException(e);
+            } catch (BadPaddingException e) {
+                throw new RuntimeException(e);
+            }
+            decryptedText = new String(decryptedBytes);
+            return decryptedText;
+        } else {
+            System.out.println("Decrypted text cannot be null");
         }
-        byte[] decryptedBytes = new byte[0];
-        try {
-            decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(cipherText));
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException(e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException(e);
-        }
-        String decryptedText = new String(decryptedBytes);
         return decryptedText;
+
     }
 
     public static void main(String[] args){

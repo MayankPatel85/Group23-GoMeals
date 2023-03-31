@@ -8,7 +8,7 @@ import SupplierRegister from "./pages/SupplierRegister";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import SupplierLogin from "./pages/SupplierLogin";
 import SupplierDashboard from "./pages/SupplierDashboard";
-import React from "react";
+import React, { useState } from "react";
 import CustomerDeliveries from "./pages/CustomerDeliveries";
 import CustomerRaiseComplain from "./pages/CustomerRaiseComplain";
 import CustomerComplainTracker from "./pages/CustomerComplainTracker";
@@ -20,15 +20,26 @@ import CustomerPaymentHistory from "./pages/CustomerPaymentHistory";
 import FooterComponent from "./components/FooterComponent";
 import SupplierPollingDetails from "./pages/SupplierPollingDetails";
 import SupplierProfile from "./pages/SupplierProfile";
+import NavbarComponent from "./components/NavbarComponent";
+import HeroComponent from "./components/HeroComponent";
 function App() {
+  // const navigate = useNavigate();
+  const [showNavbar, setShowNavbar] = useState(true);
+
+   // Redirect to login page if user is not authenticated
+  //  const isAuthenticated = true; // Replace with your authentication logic
+  //  if (!isAuthenticated && location.pathname !== "/login") {
+  //    navigate("/login");
+  //  }
   return (
     <div className="App">
       <Router>
+        <NavbarComponent />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/supplierRegister" element={<SupplierRegister />} />
-          <Route path="/" element={<Register />} />
+          <Route path="/" element={<HeroComponent />} />
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
