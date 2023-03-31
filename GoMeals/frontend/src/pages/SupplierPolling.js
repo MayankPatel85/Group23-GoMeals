@@ -23,7 +23,7 @@ function SupplierPolling() {
 
   useEffect(() => {
     console.log("useEffect");
-    fetch("http://localhost:8080/polling/get/all/" + loggedInUser.supId)
+    fetch("http://localhost:8080/polling/get/allPolls/" + loggedInUser.supId)
       .then((res) => res.json())
       .then((supplierPollingList) => {
         setSupplierPollingList(supplierPollingList);
@@ -41,6 +41,8 @@ function SupplierPolling() {
           if (poll.pollDate === selectedDate) {
             alert("A poll for this date has already been raised.");
             throw new Error("Complain already raised for this delivery");
+          } else {
+            console.log(poll.pollDate + " : " + selectedDate);
           }
         });
         submitPolling();

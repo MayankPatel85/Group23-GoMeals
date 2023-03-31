@@ -12,6 +12,8 @@ import com.gomeals.service.SubscriptionService;
 
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
@@ -43,6 +45,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		subscriptioRepository.deleteById(sub_id);
 		return "Subscription deleted successfully.";
 
+	}
+	@Override
+	public List<Integer> getCustomers(int id){
+		return subscriptioRepository.getCustomers(id);
 	}
 
 	@Override

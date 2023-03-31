@@ -22,24 +22,29 @@ function SupplierPollingDetails() {
       });
   }, [refresh]); // Add refresh as a dependency of useEffect
 
-  function handlePollClose(pollId, pollDate) {
-    try {
-      fetch(
-        "http://localhost:8080/meal-voting/get/most-voted-meal/" +
-          pollId +
-          "/" +
-          loggedInUser.supId
-      ).then((res) => {
-        console.log();
-        alert(
-          "Polling for the date " +
-            pollDate +
-            " closed. The most voted meal would be highlighted."
-        );
-        setRefresh(!refresh); // Toggle refresh state to trigger a re-render
-      });
-    } catch (error) {
-      console.log(error);
+  function handlePollClose(pollId, pollDate, pollVote) {
+    console.log("Poll Vote received: " + pollVote);
+    if (pollVote === null) {
+      alert("No meals were voted");
+    } else {
+      try {
+        fetch(
+          "http://localhost:8080/meal-voting/get/most-voted-meal/" +
+            pollId +
+            "/" +
+            loggedInUser.supId
+        ).then((res) => {
+          console.log();
+          alert(
+            "Polling for the date " +
+              pollDate +
+              " closed. The most voted meal would be highlighted."
+          );
+          setRefresh(!refresh); // Toggle refresh state to trigger a re-render
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -83,7 +88,9 @@ function SupplierPollingDetails() {
             {poll.status == true ? (
               <Button
                 variant="primary"
-                onClick={() => handlePollClose(poll.pollId, poll.pollDate)}
+                onClick={() =>
+                  handlePollClose(poll.pollId, poll.pollDate, poll.vote)
+                }
               >
                 Close
               </Button>

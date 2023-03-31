@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.service.SubscriptionService;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/subscription")
@@ -33,7 +35,10 @@ public class SubscriptionController {
 	public List<Integer> getAllSuppliersForCustomer(@PathVariable int custId) {
 		return subscriptionService.getAllCustomerSubscriptions(custId);
 	}
-
+	@GetMapping("/get/sup/{id}")
+	public List<Integer> getCustomers(@PathVariable int id){
+		return subscriptionService.getCustomers(id);
+	}
 	@PostMapping("/add")
 	public String postSubscription(@RequestBody Subscriptions subscription) {
 

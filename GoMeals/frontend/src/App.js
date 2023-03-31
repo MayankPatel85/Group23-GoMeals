@@ -19,6 +19,7 @@ import CustomerPolls from "./pages/CustomerPolls";
 import CustomerPaymentHistory from "./pages/CustomerPaymentHistory";
 import FooterComponent from "./components/FooterComponent";
 import SupplierPollingDetails from "./pages/SupplierPollingDetails";
+import SupplierProfile from "./pages/SupplierProfile";
 function App() {
   return (
     <div className="App">
@@ -52,6 +53,7 @@ function App() {
             path="/supplierPollingDetails"
             element={<SupplierPollingDetails />}
           />
+          <Route path="/supplierProfile" element={<SupplierProfile />} />
         </Routes>
       </Router>
       <FooterComponent />

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.gomeals.model.MealChartID;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,24 +20,38 @@ public class MealChartServiceImplementation implements MealChartService {
 
     }
     @Override
-
     public String addMealChart(List<MealChart> mealChart){
         mealchartRepository.saveAll(mealChart);
         return "Objects saved";
     }
     @Override
-    public MealChart updateMealChart(@RequestBody MealChart mealChart){
-        MealChart m=mealchartRepository.findById(mealChart.getId()).orElse(null);
-        m.setId(mealChart.getId());
-        m.setItem1(mealChart.getItem1());
-        m.setItem2(mealChart.getItem2());
-        m.setItem3(mealChart.getItem3());
-        m.setItem4(mealChart.getItem4());
-        m.setItem5(mealChart.getItem5());
-        m.setSpecialDate(mealChart.getSpecialDate());
-        mealchartRepository.save(m);
-        return m;
+    public String updateMealChart(List<MealChart> mealCharts) {
+        for (MealChart mealChart : mealCharts) {
+            MealChart m = mealchartRepository.findById(mealChart.getId()).orElse(null);
+            if (m != null) {
+                if (mealChart.getItem1() != "") {
+                    m.setItem1(mealChart.getItem1());
+                }
+                if (mealChart.getItem2() != "") {
+                    m.setItem2(mealChart.getItem2());
+                }
+                if (mealChart.getItem3() != "") {
+                    m.setItem3(mealChart.getItem3());
+                }
+                if (mealChart.getItem4() != "") {
+                    m.setItem4(mealChart.getItem4());
+                }
+                if (mealChart.getItem5() != "") {
+                    m.setItem5(mealChart.getItem5());
+                }
+                mealchartRepository.save(m);
+            }
+        }
+        return "updated";
     }
+
+
+
     @Override
     public String deleteMealChart(MealChartID id){
         mealchartRepository.deleteById(id);
