@@ -29,35 +29,61 @@ export default function NavbarComponent() {
   };
 
   const logout = () => {
-    cookies.remove('loggedInUser');
+    cookies.remove("loggedInUser");
     navigate("/");
   };
 
   const getProfileName = () => {
-    if (loggedInUser.userType === 'customer') {
+    if (loggedInUser.userType === "customer") {
       return loggedInUser.cust_fname + " " + loggedInUser.cust_lname;
-    } else if (loggedInUser.userType === 'supplier') {
+    } else if (loggedInUser.userType === "supplier") {
       return loggedInUser.supName;
     }
-  }
+  };
 
   function handleProfile() {
-    if(loggedInUser.userType === 'customer') {
+    if (loggedInUser.userType === "customer") {
       navigate("/customerProfile");
     }
   }
 
+  function handlePollVote() {
+    navigate("/customerPollVote");
+  }
+
+  function handlePaymentHistory() {
+    navigate("/customerPaymentHistory");
+  }
+
+  function handleOrders() {
+    navigate("/customerOrders");
+  }
+
+  function handleComplain() {
+    navigate("/complainTracker");
+  }
+
+  function handleSupplierComplain() {
+    navigate("/supplierComplain");
+  }
+
+  function handleSupplierPolling() {
+    navigate("/supplierPolling");
+  }
+
+  function handleSupplierPollingDetails() {
+    navigate("/supplierPollingDetails");
+  }
   return (
     <>
       <Navbar bg="primary" variant="light">
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
+          <Navbar.Brand href="/dashboard">Go Meals</Navbar.Brand>
           <div>
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link href="/dashboard">Home</Nav.Link>
               <Nav.Link href="#features">Profile</Nav.Link>
-              <Nav.Link href="#pricing">Customers</Nav.Link>
-              {loggedInUser.userType === 'supplier' && <Nav.Link href="/supplierComplain">Complains</Nav.Link>}
+
               <Nav.Link onClick={toggleNotifications}>
                 <FontAwesomeIcon icon={faBell} />
 
@@ -77,7 +103,38 @@ export default function NavbarComponent() {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
+                    <Dropdown.Item onClick={handleProfile}>
+                      Profile
+                    </Dropdown.Item>
+                    {loggedInUser.userType === "supplier" ? (
+                      <>
+                        <Dropdown.Item>Customers</Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierComplain}>
+                          Complains
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierPolling}>
+                          Polling
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierPollingDetails}>
+                          Polling Details
+                        </Dropdown.Item>
+                      </>
+                    ) : (
+                      <>
+                        <Dropdown.Item onClick={handleComplain}>
+                          Complain
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleOrders}>
+                          Orders
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePaymentHistory}>
+                          Payment History
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePollVote}>
+                          Meal Poll
+                        </Dropdown.Item>
+                      </>
+                    )}
                     <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

@@ -20,7 +20,6 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
-
     @GetMapping("/get/{id}")
     public Delivery getDeliveryById(@PathVariable("id") int id) {
         return deliveryService.getDeliveryById(id);
@@ -53,7 +52,7 @@ public class DeliveryController {
 
     @PutMapping("/update-status/")
     public ResponseEntity<Delivery> updateDeliveryStatus(@RequestParam int deliveryId, String orderStatus) {
-        Delivery deliveryToUpdate= deliveryService.updateDeliveryStatus(deliveryId, orderStatus);
+        Delivery deliveryToUpdate = deliveryService.updateDeliveryStatus(deliveryId, orderStatus);
         if (deliveryToUpdate == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {

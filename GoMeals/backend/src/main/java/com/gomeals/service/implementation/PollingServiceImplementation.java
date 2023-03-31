@@ -3,6 +3,9 @@ package com.gomeals.service.implementation;
 import com.gomeals.model.Polling;
 import com.gomeals.repository.PollingRepository;
 import com.gomeals.service.PollingService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,10 @@ public class PollingServiceImplementation implements PollingService {
     @Override
     public Polling getPollById(int id) {
         return pollingRepository.findById(id).orElse(null);
+    }
+
+    public List<Polling> getActivePollForSupplier(int[] supId) {
+        return pollingRepository.getActivePollForSupplier(supId);
     }
 
     @Override
@@ -40,5 +47,10 @@ public class PollingServiceImplementation implements PollingService {
     public String deletePollById(int id) {
         pollingRepository.deleteById(id);
         return "Poll deleted!";
+    }
+
+    @Override
+    public List<Polling> getAllPollsForSupplier(int supId) {
+        return pollingRepository.getAllPollsForSupplier(supId);
     }
 }
