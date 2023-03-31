@@ -31,11 +31,11 @@ public class DeliveryController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createDelivery(@RequestBody Delivery delivery) {
-        String createDelivery = deliveryService.createDelivery(delivery);
-        if(createDelivery == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }else{
+        Boolean createDelivery = deliveryService.createDelivery(delivery);
+        if(createDelivery){
             return ResponseEntity.status(HttpStatus.OK).body("Delivery created successfully.\n");
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating delivery.\n");
         }
     }
 

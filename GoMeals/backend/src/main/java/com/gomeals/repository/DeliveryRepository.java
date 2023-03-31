@@ -10,5 +10,7 @@ import java.util.List;
 public interface DeliveryRepository extends CrudRepository<Delivery, Integer> {
 
     List<Delivery> findByCustId(int custId);
-    Delivery findBySupIdAndCustIdAndDeliveryDate(int supplierId, int customerId, LocalDate deliveryDate);
+    Delivery findBySupIdAndCustIdAndDeliveryDateAndOrderStatus(int supplierId, int customerId, LocalDate deliveryDate,
+                                                               String orderStatus);
+
 }
