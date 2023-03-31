@@ -13,4 +13,7 @@ public interface SupplierReviewRepository extends CrudRepository<SupplierReview,
 
     @Query("SELECT s.supplierId FROM SupplierReview s WHERE s.supplierId IN (SELECT sr.supplierId FROM SupplierReview sr GROUP BY sr.supplierId HAVING AVG(sr.supplier_rating) > 3)")
     List<Integer> find3supId();
+
+    @Query("SELECT COALESCE(avg(s.supplier_rating),0.0) FROM SupplierReview s WHERE s.supplierId = :supplierId")
+    Double findSupplierAverage(int supplierId);
 }

@@ -6,6 +6,7 @@ import com.gomeals.repository.CustomerRepository;
 import com.gomeals.repository.SubscriptionRepository;
 import com.gomeals.repository.SupplierRepository;
 import com.gomeals.model.Supplier;
+import com.gomeals.repository.SupplierReviewRepository;
 import com.gomeals.service.SupplierService;
 import com.gomeals.utils.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,17 @@ public class SupplierServiceImplementation implements SupplierService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    SupplierReviewRepository supplierReviewRepository;
+
     UserSecurity userSecurity = new UserSecurity();
 
     public Supplier getSupplierDetails(int id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
         if (supplier != null) {
+
+            supplier.setSupplierRating(supplierReviewRepository.findSupplierAverage(id));
+
             List<Customer> customers = new ArrayList<>();
             List<Subscriptions> subscriptions = new ArrayList<>();
 
@@ -52,7 +59,12 @@ public class SupplierServiceImplementation implements SupplierService {
 
     public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
-        supplierRepository.findAll().forEach(supplier -> suppliers.add(supplier));
+
+        supplierRepository.findAll().forEach(supplier -> {
+            Double rating = supplierReviewRepository.findSupplierAverage(supplier.getSupId());
+            supplier.setSupplierRating(rating);
+            suppliers.add(supplier);
+        });
         return suppliers;
     }
 
