@@ -27,7 +27,7 @@ function Profile(props){
         }
 
         axios.post("http://localhost:8080/subscription/add",subscription)
-            .then(console.log(subscription))
+            .then(alert("Subscription requested"))
     }
     useEffect(()=>{
         axios.get(`http://localhost:8080/supplier/get/${location.state.id}`)

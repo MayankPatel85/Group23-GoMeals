@@ -13,7 +13,7 @@ export default function SupplierDashboard() {
     const [showCustomerList, setShowCustomerList] = useState(false);
     const [customerList, setCustomerList] = useState([]);
     const [subscriptionList, setSubscriptionList] = useState([]);
-    const [deliveryData,setDeliveryData]=useState();
+    const [deliveryData,setDeliveryData]=useState([]);
     const cookies = new Cookies();
     const loggedInUser = cookies.get('loggedInUser');
     console.log("logged" + loggedInUser);
@@ -22,27 +22,29 @@ export default function SupplierDashboard() {
         alterstate(param)
     };
     const handleDelivery=()=>{
-        axios.get(`http://localhost:8080/subscription/get/sup/12`)
-            .then((response)=> {
-                   response.data.forEach(custId=> {
-                           const delivery = {
-                               "deliveryId": 8,
-                               "deliveryDate": "2023-02-25",
-                               "deliveryMeal": "Samosas",
-                               "orderStatus": "inprogress",
-                               "supId": loggedInUser.supId,
-                               "custId": custId
-                           }
-                           console.log(delivery)
-                       axios.post("http://localhost:8080/delivery/create",delivery)
-                       }
-                   )
-                }
-            )
+        // axios.get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+        //     .then((response)=> {
+        //            response.data.forEach(custId=> {
+        //                console.log(custId)
+        //                    const delivery = {
+        //                        "deliveryId": 8,
+        //                        "deliveryDate": "",
+        //                        "deliveryMeal": "",
+        //                        "orderStatus": "inprogress",
+        //                        "supId": loggedInUser.supId,
+        //                        "custId": custId
+        //                    }
+        //                    console.log(delivery)
+        //                axios.post("http://localhost:8080/delivery/create",delivery)
+        //                    .then(alert("Deliveries initiated"))
+        //                }
+        //            )
+        //         }
+        //     )
 
         axios.get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
             .then((response)=> {
-                    setDeliveryData(response.data);
+                setDeliveryData(response.data);
                 console.log(response.data);
                 }
             )
@@ -200,7 +202,7 @@ export default function SupplierDashboard() {
             <br />
             <Button variant="outline-primary" onClick={()=>handleClick('create')}>Create Meal Chart</Button>{' '}
             <Button variant="outline-primary" onClick={()=>handleClick('update')}>Update Meal Chart</Button>{' '}
-            <Button variant="outline-primary" onClick={()=>handleDelivery('update')}>Delivery</Button>{' '}
+            <Button variant="outline-primary" onClick={handleDelivery}>Delivery</Button>{' '}
             <Button variant="outline-primary" onClick={handleShowCustomers}>View Customers</Button>
             {mealchart &&
                 <div><Card className="mechco">
@@ -291,7 +293,6 @@ export default function SupplierDashboard() {
                 </tr>
                 </thead>
                 <tbody>
-                {/*{deliveryData}*/}
                 <tr>
                     <td>1</td>
                     <td>Mark</td>

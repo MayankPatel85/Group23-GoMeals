@@ -1,6 +1,7 @@
 package com.gomeals.controller;
 
 import com.gomeals.model.Delivery;
+import com.gomeals.model.Supplier;
 import com.gomeals.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class DeliveryController {
         return deliveryService.getDeliveryById(id);
     }
 
+
     @GetMapping("/get/customer/{id}")
     public List<Delivery> getByCustomerId(@PathVariable int id) {
         return deliveryService.getByCustId(id);
@@ -35,8 +37,13 @@ public class DeliveryController {
     }
 
     @PostMapping("/create")
-    public Delivery createDelivery(@RequestBody Delivery delivery) {
-        return deliveryService.createDelivery(delivery);
+    public ResponseEntity<String> createDelivery(@RequestBody Delivery delivery) {
+        Boolean createDelivery = deliveryService.createDelivery(delivery);
+        if(createDelivery){
+            return ResponseEntity.status(HttpStatus.OK).body("Delivery created successfully.\n");
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating delivery.\n");
+        }
     }
 
     @PutMapping("/update")

@@ -3,6 +3,7 @@ package com.gomeals.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "delivery")
@@ -13,7 +14,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private int deliveryId;
     @Column(name = "delivery_date")
-    private Date deliveryDate;
+    private LocalDate deliveryDate;
     @Column(name = "delivery_meal")
     private String deliveryMeal;
     @Column(name = "order_status")
@@ -34,7 +35,7 @@ public class Delivery {
     public Delivery() {
     }
 
-    public Delivery(int deliveryId, Date deliveryDate, String deliveryMeal, String orderStatus, int supId, int custId) {
+    public Delivery(int deliveryId, LocalDate deliveryDate, String deliveryMeal, String orderStatus, int supId, int custId) {
         this.deliveryId = deliveryId;
         this.deliveryDate = deliveryDate;
         this.deliveryMeal = deliveryMeal;
@@ -51,11 +52,11 @@ public class Delivery {
         this.deliveryId = deliveryId;
     }
 
-    public Date getDeliveryDate() {
+    public LocalDate getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(LocalDate deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 

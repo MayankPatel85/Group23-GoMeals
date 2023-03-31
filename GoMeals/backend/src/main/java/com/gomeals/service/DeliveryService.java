@@ -1,12 +1,13 @@
 package com.gomeals.service;
 
 import com.gomeals.model.Delivery;
+import com.gomeals.model.Supplier;
 
 import java.util.List;
 
 public interface DeliveryService {
 
-    Delivery createDelivery(Delivery delivery);
+    Boolean createDelivery(Delivery delivery);
 
     Delivery getDeliveryById(int id);
 
