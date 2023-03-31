@@ -31,6 +31,8 @@ public class Supplier {
     private Double mealPrice;
     @Column (name = "paypal_link")
     private String paypalLink;
+    @Transient
+    private Double supplierRating;
 
     //    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     //    List<mealchart> supIdList= new ArrayList<>();
@@ -133,5 +135,12 @@ public class Supplier {
 
     public void setPaypalLink(String paypalLink) {
         this.paypalLink = paypalLink;
+    }
+
+    public Double getSupplierRating() {
+        return supplierRating;
+    }
+    public void setSupplierRating(Double supplierRating) {
+        this.supplierRating = supplierRating;
     }
 }
