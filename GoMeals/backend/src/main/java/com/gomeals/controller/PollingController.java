@@ -40,4 +40,9 @@ public class PollingController {
     public String deletePollById(@PathVariable int id) {
         return pollingService.deletePollById(id);
     }
+
+    @GetMapping("/get/allPolls/{supId}")
+    public List<Polling> getAllPolls(@PathVariable int supId) {
+        return pollingService.getAllPollsForSupplier(supId);
+    }
 }

@@ -15,4 +15,6 @@ public interface PollingService {
     String deletePollById(int id);
 
     List<Polling> getActivePollForSupplier(int[] supId);
+
+    List<Polling> getAllPollsForSupplier(int supId);
 }

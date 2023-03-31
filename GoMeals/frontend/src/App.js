@@ -18,7 +18,7 @@ import SupplierComplain from "./pages/SupplierComplain";
 import CustomerPolls from "./pages/CustomerPolls";
 import CustomerPaymentHistory from "./pages/CustomerPaymentHistory";
 import FooterComponent from "./components/FooterComponent";
-
+import SupplierPollingDetails from "./pages/SupplierPollingDetails";
 function App() {
   return (
     <div className="App">
@@ -47,10 +47,11 @@ function App() {
           />
           <Route path="/supplierPolling" element={<SupplierPolling />} />
           <Route path="/customerProfile" element={<CustomerProfile />} />
+          <Route path="/supplierComplain" element={<SupplierComplain />} />
           <Route
-            path="/supplierComplain"
-            element={<SupplierComplain />}
-          ></Route>
+            path="/supplierPollingDetails"
+            element={<SupplierPollingDetails />}
+          />
         </Routes>
       </Router>
       <FooterComponent />

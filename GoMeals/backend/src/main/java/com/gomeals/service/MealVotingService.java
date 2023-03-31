@@ -8,4 +8,6 @@ public interface MealVotingService {
     MealVoting getMealVotingByPollingId(int pollingId);
 
     MealVoting getMealVotingForCustomerByPollId(int pollId, int custId);
+
+    String findMostVotedMeal(int pollingId, int supplierId);
 }

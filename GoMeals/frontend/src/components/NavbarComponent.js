@@ -71,6 +71,9 @@ export default function NavbarComponent() {
     navigate("/supplierPolling");
   }
 
+  function handleSupplierPollingDetails() {
+    navigate("/supplierPollingDetails");
+  }
   return (
     <>
       <Navbar bg="primary" variant="light">
@@ -111,6 +114,9 @@ export default function NavbarComponent() {
                         </Dropdown.Item>
                         <Dropdown.Item onClick={handleSupplierPolling}>
                           Polling
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierPollingDetails}>
+                          Polling Details
                         </Dropdown.Item>
                       </>
                     ) : (

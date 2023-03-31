@@ -45,4 +45,14 @@ public class MealVotingController {
         return new ResponseEntity<>(mealVoting, HttpStatus.OK);
     }
 
+    @GetMapping("/get/most-voted-meal/{pollingId}/{supplierId}")
+    public ResponseEntity<String> getMostVotedMeal(@PathVariable("pollingId") int pollingId,
+            @PathVariable("supplierId") int supplierId) {
+        String mostVotedMeal = mealVotingService.findMostVotedMeal(pollingId, supplierId);
+        if (mostVotedMeal == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(mostVotedMeal, HttpStatus.OK);
+    }
+
 }

@@ -48,4 +48,9 @@ public class PollingServiceImplementation implements PollingService {
         pollingRepository.deleteById(id);
         return "Poll deleted!";
     }
+
+    @Override
+    public List<Polling> getAllPollsForSupplier(int supId) {
+        return pollingRepository.getAllPollsForSupplier(supId);
+    }
 }
