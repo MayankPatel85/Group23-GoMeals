@@ -4,22 +4,6 @@ import axios from "axios";
 import food from "../resources/food.jpg"
 import {Modal} from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
-<<<<<<< HEAD
-import AddOns from "./AddOns";
-
-export default function CustomerDashboard() {
-  return (
-    <div>
-      {/* <NavbarComponent /> */}
-      <br />
-      <h1>Welcome to GO-Meals</h1>
-      <br />
-      <br />
-      <h3>Vendors in your city</h3>
-      <br />
-     
-     {/* <AddOns /> */}
-=======
 import { Cookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -53,7 +37,6 @@ export default function CustomerDashboard(children, func) {
                 // console.log(response.data)
                 sets3List(response.data)
             })
->>>>>>> 010c7c44d5387e3d9428b5813f06b6ec1b552af0
 
         console.log(param)
         axios.get("http://localhost:8080/supplier/get/all")
