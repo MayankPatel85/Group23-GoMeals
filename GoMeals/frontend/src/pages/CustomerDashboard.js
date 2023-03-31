@@ -168,7 +168,7 @@ export default function CustomerDashboard(children, func) {
             <div className="containers">
                 <div className="card-containers">
                     { Object.keys(data).map((key) => (
-                        <Card style={{ width: '18rem' }}>
+                        <Card className="supplierCard" style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={food}/>
                             <Card.Body>
                                 <Card.Title>{data[key].supName}</Card.Title>

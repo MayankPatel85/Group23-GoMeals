@@ -5,6 +5,7 @@ import { Label, Input } from 'reactstrap';
 import CustomerList from './CustomerList';
 import { Cookies } from 'react-cookie';
 import NavbarComponent from '../components/NavbarComponent';
+import swal from "sweetalert";
 
 export default function SupplierDashboard() {
     const [alter,alterstate]=useState("create");
@@ -18,29 +19,30 @@ export default function SupplierDashboard() {
     const loggedInUser = cookies.get('loggedInUser');
     console.log("logged" + loggedInUser);
     const handleClick = (param) => {
-        showmealchart(true);
+        showmealchart(!mealchart);
         alterstate(param)
     };
     const handleDelivery=()=>{
-        // axios.get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
-        //     .then((response)=> {
-        //            response.data.forEach(custId=> {
-        //                console.log(custId)
-        //                    const delivery = {
-        //                        "deliveryId": 8,
-        //                        "deliveryDate": "",
-        //                        "deliveryMeal": "",
-        //                        "orderStatus": "inprogress",
-        //                        "supId": loggedInUser.supId,
-        //                        "custId": custId
-        //                    }
-        //                    console.log(delivery)
-        //                axios.post("http://localhost:8080/delivery/create",delivery)
-        //                    .then(alert("Deliveries initiated"))
-        //                }
-        //            )
-        //         }
-        //     )
+        axios.get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+            .then((response)=> {
+                   response.data.forEach(custId=> {
+                       console.log(custId)
+                           const delivery = {
+                               "deliveryId": 8,
+                               "deliveryDate": "",
+                               "deliveryMeal": "",
+                               "orderStatus": "inprogress",
+                               "supId": loggedInUser.supId,
+                               "custId": custId
+                           }
+                           console.log(delivery)
+                       axios.post("http://localhost:8080/delivery/create",delivery)
+                           .then(swal("Deliveries initiated"))
+
+                       }
+                   )
+                }
+            )
 
         axios.get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
             .then((response)=> {
