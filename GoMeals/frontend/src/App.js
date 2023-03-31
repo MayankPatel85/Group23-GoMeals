@@ -11,6 +11,7 @@ import SupplierDashboard from "./pages/SupplierDashboard";
 import React from "react";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
+import SupplierProfile from "./pages/SupplierProfile";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
           <Route path="/customerProfile" element={<CustomerProfile />} />
+          <Route path="/supplierProfile" element={<SupplierProfile/>}/>
           <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
         </Routes>
       </Router>

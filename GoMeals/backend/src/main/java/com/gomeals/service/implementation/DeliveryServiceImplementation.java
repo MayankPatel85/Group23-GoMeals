@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -134,7 +135,6 @@ public class DeliveryServiceImplementation implements DeliveryService {
         return true;
     }
 
-
     @Override
     public Delivery getDeliveryById(int id) {
         return deliveryRepository.findById(id).orElse(null);
@@ -215,5 +215,8 @@ public class DeliveryServiceImplementation implements DeliveryService {
 
         return delivery;
     }
-
+    @Override
+    public List<Delivery> getBySupId(int id) {
+        return deliveryRepository.findBySupId(id);
+    }
 }

@@ -1,6 +1,7 @@
 package com.gomeals.controller;
 
 import com.gomeals.model.Delivery;
+import com.gomeals.model.Supplier;
 import com.gomeals.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/delivery")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DeliveryController {
 
     private final DeliveryService deliveryService;
@@ -24,9 +26,14 @@ public class DeliveryController {
         return deliveryService.getDeliveryById(id);
     }
 
+
     @GetMapping("/get/customer/{id}")
     public List<Delivery> getByCustomerId(@PathVariable int id) {
         return deliveryService.getByCustId(id);
+    }
+    @GetMapping("/get/supplier/{id}")
+    public List<Delivery> getBySupplierId(@PathVariable int id) {
+        return deliveryService.getBySupId(id);
     }
 
     @PostMapping("/create")
