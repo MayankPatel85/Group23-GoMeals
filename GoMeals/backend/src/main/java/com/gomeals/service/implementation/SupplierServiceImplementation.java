@@ -3,11 +3,10 @@ import com.gomeals.model.Customer;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.repository.CustomerRepository;
 import com.gomeals.repository.SubscriptionRepository;
-import com.gomeals.repository.supplierRepository;
+import com.gomeals.repository.SupplierRepository;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
 import com.gomeals.utils.UserSecurity;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,7 @@ import java.util.Optional;
 public class SupplierServiceImplementation implements SupplierService {
 
     @Autowired
-    supplierRepository supplierRepository;
+    SupplierRepository supplierRepository;
 
     @Autowired
     SubscriptionRepository subscriptionRepository;
