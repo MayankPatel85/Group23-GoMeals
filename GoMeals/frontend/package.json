@@ -17,8 +17,12 @@
     "react-bootstrap": "^2.7.2",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
     "react-notifications-menu": "^1.0.6",
     "react-router-dom": "^6.8.1",
+=======
+    "react-router-dom": "^6.9.0",
+>>>>>>> 010c7c44d5387e3d9428b5813f06b6ec1b552af0
     "react-scripts": "5.0.1",
     "reactstrap": "^9.1.6",
     "sweetalert": "^2.1.2",

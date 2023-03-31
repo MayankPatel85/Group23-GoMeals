@@ -14,7 +14,11 @@ import NavbarComponent from "./components/NavbarComponent";
 import AddOns from "./pages/AddOns";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
+<<<<<<< HEAD
 import Hero from "./pages/Hero";
+=======
+import SupplierProfile from "./pages/SupplierProfile";
+>>>>>>> 010c7c44d5387e3d9428b5813f06b6ec1b552af0
 
 function App() {
   // const navigate = useNavigate();
@@ -40,6 +44,7 @@ function App() {
           <Route path="/meals" element={<MealAccordion />} exact/>
           {/* <Route path="/addons" element={<AddOns />} exact/> */}
           <Route path="/customerProfile" element={<CustomerProfile />} />
+          <Route path="/supplierProfile" element={<SupplierProfile/>}/>
           <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
           
         </Routes>

@@ -5,7 +5,7 @@ import com.gomeals.model.Subscriptions;
 import com.gomeals.model.Supplier;
 import com.gomeals.repository.CustomerRepository;
 import com.gomeals.repository.SubscriptionRepository;
-import com.gomeals.repository.supplierRepository;
+import com.gomeals.repository.SupplierRepository;
 import com.gomeals.service.CustomerService;
 import com.gomeals.utils.UserSecurity;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +21,7 @@ public class CustomerServiceImplementation implements CustomerService {
     @Autowired
     CustomerRepository customerRepository;
     @Autowired
-    supplierRepository supplierRepository;
+    SupplierRepository supplierRepository;
     @Autowired
     SubscriptionRepository subscriptionRepository;
 
