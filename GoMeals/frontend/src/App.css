@@ -29,6 +29,9 @@
 }
 .body{
   background-color: #FEDEFF;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .mechco{
   border-left: 100px;
@@ -68,11 +71,11 @@ h3{
 }
 
 
-/*.customerlist-table {*/
-/*  background-color: #efefef;*/
-/*  border-radius: 14px;*/
-/*  padding: 2%;*/
-/*}*/
+.customerlist-table {
+ background-color: #efefef;
+ border-radius: 14px;
+ padding: 2%;
+}
 
 .profile-item hr {
   margin: 1% 0% 1.5% 0%;
@@ -100,4 +103,28 @@ h3{
 
 .my-notification{
   position: absolute;
+}
+.customer-profile {
+ text-align: left;
+ padding: 2%;
+ border: #efefef 0.5rem;
+ border-style: solid;
+ border-radius: 14px;
+}
+
+.customer-profile-page {
+ background-color: #efefef;
+}
+
+.profile-item {
+ padding: 1.5% 0%;
+}
+
+.profile-item hr {
+margin: 1% 0% 1.5% 0%;
+}
+
+
+.customerlist-table tr:hover{
+cursor: pointer;
 }

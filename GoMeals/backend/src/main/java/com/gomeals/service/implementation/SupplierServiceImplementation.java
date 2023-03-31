@@ -31,7 +31,6 @@ public class SupplierServiceImplementation implements SupplierService {
 
     UserSecurity userSecurity = new UserSecurity();
 
-
     public Supplier getSupplierDetails(int id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
         if (supplier != null) {
@@ -57,12 +56,12 @@ public class SupplierServiceImplementation implements SupplierService {
         return suppliers;
     }
 
-    public Supplier registerSupplier(Supplier supplier){
-        if(supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
+    public Supplier registerSupplier(Supplier supplier) {
+        if (supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
             throw new RuntimeException("Email already exists");
         }
         supplier.setPassword(userSecurity.encryptData(supplier.getPassword()));
-        return  supplierRepository.save(supplier);
+        return supplierRepository.save(supplier);
     }
 
     public Supplier updateSupplier(@RequestBody Supplier supplier) {
@@ -82,12 +81,13 @@ public class SupplierServiceImplementation implements SupplierService {
         supplierRepository.deleteById(id);
         return "Supplier deleted";
     }
-    public Supplier loginSupplier(Supplier supplier){
+
+    public Supplier loginSupplier(Supplier supplier) {
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
             throw new RuntimeException("Supplier not Registered");
-        }
-        else{
+
+        } else {
             String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
             if (Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
                 return supplierData;

@@ -41,7 +41,7 @@ export default function NavbarComponent() {
     customerUser = loggedInUser.userType === "customer";
     supplierUser = loggedInUser.userType === "supplier";
   }
-  const handleProfile = () => {};
+  // const handleProfile = () => {};
   const getProfileName = () => {
     //boolean to see which type of user has logged in
 
@@ -51,6 +51,40 @@ export default function NavbarComponent() {
       return loggedInUser.supName;
     }
   };
+
+function handleProfile() {
+  if (loggedInUser.userType === "customer") {
+    navigate("/customerProfile");
+  }
+}
+
+function handlePollVote() {
+  navigate("/customerPollVote");
+}
+
+function handlePaymentHistory() {
+  navigate("/customerPaymentHistory");
+}
+
+function handleOrders() {
+  navigate("/customerOrders");
+}
+
+function handleComplain() {
+  navigate("/complainTracker");
+}
+
+function handleSupplierComplain() {
+  navigate("/supplierComplain");
+}
+
+function handleSupplierPolling() {
+  navigate("/supplierPolling");
+}
+
+function handleSupplierPollingDetails() {
+  navigate("/supplierPollingDetails");
+}
   const location = useLocation();
   const hideNavBar =
     location.pathname === "/login" ||
@@ -89,11 +123,40 @@ export default function NavbarComponent() {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={handleProfile}>
-                        Profile
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
+                    <Dropdown.Item onClick={handleProfile}>
+                      Profile
+                    </Dropdown.Item>
+                    {loggedInUser.userType === "supplier" ? (
+                      <>
+                        <Dropdown.Item>Customers</Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierComplain}>
+                          Complains
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierPolling}>
+                          Polling
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleSupplierPollingDetails}>
+                          Polling Details
+                        </Dropdown.Item>
+                      </>
+                    ) : (
+                      <>
+                        <Dropdown.Item onClick={handleComplain}>
+                          Complain
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleOrders}>
+                          Orders
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePaymentHistory}>
+                          Payment History
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePollVote}>
+                          Meal Poll
+                        </Dropdown.Item>
+                      </>
+                    )}
+                    <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                  </Dropdown.Menu>
                   </Dropdown>
                 </div>
               </Nav>
@@ -102,5 +165,4 @@ export default function NavbarComponent() {
         </Navbar>
       </>
     );
-  }
-}
+  }}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -28,12 +28,6 @@ export default function SupplierDashboard() {
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
   console.log("logged" + loggedInUser);
-  useEffect(() => {
-  
-    return () => {
-      handleDelivery();
-    }
-  }, [])
   
   const handleClick = (param) => {
     showmealchart(true);
@@ -42,7 +36,7 @@ export default function SupplierDashboard() {
     alterstate(param);
   };
   const handleDelivery = () => {
-    // setshowDelivery(!showDelivery);
+    setshowDelivery(!showDelivery);
     setShowCustomerList(false);
     showmealchart(false);
     axios
@@ -225,7 +219,6 @@ export default function SupplierDashboard() {
 
   return (
     <div>
-      {/* <NavbarComponent /> */}
       <br />
       <h2>Welcome Supplier</h2>
       <br />

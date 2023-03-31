@@ -3,20 +3,25 @@ import "./App.css";
 import Register from "./pages/Register";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import { useLocation, useNavigate } from "react-router-dom";
-import SupplierRegister from "./pages/SupplierRegister"
+
+import SupplierRegister from "./pages/SupplierRegister";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import SupplierLogin from "./pages/SupplierLogin";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import React, { useState } from "react";
-import MealAccordion from "./pages/Meals";
-import NavbarComponent from "./components/NavbarComponent";
-import AddOns from "./pages/AddOns";
+import CustomerDeliveries from "./pages/CustomerDeliveries";
+import CustomerRaiseComplain from "./pages/CustomerRaiseComplain";
+import CustomerComplainTracker from "./pages/CustomerComplainTracker";
+import SupplierPolling from "./pages/SupplierPolling";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
-import Hero from "./pages/Hero";
+import CustomerPolls from "./pages/CustomerPolls";
+import CustomerPaymentHistory from "./pages/CustomerPaymentHistory";
+import FooterComponent from "./components/FooterComponent";
+import SupplierPollingDetails from "./pages/SupplierPollingDetails";
 import SupplierProfile from "./pages/SupplierProfile";
-
+import NavbarComponent from "./components/NavbarComponent";
+import HeroComponent from "./components/HeroComponent";
 function App() {
   // const navigate = useNavigate();
   const [showNavbar, setShowNavbar] = useState(true);
@@ -34,18 +39,35 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/supplierRegister" element={<SupplierRegister />} />
-          <Route path="/" element={<Hero />} />
+          <Route path="/" element={<HeroComponent />} />
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
-          <Route path="/meals" element={<MealAccordion />} exact/>
-          {/* <Route path="/addons" element={<AddOns />} exact/> */}
+          <Route path="/customerOrders" element={<CustomerDeliveries />} />
+          <Route path="/customerPollVote" element={<CustomerPolls />} />
+          <Route
+            path="/customerRaiseComplain/:id"
+            element={<CustomerRaiseComplain />}
+          />
+          <Route
+            path="/complainTracker"
+            element={<CustomerComplainTracker />}
+          />
+          <Route
+            path="/customerPaymentHistory"
+            element={<CustomerPaymentHistory />}
+          />
+          <Route path="/supplierPolling" element={<SupplierPolling />} />
           <Route path="/customerProfile" element={<CustomerProfile />} />
-          <Route path="/supplierProfile" element={<SupplierProfile/>}/>
-          <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
-          
+          <Route path="/supplierComplain" element={<SupplierComplain />} />
+          <Route
+            path="/supplierPollingDetails"
+            element={<SupplierPollingDetails />}
+          />
+          <Route path="/supplierProfile" element={<SupplierProfile />} />
         </Routes>
       </Router>
+      <FooterComponent />
     </div>
   );
 }

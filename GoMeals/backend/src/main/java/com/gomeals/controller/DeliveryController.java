@@ -20,7 +20,6 @@ public class DeliveryController {
     public DeliveryController(DeliveryService deliveryService) {
         this.deliveryService = deliveryService;
     }
-
     @CrossOrigin
     @GetMapping("/get/{id}")
     public Delivery getDeliveryById(@PathVariable("id") int id) {
