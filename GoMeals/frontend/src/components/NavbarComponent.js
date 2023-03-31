@@ -35,15 +35,13 @@ export default function NavbarComponent() {
     cookies.remove("loggedInUser");
     navigate("/");
   };
-  var customerUser = ""
-  var supplierUser = ""
-  if(loggedInUser){
-   customerUser = loggedInUser.userType === "customer";
-   supplierUser = loggedInUser.userType === "supplier";
+  var customerUser = "";
+  var supplierUser = "";
+  if (loggedInUser) {
+    customerUser = loggedInUser.userType === "customer";
+    supplierUser = loggedInUser.userType === "supplier";
   }
-const handleProfile = () => {
-  
-}
+  const handleProfile = () => {};
   const getProfileName = () => {
     //boolean to see which type of user has logged in
 
@@ -54,46 +52,55 @@ const handleProfile = () => {
     }
   };
   const location = useLocation();
-  const hideNavBar = location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/";
+  const hideNavBar =
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/" ||
+    location.pathname === "/Supplierlogin" ||
+    location.pathname === "/supplierRegister";
+
 
   if (hideNavBar) {
     return null;
-  }else {
-  return (
-    <>
-      <Navbar bg="primary" variant="light">
-        <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
-          <div>
-            <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="#features">Profile</Nav.Link>
-              {supplierUser && <Nav.Link href="#pricing">Customers</Nav.Link>}
-              {customerUser && <Nav.Link href="/meals">Meals</Nav.Link>}
-              <Nav.Link onClick={toggleNotifications}>
-                <FontAwesomeIcon icon={faBell} />
+  } else {
+    return (
+      <>
+        <Navbar bg="primary" variant="light">
+          <Container
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
+            <div>
+              <Nav className="me-auto">
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="#features">Profile</Nav.Link>
+                {supplierUser && <Nav.Link href="#pricing">Customers</Nav.Link>}
+                {customerUser && <Nav.Link href="/meals">Meals</Nav.Link>}
+                <Nav.Link onClick={toggleNotifications}>
+                  <FontAwesomeIcon icon={faBell} />
 
-                {showNotifications && (
-                  <Notification {...loggedInUser} />
-                )}
-              </Nav.Link>
+                  {showNotifications && <Notification {...loggedInUser} />}
+                </Nav.Link>
 
-              <div className="navbar-icons">
-                <Dropdown>
-                  <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                    {getProfileName()}
-                  </Dropdown.Toggle>
+                <div className="navbar-icons">
+                  <Dropdown>
+                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                      {getProfileName()}
+                    </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
-                    <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </Nav>
-          </div>
-        </Container>
-      </Navbar>
-    </>
-  );
-}}
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={handleProfile}>
+                        Profile
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </Nav>
+            </div>
+          </Container>
+        </Navbar>
+      </>
+    );
+  }
+}
