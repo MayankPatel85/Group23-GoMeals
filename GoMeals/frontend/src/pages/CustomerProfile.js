@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Spinner, Modal, Form, Button } from "react-bootstrap";
 import { Cookies } from 'react-cookie';
+import ReactStars from "react-stars";
 import NavbarComponent from "../components/NavbarComponent";
+import { addSupplierNotification } from "../utils";
 
 function CustomerProfile() {
     const [customer, setCustomer] = useState({});
@@ -13,6 +15,16 @@ function CustomerProfile() {
         contactNumber: "",
         address: ""
     });
+    const [addReview, setAddReview] = useState(false);
+    const [review, setReview] = useState({
+        comment: "",
+        supplier_rating: 0,
+        customerId: 0,
+        supplierId: 0,
+        supplier_reviewcol: ""
+    });
+    const [currentSupplierReview, setCurrentSupplierReview] = useState({});
+    var currentSupplierIndex = 0;
     const cookies = new Cookies();
     const loggedInUser = cookies.get('loggedInUser');
 
@@ -29,7 +41,6 @@ function CustomerProfile() {
                         }
                     });
                 });
-                console.log("res  " + response.data.subscriptions);
                 setCustomer(response.data);
             })
             .catch((e) => {
@@ -42,18 +53,15 @@ function CustomerProfile() {
 
     useEffect(() => {
         axios
-        .put("http://localhost:8080/customer/update", customer)
-        .catch((e) => {
-            alert("Error getting data" + e)
-        })
-        .finally(() => {
-            setIsLoading(false);
-            setEditProfile(false);
-        });
+            .put("http://localhost:8080/customer/update", customer)
+            .catch((e) => {
+                alert("Error getting data" + e)
+            })
+            .finally(() => {
+                setIsLoading(false);
+                setEditProfile(false);
+            });
     }, [customer]);
-    
-
-    console.log("cccc " + customer.cust_fname);
 
     const handleEditProfile = () => {
         setEditProfile(true);
@@ -62,41 +70,93 @@ function CustomerProfile() {
             "contactNumber": customer.cust_contact_number,
             "address": customer.cust_address
         });
-    }
+    };
 
     const handleEditingProfile = (event) => {
-        const {name, value} = event.target;
-        console.log("name " + name + value);
+        const { name, value } = event.target;
         setEditedCustomerDetail((prevValue) => ({
             ...prevValue,
             [name]: value,
         }));
-    }
-        console.log("EDITED " + JSON.stringify(editedCustomerDetail));
+    };
 
     const updateCustomerProfile = () => {
-        if(editedCustomerDetail.email === "" || editedCustomerDetail.contactNumber === "" || editedCustomerDetail.address === "") {
+        if (editedCustomerDetail.email === "" || editedCustomerDetail.contactNumber === "" || editedCustomerDetail.address === "") {
             alert("Fields should not be empty");
             return;
         }
         setIsLoading(true);
-        console.log("before setting",JSON.stringify(editedCustomerDetail))
+        console.log("before setting", JSON.stringify(editedCustomerDetail))
         setCustomer((prevValue) => ({
             ...prevValue,
             cust_email: editedCustomerDetail.email,
             cust_contact_number: editedCustomerDetail.contactNumber,
             cust_address: editedCustomerDetail.address,
         }));
-        // axios
-        //     .put("http://localhost:8080/customer/update", customer)
-        //     .catch((e) => {
-        //         alert("Error getting data" + e)
-        //     })
-        //     .finally(() => {
-        //         setIsLoading(false);
-        //         setEditProfile(false);
-        //     });
-    }
+    };
+
+    const handleAddReview = (index) => {
+        setAddReview(true);
+        getCurrentSupplierReview(loggedInUser.cust_id, customer.subscriptions[currentSupplierIndex].supplierId);
+        currentSupplierIndex = index;
+        if(currentSupplierReview !== "") {
+            setReview((prevValue) => ({
+                ...prevValue,
+                "customerId": loggedInUser.cust_id,
+                "supplierId": customer.subscriptions[currentSupplierIndex].supplierId
+            }));   
+        }
+    };
+
+    const handleRating = (number) => {
+        setReview((prevValue) => ({
+            ...prevValue,
+            "supplier_rating": number
+        }));
+    };
+
+    const handleComment = (event) => {
+        setReview((prevValue) => ({
+            ...prevValue,
+            "comment": event.target.value
+        }));
+    };
+
+    const saveReview = () => {
+        setIsLoading(true);
+        axios
+            .post("http://localhost:8080/supplierReview/create", review)
+            .catch((e) => {
+                alert("Error posting review" + e);
+            })
+            .finally(() => {
+                setIsLoading(false);
+                setAddReview(false);
+            });
+        addSupplierNotification({
+            "message": `${customer.cust_fname + " " + customer.cust_lname} has provided review.`,
+            "eventType": "New Review",
+            "customerId": customer.cust_id,
+            "supplierId": customer.subscriptions[currentSupplierIndex].supplierId
+        });
+    };
+
+    const getCurrentSupplierReview = (customerId, supplierId) => {
+        setIsLoading(true);
+        axios
+            .get("http://localhost:8080/supplierReview/getById", { params: { customerId: customerId, supplierId: supplierId } })
+            .then((response) => {
+                console.log(response.data);
+                setCurrentSupplierReview(response.data);
+                if(response.data !== "") {
+                    setReview(response.data);
+                }
+            })
+            .finally(() => {
+                setIsLoading(false);
+                console.log(addReview);
+            })
+    };
 
 
     return (
@@ -134,7 +194,7 @@ function CustomerProfile() {
                             controlId="address"
                         >
                             <Form.Label>Address</Form.Label>
-                            <Form.Control as="textarea" rows={2} name="address" value={editedCustomerDetail.address}  onChange={handleEditingProfile}/>
+                            <Form.Control as="textarea" rows={2} name="address" value={editedCustomerDetail.address} onChange={handleEditingProfile} />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -143,6 +203,34 @@ function CustomerProfile() {
                         Close
                     </Button>
                     <Button variant="primary" onClick={updateCustomerProfile}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={addReview} onHide={() => setAddReview(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Supplier Review</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>Rating</Form.Label>
+                            <ReactStars count={5} value={review.supplier_rating} onChange={handleRating} size={24} color2={'#ffd700'} half={false} />
+                        </Form.Group>
+                        <Form.Group
+                            className="mb-3"
+                            controlId="comment"
+                        >
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control as="textarea" rows={2} name="comment" value={review.comment} onChange={handleComment} />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setAddReview(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={saveReview}  disabled={currentSupplierReview === "" ? false : true}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -192,37 +280,55 @@ function CustomerProfile() {
                                 <h4 className="d-inline">Subscription</h4>
                                 <hr></hr>
                             </div>
-                            <div className="col-lg-8">
+                            <div className="col-lg-12">
                                 {customer.subscriptions?.map((subscription, index) => {
                                     return (
-                                        <div key={subscription.sub_id}>
-                                            <div className="row mb-2 profile-item">
-                                                <div className="row">
-                                                    <div className="col-lg-4 col-sm-6">
-                                                        {/* <h5>Subscription {index + 1}</h5> */}
-                                                        <h5 className="d-inline">Supplier's name:</h5>
+                                        <div key={subscription.sub_id} className="row">
+                                            <div className="col-lg-10 col-md-10">
+                                                <div className="row mb-2 profile-item">
+                                                    <div className="row">
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            {/* <h5>Subscription {index + 1}</h5> */}
+                                                            <h5 className="d-inline">Supplier's name:</h5>
+                                                        </div>
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">{subscription.supplierName}</h5>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-lg-4 col-sm-6">
-                                                        <h5 className="d-inline">{subscription.supplierName}</h5>
+                                                    <div className="row">
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">Subscription date:</h5>
+                                                        </div>
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">{subscription.sub_date}</h5>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-lg-4 col-sm-6">
-                                                        <h5 className="d-inline">Subscription date:</h5>
+                                                    <div className="row">
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">Meals remaining:</h5>
+                                                        </div>
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">{subscription.meals_remaining}</h5>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-lg-4 col-sm-6">
-                                                        <h5 className="d-inline">{subscription.sub_date}</h5>
+                                                    <div className="row">
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">Status:</h5>
+                                                        </div>
+                                                        <div className="col-lg-4 col-sm-6">
+                                                            <h5 className="d-inline">{subscription.activeStatus === 1 ? "Active" : "Expired"}</h5>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-lg-4 col-sm-6">
-                                                        <h5 className="d-inline">Meals remaining:</h5>
-                                                    </div>
-                                                    <div className="col-lg-4 col-sm-6">
-                                                        <h5 className="d-inline">{subscription.meals_remaining}</h5>
+                                                    <div className="row">
+                                                        <div className="col-lg-4 col-sm-6 py-1">
+                                                            <Button variant="dark" onClick={() => handleAddReview(index)} >Review</Button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            {/* <div className="col-lg-4 col-md-2">
+                                                
+                                            </div> */}
                                         </div>
                                     );
                                 })}
