@@ -3,6 +3,7 @@ import { Cookies } from "react-cookie";
 import axios from "axios";
 import { Container, Table, Modal, Button, Form, Spinner } from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
+import { addCustomerNotification } from "../utils";
 
 export default function SupplierComplain() {
     const cookies = new Cookies();
@@ -50,6 +51,13 @@ export default function SupplierComplain() {
         console.log(complains[selectedComplainIndex]);
         axios
             .put("http://localhost:8080/complain/update", complains[selectedComplainIndex])
+            .then(() => {
+                addCustomerNotification({
+                    "message": `${loggedInUser.supName} has provided feedback to your complain`,
+                    "eventType": "Complain Solved",
+                    "customerId": complains[selectedComplainIndex].customerId
+                });
+            })
             .catch((e) => {
                 alert("Error submitting feedback" + e)
             })
@@ -63,7 +71,7 @@ export default function SupplierComplain() {
 
     return (
         <div>
-            {/* <NavbarComponent /> */}
+            <NavbarComponent />
             <Modal show={showComplainDetail} onHide={() => setShowComplainDetail(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Complain</Modal.Title>

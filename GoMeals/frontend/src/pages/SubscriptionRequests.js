@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Cookies } from "react-cookie";
 import axios from "axios";
 import { Spinner, Container, Table, Button } from "react-bootstrap";
+import NavbarComponent from "../components/NavbarComponent";
+import { addCustomerNotification } from "../utils";
 
 function SubscriptionRequests() {
     const [subscriptionRequestList, setSubscriptionRequestList] = useState([]);
@@ -38,27 +40,25 @@ function SubscriptionRequests() {
         axios
             .put("http://localhost:8080/subscription/update", currentRequest)
             .then(() => {
-                // const fdata = subscriptionRequestList.filter((_, idx)=> idx!==index);
-                // console.log("F data", fdata)
+                addCustomerNotification({
+                    "message": `${loggedInUser.supName} has appproved your subscription request.`,
+                    "eventType": "Subscription Approved",
+                    "customerId": subscriptionRequestList[index].customerId
+                });
                 setSubscriptionRequestList((prev)=> prev.filter((_, idx) => idx !== index));
-                // setSubscriptionRequestList((prevValue) => {
-                //     const newValue = { ...prevValue };
-                //     delete newValue[index];
-                //     return newValue;
-                // });
             })
             .finally(() => {
                 setIsLoading(false);
             })
     }
-    console.log("subscriptionRequestList: ",subscriptionRequestList)
 
     return (
         <div>
+            <NavbarComponent />
             {isLoading ? <Spinner /> : null}
             {subscriptionRequestList.length === 0 ?
                 (
-                    <div>
+                    <div className="m-auto">
                         <h1>No Pending Requests</h1>
                     </div>
                 )   
