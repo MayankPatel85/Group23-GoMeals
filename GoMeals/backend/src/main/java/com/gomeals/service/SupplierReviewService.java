@@ -4,5 +4,7 @@ public interface SupplierReviewService {
 
     SupplierReview createSupplierReview(SupplierReview supplierReview);
 
+    SupplierReview getSupplierReviewByCustomerIdAndSupplierId(int customerId, int supplierId);
+
 
 }

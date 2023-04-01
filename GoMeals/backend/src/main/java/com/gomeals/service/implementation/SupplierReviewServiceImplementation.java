@@ -14,4 +14,9 @@ public class SupplierReviewServiceImplementation implements SupplierReviewServic
     @Override
     public SupplierReview createSupplierReview(SupplierReview supplierReview) {return supplierReviewRepository.save(supplierReview);}
 
+    @Override
+    public SupplierReview getSupplierReviewByCustomerIdAndSupplierId(int customerId, int supplierId) {
+        return supplierReviewRepository.findByCustomerIdAndSupplierId(customerId, supplierId);
+    }
+
 }
