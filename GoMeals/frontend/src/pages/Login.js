@@ -68,7 +68,6 @@ function Login() {
                             onChange={(e) => setEmail(e.target.value)}
                           />
                         </Form.Group>
-
                         <Form.Group
                           className="mb-3"
                           controlId="formBasicPassword"
@@ -80,7 +79,6 @@ function Login() {
                             onChange={(e) => setCustPassword(e.target.value)}
                           />
                         </Form.Group>
-
                         <Form.Group
                           className="mb-3"
                           controlId="formBasicCheckbox"

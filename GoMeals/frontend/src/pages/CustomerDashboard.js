@@ -155,7 +155,7 @@ export default function CustomerDashboard(children, func) {
                     </Nav>
                 </Container>
             </Navbar> */}
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <HeroComponent
         header="Welcome to Go Meals"
         body="Delivering deliciousness – one tiffin at a time!"

@@ -21,6 +21,8 @@ public interface SubscriptionService {
 
 	public String deleteSubscription(int sub_id);
 
+	public List<Subscriptions> getPendingSubscription(int supplierId);
+	
 	public List<Integer> getAllCustomerSubscriptions(int cust_id);
 
 }

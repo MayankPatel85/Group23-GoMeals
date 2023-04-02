@@ -29,7 +29,10 @@ public class CustomerController {
     }
 
     @PostMapping("/login")
-    public Customer loginCustomer(@RequestBody Customer customer, HttpServletResponse response) {
-        return CustomerService.loginCustomer(customer, response);
+    public Customer loginCustomer(@RequestBody Customer customer,HttpServletResponse response) { return CustomerService.loginCustomer(customer,response);}
+
+    @PutMapping("/update")
+    public Customer updateCustomer(@RequestBody Customer customer) {
+        return CustomerService.updateCustomer(customer);
     }
 }

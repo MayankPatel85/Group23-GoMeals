@@ -9,5 +9,7 @@ public interface SupplierReviewService {
     List<Integer>  get4upStarSupplier();
     List<Integer>  get3UpStarSupplier();
 
+    SupplierReview getSupplierReviewByCustomerIdAndSupplierId(int customerId, int supplierId);
+
 
 }

@@ -21,4 +21,9 @@ public class SupplierReviewServiceImplementation implements SupplierReviewServic
     @Override
     public List<Integer> get3UpStarSupplier(){return supplierReviewRepository.find3supId();}
 
+    @Override
+    public SupplierReview getSupplierReviewByCustomerIdAndSupplierId(int customerId, int supplierId) {
+        return supplierReviewRepository.findByCustomerIdAndSupplierId(customerId, supplierId);
+    }
+
 }
