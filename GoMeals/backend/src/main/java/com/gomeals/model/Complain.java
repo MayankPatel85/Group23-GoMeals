@@ -10,33 +10,33 @@ public class Complain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column( name = "complain_id")
+    @Column(name = "complain_id")
     private Integer complainId;
     private Date date;
-    @Column( name = "cust_comment", nullable = false)
+    @Column(name = "cust_comment", nullable = false)
     private String customerComment;
-    @Column( name = "sup_comment", nullable = false)
+    @Column(name = "sup_comment", nullable = false)
     private String supplierComment;
     private String status;
-    @Column( name = "cust_id", nullable = false)
+    @Column(name = "cust_id", nullable = false)
     private int customerId; // customer FK
-    @Column( name = "sup_id" )
+    @Column(name = "sup_id")
     private int supplierId; // supplier FK
     @Column(name = "delivery_id")
     private Integer deliveryId; // delivery FK
 
-    public Complain(){
+    public Complain() {
     }
 
     public Complain(Integer complain_id, Date date, String cust_comment, String sup_comment, String status,
-                    int cust_id, int sup_id, int delivery_id){
+            int cust_id, int sup_id, int delivery_id) {
         this.complainId = complain_id;
         this.date = date;
         this.customerComment = cust_comment;
         this.supplierComment = sup_comment;
         this.status = status;
-        this.customerId=cust_id;
-        this.supplierId=sup_id;
+        this.customerId = cust_id;
+        this.supplierId = sup_id;
         this.deliveryId = delivery_id;
     }
 
@@ -99,6 +99,7 @@ public class Complain {
     public Integer getDeliveryId() {
         return deliveryId;
     }
+
     public void setDeliveryId(Integer deliveryId) {
         this.deliveryId = deliveryId;
     }

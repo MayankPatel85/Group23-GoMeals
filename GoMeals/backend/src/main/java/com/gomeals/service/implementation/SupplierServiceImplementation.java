@@ -1,13 +1,14 @@
 package com.gomeals.service.implementation;
+
 import com.gomeals.model.Customer;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.repository.CustomerRepository;
 import com.gomeals.repository.SubscriptionRepository;
-import com.gomeals.repository.supplierRepository;
+import com.gomeals.repository.SupplierRepository;
 import com.gomeals.model.Supplier;
+import com.gomeals.repository.SupplierReviewRepository;
 import com.gomeals.service.SupplierService;
 import com.gomeals.utils.UserSecurity;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class SupplierServiceImplementation implements SupplierService {
 
     @Autowired
-    supplierRepository supplierRepository;
+    SupplierRepository supplierRepository;
 
     @Autowired
     SubscriptionRepository subscriptionRepository;
@@ -29,19 +30,24 @@ public class SupplierServiceImplementation implements SupplierService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    SupplierReviewRepository supplierReviewRepository;
+
     UserSecurity userSecurity = new UserSecurity();
 
-
-    public Supplier getSupplierDetails(int id){
+    public Supplier getSupplierDetails(int id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
-        if(supplier != null){
+        if (supplier != null) {
+
+            supplier.setSupplierRating(supplierReviewRepository.findSupplierAverage(id));
+
             List<Customer> customers = new ArrayList<>();
             List<Subscriptions> subscriptions = new ArrayList<>();
 
-            subscriptionRepository.findSubscriptionsBySupplierIdAndActiveStatus(id,1).forEach(
+            subscriptionRepository.findSubscriptionsBySupplierIdAndActiveStatus(id, 1).forEach(
                     subscribedCustomer -> {
                         Optional<Customer> customer = customerRepository.findById(subscribedCustomer.getCustomerId());
-                        customers.add( unwrapCustomer(customer));
+                        customers.add(unwrapCustomer(customer));
                         // Store the subscription details
                         subscriptions.add(subscribedCustomer);
                     });
@@ -51,22 +57,27 @@ public class SupplierServiceImplementation implements SupplierService {
         return supplier;
     }
 
-    public List<Supplier> getAllSuppliers(){
+    public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
-        supplierRepository.findAll().forEach(supplier -> suppliers.add(supplier));
+
+        supplierRepository.findAll().forEach(supplier -> {
+            Double rating = supplierReviewRepository.findSupplierAverage(supplier.getSupId());
+            supplier.setSupplierRating(rating);
+            suppliers.add(supplier);
+        });
         return suppliers;
     }
 
-    public Supplier registerSupplier(Supplier supplier){
-        if(supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
+    public Supplier registerSupplier(Supplier supplier) {
+        if (supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
             throw new RuntimeException("Email already exists");
         }
         supplier.setPassword(userSecurity.encryptData(supplier.getPassword()));
-        return  supplierRepository.save(supplier);
+        return supplierRepository.save(supplier);
     }
 
-    public Supplier updateSupplier(@RequestBody Supplier supplier){
-        Supplier s=supplierRepository.findById(supplier.getSupId()).orElse(null);
+    public Supplier updateSupplier(@RequestBody Supplier supplier) {
+        Supplier s = supplierRepository.findById(supplier.getSupId()).orElse(null);
         s.setSupName(supplier.getSupName());
         s.setSupContactNumber(supplier.getSupContactNumber());
         s.setSupEmail(supplier.getSupEmail());
@@ -78,11 +89,12 @@ public class SupplierServiceImplementation implements SupplierService {
 
     }
 
-    public String deleteSupplier(int id){
+    public String deleteSupplier(int id) {
         supplierRepository.deleteById(id);
         return "Supplier deleted";
     }
-    public Supplier loginSupplier(Supplier supplier){
+
+    public Supplier loginSupplier(Supplier supplier) {
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
             throw new RuntimeException("Supplier not Registered");
@@ -96,7 +108,7 @@ public class SupplierServiceImplementation implements SupplierService {
         return supplierData;
     }
 
-    private static Customer unwrapCustomer(Optional<Customer> entity){
+    private static Customer unwrapCustomer(Optional<Customer> entity) {
         return entity.orElse(null);
     }
 

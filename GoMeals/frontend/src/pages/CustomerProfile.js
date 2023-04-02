@@ -161,7 +161,6 @@ function CustomerProfile() {
 
     return (
         <div>
-            <NavbarComponent />
             <Modal show={editProfile} onHide={() => setEditProfile(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit your profile</Modal.Title>
