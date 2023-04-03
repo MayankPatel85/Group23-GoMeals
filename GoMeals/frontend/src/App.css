@@ -54,8 +54,8 @@ h3{
 .containers {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-right: 10%;
+  /* align-items: center;
+  margin-right: 10%; */
 }
 
 .card-containers {
@@ -63,7 +63,7 @@ h3{
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-right: 10%;
+  /* margin-right: 10%; */
 
 }
 
@@ -97,4 +97,26 @@ margin: 1% 0% 1.5% 0%;
 
 .customerlist-table tr:hover{
 cursor: pointer;
+}
+
+#heroLine{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.titleVendor{
+  padding: 2em 2em 0 2em;
+}
+
+.filterButton{
+  margin: 1.5em;
+}
+
+#listSuppliers{
+  padding :2em;
+}
+
+#listSuppliersCardContainer{
+  
 }

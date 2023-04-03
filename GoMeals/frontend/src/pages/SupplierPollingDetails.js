@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import NavbarComponent from "../components/NavbarComponent";
+import "../styles/SupplierPollingDetails.css";
 
 function SupplierPollingDetails() {
   const cookies = new Cookies();
@@ -22,84 +23,80 @@ function SupplierPollingDetails() {
       });
   }, [refresh]); // Add refresh as a dependency of useEffect
 
-  function handlePollClose(pollId, pollDate, pollVote) {
-    console.log("Poll Vote received: " + pollVote);
-    if (pollVote === null) {
-      alert("No meals were voted");
-    } else {
-      try {
-        fetch(
-          "http://localhost:8080/meal-voting/get/most-voted-meal/" +
-            pollId +
-            "/" +
-            loggedInUser.supId
-        ).then((res) => {
-          console.log();
-          alert(
-            "Polling for the date " +
-              pollDate +
-              " closed. The most voted meal would be highlighted."
-          );
-          setRefresh(!refresh); // Toggle refresh state to trigger a re-render
-        });
-      } catch (error) {
-        console.log(error);
-      }
+  function handlePollClose(pollId, pollDate) {
+    try {
+      fetch(
+        "http://localhost:8080/meal-voting/get/most-voted-meal/" +
+          pollId +
+          "/" +
+          loggedInUser.supId
+      ).then((res) => {
+        console.log();
+        alert(
+          "Polling for the date " +
+            pollDate +
+            " closed. The most voted meal would be highlighted."
+        );
+        setRefresh(!refresh); // Toggle refresh state to trigger a re-render
+      });
+    } catch (error) {
+      console.log(error);
     }
   }
 
   return (
     <div className="row">
       <NavbarComponent />
-      {polls.map((poll) => (
-        <Card style={{ width: "18rem" }}>
-          {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-          <Card.Body>
-            <Card.Title>Polling for date: {poll.pollDate}</Card.Title>
-            <Card.Text>
-              <ListGroup>
-                <ListGroup.Item
-                  variant={poll.item1 == poll.vote ? "primary" : ""}
+      <h2 id="pollingDetailsHeader">Polling Details</h2>
+      <div id="pollingDetails">
+        {polls.map((poll) => (
+          <Card style={{ width: "18rem" }}>
+            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+            <Card.Body>
+              <Card.Title>Polling for date: {poll.pollDate}</Card.Title>
+              <Card.Text>
+                <ListGroup>
+                  <ListGroup.Item
+                    variant={poll.item1 === poll.vote ? "primary" : ""}
+                  >
+                    {poll.item1}
+                  </ListGroup.Item>
+                  <ListGroup.Item
+                    variant={poll.item2 === poll.vote ? "primary" : ""}
+                  >
+                    {poll.item2}
+                  </ListGroup.Item>
+                  <ListGroup.Item
+                    variant={poll.item3 === poll.vote ? "primary" : ""}
+                  >
+                    {poll.item3}
+                  </ListGroup.Item>
+                  <ListGroup.Item
+                    variant={poll.item4 === poll.vote ? "primary" : ""}
+                  >
+                    {poll.item4}
+                  </ListGroup.Item>
+                  <ListGroup.Item
+                    variant={poll.item5 === poll.vote ? "primary" : ""}
+                  >
+                    {poll.item5}
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card.Text>
+              {poll.status == true ? (
+                <Button
+                  variant="primary"
+                  onClick={() => handlePollClose(poll.pollId, poll.pollDate)}
                 >
-                  {poll.item1}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  variant={poll.item2 == poll.vote ? "primary" : ""}
-                >
-                  {poll.item2}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  variant={poll.item3 == poll.vote ? "primary" : ""}
-                >
-                  {poll.item3}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  variant={poll.item4 == poll.vote ? "primary" : ""}
-                >
-                  {poll.item4}
-                </ListGroup.Item>
-                <ListGroup.Item
-                  variant={poll.item5 == poll.vote ? "primary" : ""}
-                >
-                  {poll.item5}
-                </ListGroup.Item>
-              </ListGroup>
-            </Card.Text>
-            {poll.status == true ? (
-              <Button
-                variant="primary"
-                onClick={() =>
-                  handlePollClose(poll.pollId, poll.pollDate, poll.vote)
-                }
-              >
-                Close
-              </Button>
-            ) : (
-              <></>
-            )}
-          </Card.Body>
-        </Card>
-      ))}
+                  Close
+                </Button>
+              ) : (
+                <></>
+              )}
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

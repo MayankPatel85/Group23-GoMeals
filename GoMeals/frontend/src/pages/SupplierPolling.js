@@ -88,11 +88,14 @@ function SupplierPolling() {
   return (
     <div id="supplierPolling">
       <NavbarComponent />
-      <div classNmae="d-flex justify-content-center align-items-center">
-        <Card className="shadow px-4">
+      <div className="d-flex justify-content-center align-items-center">
+        <Card className="shadow px-4 polling-card">
           <Card.Body>
             <div className="mb-3 mt-md-4">
-              <h2 className="fw-bold mb-2 text-center text-uppercase ">
+              <h2
+                className="fw-bold mb-2 text-center text-uppercase "
+                id="pollingHeader"
+              >
                 Meal Polling
               </h2>
               <div className="mb-3">
@@ -103,6 +106,7 @@ function SupplierPolling() {
                     onChange={handleDateChange}
                     min={minDate}
                     max={maxDate}
+                    id="pollingDatePicker"
                   />
                   <Form.Group className="mb-3" controlId="Item1">
                     <Form.Label>Meal Option 1 :</Form.Label>

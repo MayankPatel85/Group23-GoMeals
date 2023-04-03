@@ -15,6 +15,7 @@ import {
   faUserCircle,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import foodcart from "../resources/shopping-cart.png";
 import "../styles/Navbar.css";
 export default function NavbarComponent() {
   const cookies = new Cookies();
@@ -78,10 +79,27 @@ export default function NavbarComponent() {
     <>
       <Navbar bg="primary" variant="light">
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <Navbar.Brand href="/dashboard">Go Meals</Navbar.Brand>
+          <Navbar.Brand
+            href={
+              loggedInUser.userType === "supplier"
+                ? "/supplierDashboard"
+                : "/dashboard"
+            }
+          >
+            <img src={foodcart} id="foodCart" width="30px" height="30px"></img>
+            Go Meals
+          </Navbar.Brand>
           <div>
             <Nav className="me-auto">
-              <Nav.Link href="/dashboard">Home</Nav.Link>
+              <Nav.Link
+                href={
+                  loggedInUser.userType === "supplier"
+                    ? "/supplierDashboard"
+                    : "/dashboard"
+                }
+              >
+                Home
+              </Nav.Link>
               <Nav.Link href="#features">Profile</Nav.Link>
 
               <Nav.Link onClick={toggleNotifications}>

@@ -30,25 +30,25 @@ export default function SupplierDashboard() {
     alterstate(param);
   };
   const handleDelivery = () => {
-    // axios.get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
-    //     .then((response)=> {
-    //            response.data.forEach(custId=> {
-    //                console.log(custId)
-    //                    const delivery = {
-    //                        "deliveryId": 8,
-    //                        "deliveryDate": "",
-    //                        "deliveryMeal": "",
-    //                        "orderStatus": "inprogress",
-    //                        "supId": loggedInUser.supId,
-    //                        "custId": custId
-    //                    }
-    //                    console.log(delivery)
-    //                axios.post("http://localhost:8080/delivery/create",delivery)
-    //                    .then(alert("Deliveries initiated"))
-    //                }
-    //            )
-    //         }
-    //     )
+    axios
+      .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+      .then((response) => {
+        response.data.forEach((custId) => {
+          console.log(custId);
+          const delivery = {
+            deliveryId: 8,
+            deliveryDate: "",
+            deliveryMeal: "",
+            orderStatus: "inprogress",
+            supId: loggedInUser.supId,
+            custId: custId,
+          };
+          console.log(delivery);
+          axios
+            .post("http://localhost:8080/delivery/create", delivery)
+            .then(alert("Deliveries initiated"));
+        });
+      });
 
     axios
       .get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
