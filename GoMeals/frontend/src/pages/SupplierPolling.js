@@ -87,7 +87,7 @@ function SupplierPolling() {
   };
   return (
     <div id="supplierPolling">
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <div className="d-flex justify-content-center align-items-center">
         <Card className="shadow px-4 polling-card">
           <Card.Body>

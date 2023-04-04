@@ -34,7 +34,7 @@ function CustomerComplainTracker() {
 
   return (
     <div>
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <h2 id="customerComplainHeader"> Complain Portal </h2>
       <div id="pollingDetails">
         {complainList.map((complain) =>

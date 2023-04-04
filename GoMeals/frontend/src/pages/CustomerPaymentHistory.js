@@ -23,7 +23,7 @@ function CustomerPaymentHistory() {
 
   return (
     <div>
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <h2 id="paymentHistoryHeader"> Payment History </h2>
       <div id="paymentHistoryTable">
         <Table striped bordered hover>

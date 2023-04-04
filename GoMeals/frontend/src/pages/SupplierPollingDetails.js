@@ -46,7 +46,7 @@ function SupplierPollingDetails() {
 
   return (
     <div className="row">
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <h2 id="pollingDetailsHeader">Polling Details</h2>
       <div id="pollingDetails">
         {polls.map((poll) => (

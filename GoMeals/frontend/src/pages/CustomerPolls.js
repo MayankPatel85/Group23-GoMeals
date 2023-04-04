@@ -79,7 +79,7 @@ function CustomerPolls() {
 
   return (
     <div>
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <h2 id="customerPollsHeader">Special Meal Vote</h2>
       <div id="customerPolls">
         {pollingList.map((poll) => (
