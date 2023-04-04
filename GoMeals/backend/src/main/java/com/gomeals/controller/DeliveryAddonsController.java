@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/deliveryAddons")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DeliveryAddonsController {
     @Autowired
     DeliveryAddonsService deliveryAddonsService;
@@ -24,6 +25,7 @@ public class DeliveryAddonsController {
     public ResponseEntity<DeliveryAddons> getDeliveryAddonsById(@RequestBody DeliveryAddonsId deliveryAddonsId) {
         return new ResponseEntity<>(deliveryAddonsService.getDeliveryAddonsById(deliveryAddonsId),HttpStatus.OK);
     }
+    @CrossOrigin
     @GetMapping("/get/{id}")
     public ResponseEntity<List<DeliveryAddons>> getDeliveryAddonsByDeliveryId(@PathVariable("id") Integer deliveryId) {
         return new ResponseEntity<>(deliveryAddonsService.getDeliveryAddonsByDeliveryId(deliveryId),HttpStatus.OK);

@@ -118,7 +118,7 @@ function Register() {
                         </Form.Group>
                         <Form.Group
                           className="mb-3"
-                          controlId="formBasicPassword"
+                          controlId="formConfirmBasicPassword"
                         >
                           <Form.Control
                             type="password"

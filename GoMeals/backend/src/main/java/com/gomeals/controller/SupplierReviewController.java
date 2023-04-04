@@ -17,6 +17,12 @@ public class SupplierReviewController {
     public SupplierReview createSupplierReview(@RequestBody SupplierReview supplierReview) {
         return supplierReviewService.createSupplierReview(supplierReview);
     }
+
+    @GetMapping("/getById")
+    public SupplierReview getByCustomerIdAndSupplierId(@RequestParam int customerId, int supplierId) {
+        return supplierReviewService.getSupplierReviewByCustomerIdAndSupplierId(customerId, supplierId);
+    }
+
     @GetMapping("/get/4us")
     public List<Integer> get4upStarSupplier(){
         return  supplierReviewService.get4upStarSupplier();
