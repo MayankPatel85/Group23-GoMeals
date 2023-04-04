@@ -1,6 +1,7 @@
 package com.gomeals.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.gomeals.model.Addons;
@@ -48,9 +49,9 @@ public class AddonsServiceImpl implements AddonsService {
     }
 
     @Override
-    public List<Addons> getAllSupplierAddons(int supplierId){
+    public List<Addons> getAllSupplierAddons(int supplierId) {
         List<Addons> supplierAddons = addonsRepository.findAllBySupplierId(supplierId);
-        if(supplierAddons.isEmpty()){
+        if (supplierAddons.isEmpty()) {
             System.out.println("No addons found for that supplier.");
             return null;
         }

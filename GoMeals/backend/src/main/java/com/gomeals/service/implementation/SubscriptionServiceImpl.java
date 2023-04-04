@@ -12,8 +12,6 @@ import com.gomeals.service.SubscriptionService;
 
 import jakarta.transaction.Transactional;
 
-import java.util.List;
-
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
@@ -27,8 +25,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Transactional
-	public Subscriptions getSubscription(int sub_id) {
-		return subscriptioRepository.findById(sub_id).orElse(null);
+	public Subscriptions getSubscription(int subId) {
+		return subscriptioRepository.findById(subId).orElse(null);
 	}
 
 	@Transactional
@@ -41,20 +39,21 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Transactional
-	public String deleteSubscription(int sub_id) {
-		subscriptioRepository.deleteById(sub_id);
+	public String deleteSubscription(int subId) {
+		subscriptioRepository.deleteById(subId);
 		return "Subscription deleted successfully.";
 
 	}
+
 	@Override
-	public List<Integer> getCustomers(int id){
-		return subscriptioRepository.getCustomers(id);
+	public List<Integer> getCustomersIdForSupplier(int supId) {
+		return subscriptioRepository.getCustomersIdForSupplier(supId);
 	}
 
 	@Override
-	public List<Integer> getAllCustomerSubscriptions(int cust_id) {
+	public List<Integer> getAllCustomerSubscriptions(int custId) {
 		List<Integer> listOfSuppliersForCustomers = new ArrayList<>();
-		subscriptioRepository.findSubscriptionsByCustomerIdAndActiveStatus(cust_id, 1)
+		subscriptioRepository.findSubscriptionsByCustomerIdAndActiveStatus(custId, 1)
 				.forEach(subscription -> listOfSuppliersForCustomers.add(subscription.getSupplierId()));
 
 		return listOfSuppliersForCustomers;
