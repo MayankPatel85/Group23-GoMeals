@@ -10,6 +10,7 @@ import swal from "sweetalert";
 export default function SupplierDashboard() {
     const [alter,alterstate]=useState("create");
     const [mealchart, showmealchart] = useState(false);
+    const [addOns, showAddOns] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showCustomerList, setShowCustomerList] = useState(false);
     const [customerList, setCustomerList] = useState([]);
@@ -18,6 +19,10 @@ export default function SupplierDashboard() {
     const cookies = new Cookies();
     const loggedInUser = cookies.get('loggedInUser');
     console.log("logged" + loggedInUser);
+    const handleca=()=>{
+        showAddOns(!addOns);
+
+    }
     const handleClick = (param) => {
         showmealchart(!mealchart);
         alterstate(param)
@@ -71,6 +76,56 @@ export default function SupplierDashboard() {
         setShowCustomerList(prevValue => {
             return !prevValue;
         });
+    }
+    const handleAddon=()=>{
+        const addOn1={
+            addonId:"",
+            item:document.getElementById("addon1").value,
+            price:document.getElementById("price1").value,
+            supplierId:loggedInUser.supId
+        }
+         const addOn2= {
+             addonId: "",
+             item: document.getElementById("addon2").value,
+             price: document.getElementById("price2").value,
+             supplierId: loggedInUser.supId
+         }
+         const addOn3= {
+                addonId:"",
+                item:document.getElementById("addon3").value,
+                price:document.getElementById("price3").value,
+                supplierId:loggedInUser.supId
+            }
+        axios
+            .post("http://localhost:8080/Addons/create", addOn1)
+            .then((response) => {
+                console.log(response.data);
+                // navigate("/supplierDashboard");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios
+            .post("http://localhost:8080/Addons/create", addOn2)
+            .then((response) => {
+                console.log(response.data);
+                // navigate("/supplierDashboard");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios.post("http://localhost:8080/Addons/create", addOn3)
+            .then((response) => {
+                console.log(response.data);
+                alert("Data stored");
+                // navigate("/supplierDashboard");
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Data was not sent");
+            });
+
+
     }
     const handleCreate = () => {
         const mealChart = [{
@@ -204,6 +259,7 @@ export default function SupplierDashboard() {
             <br />
             <Button variant="outline-primary" onClick={()=>handleClick('create')}>Create Meal Chart</Button>{' '}
             <Button variant="outline-primary" onClick={()=>handleClick('update')}>Update Meal Chart</Button>{' '}
+            <Button variant="outline-primary" onClick={handleca}>Create Meal Addons</Button>{' '}
             <Button variant="outline-primary" onClick={handleDelivery}>Delivery</Button>{' '}
             <Button variant="outline-primary" onClick={handleShowCustomers}>View Customers</Button>
             {mealchart &&
@@ -280,40 +336,39 @@ export default function SupplierDashboard() {
                 </Card>
                 </div>
             }
+            { addOns &&  <div><Card className="mechco">
+                <Card.Body>
+                    <h3>Add on Details</h3>
+                    <table>
+                        <tr>
+                            <td>Addon1:</td>
+                            <td><input type="text" id="addon1" /></td>
+                            <td>Price</td>
+                            <td><input type="text" id="price1" /></td>
+                        </tr>
+                        <tr>
+                            <td>Addon2:</td>
+                            <td><input type="text" id="addon2" /></td>
+                            <td>Price</td>
+                            <td><input type="text" id="price2" /></td>
+                        </tr>
+                        <tr>
+                            <td>Addon3:</td>
+                            <td><input type="text" id="addon3" /></td>
+                            <td>Price</td>
+                            <td><input type="text" id="price3" /></td>
+                        </tr>
+                    </table>
+                    <br />
+                    <Button variant="outline-primary" onClick={handleAddon}>Upload</Button>{' '}
+                </Card.Body>
+            </Card></div>
+                }
             {showCustomerList ?
                 (isLoading ? <Container className="my-5 mx-auto"><Spinner variant="primary" /></Container> : <CustomerList customerList={customerList} subscriptionList={subscriptionList} />) : null
             }
             <br />
             <br />
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Customer id</th>
-                    <th>Meal</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td colSpan={2}>Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </Table>
             <Navbar bg="primary" variant="light" className="justify-content-center align-items-center">
                 <h3>©Go Meals</h3>
             </Navbar>
