@@ -6,10 +6,10 @@ class FooterComponent extends React.Component {
       <footer className="footer">
         <div className="footer-content">
           <h3>Contact Us</h3>
-          <p>123 Main St</p>
-          <p>Anytown, USA 12345</p>
-          <p>Phone: 555-555-5555</p>
-          <p>Email: info@company.com</p>
+          <p>17 - 4 Sunset Avenues</p>
+          <p>Halifax, Nova Scotia, Canada, B3H 4R2</p>
+          <p>Phone: (902) 494-2211</p>
+          <p>Email: help@gomeals.com</p>
         </div>
         <div className="footer-content">
           <h3>Follow Us</h3>

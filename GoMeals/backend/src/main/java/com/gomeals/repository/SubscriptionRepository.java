@@ -19,6 +19,6 @@ public interface SubscriptionRepository extends CrudRepository<Subscriptions, In
     List<Subscriptions> findByActiveStatusAndStatusAndSupplierId(Integer activeStatus, String status, Integer supplierId);
 
     @Query("SELECT s.customerId FROM Subscriptions s WHERE s.supplierId=:id")
-    List<Integer> getCustomers(@Param("id") int id);
+    List<Integer> getCustomersIdForSupplier(@Param("id") int supId);
 
 }

@@ -17,6 +17,7 @@ import {
   faUserCircle,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import foodcart from "../resources/shopping-cart.png";
 import "../styles/Navbar.css";
 import Notification from "./Notification";
 
@@ -90,7 +91,6 @@ export default function NavbarComponent() {
   function handleSupplierPollingDetails() {
     navigate("/supplierPollingDetails");
   }
-
   const location = useLocation();
   const hideNavBar =
     location.pathname === "/login" ||
@@ -98,7 +98,6 @@ export default function NavbarComponent() {
     location.pathname === "/" ||
     location.pathname === "/Supplierlogin" ||
     location.pathname === "/supplierRegister";
-
 
   if (hideNavBar) {
     return null;
@@ -109,10 +108,32 @@ export default function NavbarComponent() {
           <Container
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
+            <Navbar.Brand
+              href={
+                loggedInUser.userType === "supplier"
+                  ? "/supplierDashboard"
+                  : "/dashboard"
+              }
+            >
+              <img
+                src={foodcart}
+                id="foodCart"
+                width="30px"
+                height="30px"
+              ></img>
+              Go Meals
+            </Navbar.Brand>
             <div>
               <Nav className="me-auto">
-                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link
+                  href={
+                    loggedInUser.userType === "supplier"
+                      ? "/supplierDashboard"
+                      : "/dashboard"
+                  }
+                >
+                  Home
+                </Nav.Link>
                 <Nav.Link href="#features">Profile</Nav.Link>
                 {supplierUser && <Nav.Link href="#pricing">Customers</Nav.Link>}
                 {customerUser && <Nav.Link href="/meals">Meals</Nav.Link>}
@@ -143,7 +164,9 @@ export default function NavbarComponent() {
                           <Dropdown.Item onClick={handleSupplierPollingDetails}>
                             Polling Details
                           </Dropdown.Item>
-                          <Dropdown.Item onClick={handleSubscirptionRequests}>Subscription Requests</Dropdown.Item>
+                          <Dropdown.Item onClick={handleSubscirptionRequests}>
+                            Subscription Requests
+                          </Dropdown.Item>
                         </>
                       ) : (
                         <>

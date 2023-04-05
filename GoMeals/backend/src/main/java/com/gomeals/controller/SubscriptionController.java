@@ -35,10 +35,12 @@ public class 	SubscriptionController {
 	public List<Integer> getAllSuppliersForCustomer(@PathVariable int custId) {
 		return subscriptionService.getAllCustomerSubscriptions(custId);
 	}
+
 	@GetMapping("/get/sup/{id}")
-	public List<Integer> getCustomers(@PathVariable int id){
-		return subscriptionService.getCustomers(id);
+	public List<Integer> getCustomers(@PathVariable int id) {
+		return subscriptionService.getCustomersIdForSupplier(id);
 	}
+
 	@PostMapping("/add")
 	public String postSubscription(@RequestBody Subscriptions subscription) {
 

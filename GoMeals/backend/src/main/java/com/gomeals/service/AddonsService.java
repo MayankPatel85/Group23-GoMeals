@@ -15,6 +15,4 @@ public interface AddonsService {
     String deleteAddon(int addonId);
 
     List<Addons> getAllSupplierAddons(int supplierId);
-
-
 }

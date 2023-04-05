@@ -38,7 +38,7 @@ const CustomerDeliveries = ({ history }) => {
 
   return (
     <div>
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <HeroComponent
         header="Your Orders"
         body="Following are the order cards available"

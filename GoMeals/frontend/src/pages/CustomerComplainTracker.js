@@ -4,6 +4,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import ComplainCard from "./CustomerComplainCard";
 import NavbarComponent from "../components/NavbarComponent";
+import "../styles/CustomerComplainTracker.css";
 
 function CustomerComplainTracker() {
   const cookies = new Cookies();
@@ -33,8 +34,9 @@ function CustomerComplainTracker() {
 
   return (
     <div>
-      <NavbarComponent />
-      <div class="container row p-5">
+      {/* <NavbarComponent /> */}
+      <h2 id="customerComplainHeader"> Complain Portal </h2>
+      <div id="pollingDetails">
         {complainList.map((complain) =>
           deliveries.map((delivery) =>
             complain.deliveryId == delivery.deliveryId ? (

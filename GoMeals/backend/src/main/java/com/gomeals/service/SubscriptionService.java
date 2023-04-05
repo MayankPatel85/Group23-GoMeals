@@ -15,7 +15,7 @@ public interface SubscriptionService {
 
 	public Subscriptions getSubscription(int sub_id);
 
-	public List<Integer> getCustomers(int id);
+	public List<Integer> getCustomersIdForSupplier(int id);
 
 	public String updateSubscription(Subscriptions subscription);
 

@@ -54,7 +54,7 @@ function CustomerPolling(props) {
         alert("Meal voting completed for the date " + props.poll.pollDate);
         console.log(mealPoll);
         props.onHide();
-        navigate("/dashboard");
+        navigate("/supplierDashboard");
       });
   };
 

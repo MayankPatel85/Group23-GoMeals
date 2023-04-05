@@ -160,39 +160,51 @@ export default function CustomerDashboard(children, func) {
         header="Welcome to Go Meals"
         body="Delivering deliciousness – one tiffin at a time!"
       />
+      <h3 className="titleVendor">List of available Vendors</h3>
+      <hr id="heroLine" />
+
       <Dropdown onClick={() => setClicked(true)}>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
+        <Dropdown.Toggle
+          variant="success"
+          className="filterButton"
+          id="dropdown-basic"
+        >
           Filter
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => fetchdata("lth")}>
-            Price :Low to high
+            <b>Price :</b> Low to high
           </Dropdown.Item>
           <Dropdown.Item onClick={() => fetchdata("htl")}>
-            Price :High to low
+            <b>Price :</b> High to low
           </Dropdown.Item>
           <Dropdown.Item onClick={() => fetchdata("4ustar")}>
-            Rating Average: Above 4 Stars
+            <b>Rating Average :</b> Above 4 Stars
           </Dropdown.Item>
           <Dropdown.Item onClick={() => fetchdata("3ustar")}>
-            Rating Average:Above 3 Stars
+            <b>Rating Average :</b> Above 3 Stars
           </Dropdown.Item>
           <Dropdown.Item onClick={() => fetchdata("normal")}>
-            Recommended Suppliers
+            <b>All :</b> Suppliers
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-      <div className="containers">
-        <div className="card-containers">
+      <div className="containers" id="listSuppliers">
+        <div className="card-containers" id="listSuppliersCardContainer">
           {Object.keys(data).map((key) => (
             <Card style={{ width: "18rem" }}>
               <Card.Img variant="top" src={food} />
               <Card.Body>
                 <Card.Title>{data[key].supName}</Card.Title>
+
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <b> Meal Price: </b> {data[key].mealPrice} <b>$</b>
+                </Card.Text>
+
+                <Card.Text>
+                  <b> Address : </b>
+                  {data[key].supAddress}
                 </Card.Text>
                 <Button
                   variant="primary"
@@ -259,6 +271,7 @@ export default function CustomerDashboard(children, func) {
           </Modal.Footer>
         </Modal>
       )}
+      {/* <br />
       <br />
       <br />
       <br />
@@ -276,8 +289,7 @@ export default function CustomerDashboard(children, func) {
       <br />
       <br />
       <br />
-      <br />
-      <br />
+      <br /> */}
 
       {/*<Navbar bg="primary" variant="light" className="justify-content-center align-items-center" >*/}
       {/*  <h3>©Go Meals</h3>*/}
