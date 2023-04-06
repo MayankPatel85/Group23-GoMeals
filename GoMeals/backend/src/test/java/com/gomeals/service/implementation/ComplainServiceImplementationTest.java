@@ -1,8 +1,6 @@
 package com.gomeals.service.implementation;
 
 import com.gomeals.model.Complain;
-import com.gomeals.model.DeliveryAddons;
-import com.gomeals.model.DeliveryAddonsId;
 import com.gomeals.repository.ComplainRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +20,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class ComplainServiceImplementationTest {
     @Mock
-    ComplainRepository complainRepository;
+    private ComplainRepository complainRepository;
 
     @InjectMocks
     private ComplainServiceImplementation complainServiceImplementation;

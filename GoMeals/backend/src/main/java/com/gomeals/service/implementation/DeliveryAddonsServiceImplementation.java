@@ -13,8 +13,11 @@ import java.util.List;
 
 @Service
 public class DeliveryAddonsServiceImplementation implements DeliveryAddonsService{
-    @Autowired
-    DeliveryAddonsRepository deliveryAddonsRepository;
+
+    private final DeliveryAddonsRepository deliveryAddonsRepository;
+    public DeliveryAddonsServiceImplementation(DeliveryAddonsRepository deliveryAddonsRepository) {
+        this.deliveryAddonsRepository = deliveryAddonsRepository;
+    }
 
     @Override
     public DeliveryAddons createDeliveryAddons(DeliveryAddons deliveryAddons) {
