@@ -6,15 +6,18 @@ const ComplainModalComponent = (props) => {
     return null;
   }
   return (
-    <div className="modal" onClick={props.onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h4 className="modal-title">
+    <div className="complainmodal" onClick={props.onClose}>
+      <div
+        className="complainmodal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="complainmodal-header">
+          <h4 className="complainmodal-title">
             Complain Id: {props.complain.complainId}
           </h4>
           <h4>Raised on : {props.complain.date}</h4>
         </div>
-        <div className="modal-body m-2 text-start">
+        <div className="complainmodal-body m-2 text-start">
           <h5>Status: {props.complain.status}</h5>
           <h5>Meal Name: {props.delivery.deliveryMeal}</h5>
           <h5>Delivery Date: {props.delivery.deliveryDate}</h5>
@@ -25,7 +28,7 @@ const ComplainModalComponent = (props) => {
             <h5>Suppliers Comment: {props.complain.supplierComment}</h5>
           )}
         </div>
-        <div className="modal-footer">
+        <div className="complainmodal-footer">
           <Button variant="danger" onClick={props.onClose}>
             Close
           </Button>

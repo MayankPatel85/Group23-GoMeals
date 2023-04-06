@@ -14,7 +14,15 @@ function ComplainCard(props) {
           Meal Delivery date : {props.delivery.deliveryDate}
         </Card.Text>
       </Card.Body>
-      <Button variant="info" className="m-lg-4" onClick={() => setShow(true)}>
+      <Button
+        variant="info"
+        className="m-lg-4"
+        onClick={() => {
+          setShow(true);
+          console.log(show);
+          console.log("Button was clicked");
+        }}
+      >
         View Complain
       </Button>
       <ComplainModalComponent

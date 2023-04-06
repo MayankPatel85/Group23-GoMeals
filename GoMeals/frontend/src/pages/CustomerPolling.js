@@ -46,7 +46,6 @@ function CustomerPolling(props) {
       body: mealPoll,
     })
       .then((res) => {
-        console.log("Response received is :" + res.json());
         res.json();
       })
       .then((val) => {
@@ -54,7 +53,7 @@ function CustomerPolling(props) {
         alert("Meal voting completed for the date " + props.poll.pollDate);
         console.log(mealPoll);
         props.onHide();
-        navigate("/supplierDashboard");
+        navigate("/dashboard");
       });
   };
 
