@@ -64,6 +64,7 @@ public class CustomerServiceImplementation implements CustomerService {
                 return customerData;
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                customerData = null;
             }
         }
         return customerData;

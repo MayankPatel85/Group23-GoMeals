@@ -8,6 +8,9 @@ import com.gomeals.repository.SubscriptionRepository;
 import com.gomeals.repository.SupplierRepository;
 import com.gomeals.repository.SupplierReviewRepository;
 import com.gomeals.utils.UserSecurity;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 // import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +30,7 @@ import java.util.Optional;
 // import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -56,56 +60,64 @@ public class SupplierServiceImplementationTest {
     private List<Customer> customers;
     private List<Subscriptions> subscriptions;
     private Customer customer;
+    private HttpServletResponse response;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        supplier = new Supplier(1, "Halifax", "1234567890", "Jane Doe", "janedoe@gmail.com", "94738263874683",
+        supplier = new Supplier(1, "Halifax", "1234567890", "Jane Doe",
+                "janedoe@gmail.com", "94738263874683",
                 "pass1234", 300.99, "paypal.me/jane.com");
         suppliers = new ArrayList<>(Arrays.asList(supplier));
-        customer = new Customer(0, "John", "Bruce", "Wick", "jbw@gmail.com", "8264572839772", "8762264536", "pass123");
+        customer = new Customer(0, "John", "Bruce", "Wick", "jbw@gmail.com",
+                "8264572839772", "8762264536", "pass123");
         customers = new ArrayList<>(Arrays.asList(customer));
         subscriptions = new ArrayList<>(Arrays.asList(new Subscriptions()));
+        response = mock(HttpServletResponse.class);
     }
 
-    @Test
-    public void getSupplierDetails_ReturnsSupplierWithCustomersAndSubscriptions() {
-        when(supplierRepository.findById(1)).thenReturn(Optional.of(supplier));
-        when(customerRepository.findById(anyInt())).thenReturn(Optional.of(customer));
-        when(subscriptionRepository.findSubscriptionsBySupplierIdAndActiveStatus(1, 1)).thenReturn(subscriptions);
-        when(supplierReviewRepository.findSupplierAverage(1)).thenReturn(4.0);
+@Test
+public void getSupplierDetails_ReturnsSupplierWithCustomersAndSubscriptions()
+{
+when(supplierRepository.findById(1)).thenReturn(Optional.of(supplier));
+when(customerRepository.findById(anyInt())).thenReturn(Optional.of(customer));
+when(subscriptionRepository.findSubscriptionsBySupplierIdAndActiveStatus(1,
+1)).thenReturn(subscriptions);
+when(supplierReviewRepository.findSupplierAverage(1)).thenReturn(4.0);
 
-        Supplier result = supplierService.getSupplierDetails(1);
+Supplier result = supplierService.getSupplierDetails(1);
 
-        verify(supplierRepository, times(1)).findById(1);
-        verify(customerRepository, times(1)).findById(anyInt());
-        verify(subscriptionRepository, times(1)).findSubscriptionsBySupplierIdAndActiveStatus(1, 1);
-        verify(supplierReviewRepository, times(1)).findSupplierAverage(1);
+verify(supplierRepository, times(1)).findById(1);
+verify(customerRepository, times(1)).findById(anyInt());
+verify(subscriptionRepository,
+times(1)).findSubscriptionsBySupplierIdAndActiveStatus(1, 1);
+verify(supplierReviewRepository, times(1)).findSupplierAverage(1);
 
-        assertEquals(supplier, result);
-        assertEquals(subscriptions, result.getSubscriptions());
-        assertEquals(customers, result.getCustomers());
-        assertEquals(4.0, result.getSupplierRating(), 0.0);
-    }
+assertEquals(supplier, result);
+assertEquals(subscriptions, result.getSubscriptions());
+assertEquals(customers, result.getCustomers());
+assertEquals(4.0, result.getSupplierRating(), 0.0);
+}
 
-    @Test
-    public void getAllSuppliers_ReturnsSuppliersWithRatings() {
-        when(supplierRepository.findAll()).thenReturn(suppliers);
-        when(supplierReviewRepository.findSupplierAverage(1)).thenReturn(4.0);
+@Test
+public void getAllSuppliers_ReturnsSuppliersWithRatings() {
+when(supplierRepository.findAll()).thenReturn(suppliers);
+when(supplierReviewRepository.findSupplierAverage(1)).thenReturn(4.0);
 
-        List<Supplier> result = supplierService.getAllSuppliers();
+List<Supplier> result = supplierService.getAllSuppliers();
 
-        verify(supplierRepository, times(1)).findAll();
-        verify(supplierReviewRepository, times(1)).findSupplierAverage(1);
+verify(supplierRepository, times(1)).findAll();
+verify(supplierReviewRepository, times(1)).findSupplierAverage(1);
 
-        assertEquals(suppliers, result);
-        assertEquals(4.0, result.get(0).getSupplierRating(), 0.0);
-    }
+assertEquals(suppliers, result);
+assertEquals(4.0, result.get(0).getSupplierRating(), 0.0);
+}
 
     @Test
     public void testGetAllSuppliers() {
         // mock data
-        Supplier supplier1 = new Supplier(1, "Halifax", "9736372816", "Mayank Patel", "mpatel@gmail.com", null, null,
+        Supplier supplier1 = new Supplier(1, "Halifax", "9736372816", "Mayank Patel",
+                "mpatel@gmail.com", null, null,
                 null, null);
         Supplier supplier2 = new Supplier(2, "Dombivali", "7892725362", "Shreyas Nagaraja", "snagraja@gmail.com", null,
                 null, null, null);
@@ -132,41 +144,40 @@ public class SupplierServiceImplementationTest {
         assertEquals(expectedSuppliers, actualSuppliers);
     }
 
-    @Test
-    public void testGetAllSuppliersWithEmptyData() {
-        // mock repository responses
-        when(supplierRepository.findAll()).thenReturn(new ArrayList<>());
-        
-        // expected results
-        List<Supplier> expectedSuppliers = new ArrayList<>();
-        
-        // call the service method
-        List<Supplier> actualSuppliers = supplierService.getAllSuppliers();
-        
-        // assert the results
-        assertEquals(expectedSuppliers, actualSuppliers);
-    }
+@Test
+public void testGetAllSuppliersWithEmptyData() {
+// mock repository responses
+when(supplierRepository.findAll()).thenReturn(new ArrayList<>());
 
-    @Test
-    public void testRegisterSupplier() {
-        
+// expected results
+List<Supplier> expectedSuppliers = new ArrayList<>();
 
-        // mock repository response
-        when(supplierRepository.findSupplierByEmail("janedoe@gmail.com")).thenReturn(null);
+// call the service method
+List<Supplier> actualSuppliers = supplierService.getAllSuppliers();
 
-        // mock user security response
-        when(userSecurity.encryptData("pass1234")).thenReturn("encrypted-password");
+// assert the results
+assertEquals(expectedSuppliers, actualSuppliers);
+}
 
-        when(supplierRepository.save(supplier)).thenReturn(supplier);
-        // call the service method
-        Supplier actualSupplier = supplierService.registerSupplier(supplier);
+@Test
+public void testRegisterSupplier() {
 
-        // assert the results
-        assertNotNull(actualSupplier);
-        assertEquals("janedoe@gmail.com", actualSupplier.getSupEmail());
-        assertEquals("Jane Doe", actualSupplier.getSupName());
-        assertEquals("encrypted-password", actualSupplier.getPassword());
-    }
+// mock repository response
+when(supplierRepository.findSupplierByEmail("janedoe@gmail.com")).thenReturn(null);
+
+// mock user security response
+when(userSecurity.encryptData("pass1234")).thenReturn("encrypted-password");
+
+when(supplierRepository.save(supplier)).thenReturn(supplier);
+// call the service method
+Supplier actualSupplier = supplierService.registerSupplier(supplier);
+
+// assert the results
+assertNotNull(actualSupplier);
+assertEquals("janedoe@gmail.com", actualSupplier.getSupEmail());
+assertEquals("Jane Doe", actualSupplier.getSupName());
+assertEquals("encrypted-password", actualSupplier.getPassword());
+}
 
     @Test
     public void testRegisterSupplierWithEmailAlreadyExists() {
@@ -270,7 +281,7 @@ public class SupplierServiceImplementationTest {
         when(supplierRepository.findSupplierByEmail(supplier.getSupEmail())).thenReturn(supplierData);
         when(supplierRepository.supplierPasswordMatch(supplier.getSupEmail())).thenReturn(encryptedPassword);
 
-        Supplier result = supplierService.loginSupplier(supplier);
+        Supplier result = supplierService.loginSupplier(supplier, response);
 
         assertNotNull(result);
         assertEquals(supplierData.getSupId(), result.getSupId());
@@ -279,20 +290,7 @@ public class SupplierServiceImplementationTest {
     }
 
     @Test
-    public void testLoginSupplier_supplierNotRegistered() {
-        Supplier supplier = new Supplier();
-        supplier.setSupEmail("supplier@example.com");
-        supplier.setPassword("password123");
-
-        when(supplierRepository.findSupplierByEmail(supplier.getSupEmail())).thenReturn(null);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            supplierService.loginSupplier(supplier);
-        });
-    }
-
-    @Test
-    public void testLoginSupplier_invalidPassword() {
+    public void testLoginSupplier_incorrectPassword() {
         Supplier supplier = new Supplier();
         supplier.setSupEmail("supplier@example.com");
         supplier.setPassword("password123");
@@ -307,8 +305,51 @@ public class SupplierServiceImplementationTest {
         when(supplierRepository.findSupplierByEmail(supplier.getSupEmail())).thenReturn(supplierData);
         when(supplierRepository.supplierPasswordMatch(supplier.getSupEmail())).thenReturn(encryptedPassword);
 
+        Supplier result = supplierService.loginSupplier(supplier, response);
+
+        assertNull(result);
+        verify(response, times(1)).setStatus(HttpServletResponse.SC_NOT_FOUND);
+        verify(supplierRepository,
+                times(1)).findSupplierByEmail(supplier.getSupEmail());
+        verify(supplierRepository,
+                times(1)).supplierPasswordMatch(supplier.getSupEmail());
+    }
+
+    @Test
+    public void testLoginSupplier_supplierNotRegistered() {
+        Supplier supplier = new Supplier();
+        supplier.setSupEmail("supplier@example.com");
+        supplier.setPassword("password123");
+
+        when(supplierRepository.findSupplierByEmail(supplier.getSupEmail())).thenReturn(null);
+
+        // supplierService.loginSupplier(supplier, response);
+
         Assertions.assertThrows(RuntimeException.class, () -> {
-            supplierService.loginSupplier(supplier);
+            supplierService.loginSupplier(supplier, response);
         });
     }
+
+    @Test
+    public void testLoginSupplier_emptyEmail() {
+        Supplier supplier = new Supplier();
+        supplier.setSupEmail("");
+        supplier.setPassword("password123");
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            supplierService.loginSupplier(supplier, response);
+        });
+    }
+
+    @Test
+    public void testLoginSupplier_emptyPassword() {
+        Supplier supplier = new Supplier();
+        supplier.setSupEmail("supplier@example.com");
+        supplier.setPassword("");
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            supplierService.loginSupplier(supplier, response);
+        });
+    }
+
 }

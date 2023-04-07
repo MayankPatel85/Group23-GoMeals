@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SupplierService {
 
-    public  Supplier loginSupplier(Supplier supplier);
+    public  Supplier loginSupplier(Supplier supplier, HttpServletResponse response);
     Supplier getSupplierDetails(int id);
     List<Supplier> getAllSuppliers();
     Supplier registerSupplier(Supplier supplier);

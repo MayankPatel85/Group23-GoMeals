@@ -1,5 +1,4 @@
 package com.gomeals.controller;
-import com.gomeals.model.Customer;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +41,7 @@ public class SupplierController {
         return supplierService.deleteSupplier(id);
     }
     @PostMapping("/login")
-    public Supplier loginSupplier(@RequestBody Supplier supplier) { return supplierService.loginSupplier(supplier);}
+    public Supplier loginSupplier(@RequestBody Supplier supplier,HttpServletResponse response) { return supplierService.loginSupplier(supplier,response);}
 }
 
 
