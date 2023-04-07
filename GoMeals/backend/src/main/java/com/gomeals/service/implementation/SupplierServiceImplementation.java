@@ -9,6 +9,7 @@ import com.gomeals.model.Supplier;
 import com.gomeals.repository.SupplierReviewRepository;
 import com.gomeals.service.SupplierService;
 import com.gomeals.utils.UserSecurity;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -94,7 +95,7 @@ public class SupplierServiceImplementation implements SupplierService {
         return "Supplier deleted";
     }
 
-    public Supplier loginSupplier(Supplier supplier) {
+    public Supplier loginSupplier(Supplier supplier,HttpServletResponse response) {
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
             throw new RuntimeException("Supplier not Registered");
@@ -102,7 +103,16 @@ public class SupplierServiceImplementation implements SupplierService {
         else{
             String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
             if (Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
+                try {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } catch (Exception e) {
+
+                    System.out.println(e.getMessage());
+                }
                 return supplierData;
+            }else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                supplierData=null;
             }
         }
         return supplierData;
