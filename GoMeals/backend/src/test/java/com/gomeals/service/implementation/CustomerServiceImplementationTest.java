@@ -180,4 +180,29 @@ public void testGetCustomerById() {
     assertEquals(mockSupplier.getSupName(), customer.getSuppliers().get(0).getSupName());
 }
 
+    @Test
+    public void testUpdateCustomer() {
+        Customer mockCustomer = new Customer();
+        mockCustomer.setCust_id(1);
+        mockCustomer.setCust_email("test@test.com");
+
+        when(customerRepository.findById(1)).thenReturn(Optional.of(mockCustomer));
+
+        Customer updateCustomer = new Customer();
+        updateCustomer.setCust_id(1);
+        updateCustomer.setCust_email("updated@test.com");
+        updateCustomer.setCust_contact_number("1234567890");
+        updateCustomer.setCust_address("Test Address");
+
+        when(customerRepository.save(mockCustomer)).thenReturn(updateCustomer);
+
+        Customer customer = customerService.updateCustomer(updateCustomer);
+
+        assertNotNull(customer);
+        assertEquals(updateCustomer.getCust_id(), customer.getCust_id());
+        assertEquals(updateCustomer.getCust_email(), customer.getCust_email());
+        assertEquals(updateCustomer.getCust_contact_number(), customer.getCust_contact_number());
+        assertEquals(updateCustomer.getCust_address(), customer.getCust_address());
+    }
+
 }
