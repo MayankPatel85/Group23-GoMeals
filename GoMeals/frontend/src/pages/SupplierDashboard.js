@@ -29,6 +29,7 @@ export default function SupplierDashboard() {
     const [subscriptionList, setSubscriptionList] = useState([]);
     const [deliveryData, setDeliveryData] = useState([]);
     const [showDelivery, setshowDelivery] = useState(true);
+    const [isCustomerListLoading, setIsCustomerListLoading] = useState(false);
     const [currentSupplier, setCurrentSupplier] = useState({});
     const [editProfile, setEditProfile] = useState(false);
     const [updateSupplierData, setUpdateSupplierData] = useState(false);
@@ -48,7 +49,7 @@ export default function SupplierDashboard() {
 
 
         const handleClick = (param) => {
-            showmealchart(true);
+            showmealchart(!mealchart);
             setShowCustomerList(false);
             setshowDelivery(false);
             alterstate(param);
@@ -420,6 +421,7 @@ export default function SupplierDashboard() {
                     <Button variant="outline-primary" onClick={() => handleClick("update")}>
                         Update Meal Chart
                     </Button>{" "}
+                    <Button variant="outline-primary" onClick={handleca}>Create Meal Addons</Button>{' '}
                     <Button variant="outline-primary" onClick={handleDelivery}>
                         Delivery
                     </Button>{" "}
