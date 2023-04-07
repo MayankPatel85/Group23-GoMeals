@@ -30,6 +30,7 @@ function SupplierPolling() {
         console.log(supplierPollingList);
       });
   }, []);
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -45,12 +46,32 @@ function SupplierPolling() {
             console.log(poll.pollDate + " : " + selectedDate);
           }
         });
+        // if (validateMealPolling()) {
         submitPolling();
+        // }
       }
     } catch (error) {
       console.log(error);
     }
   }
+  const validateMealPolling = (pollingObject) => {
+    console.log("In here");
+    console.log(selectedDate);
+    if (selectedDate === null) {
+      alert("Please enter the date to raise a poll.");
+      return false;
+    } else if (
+      Object.keys(item1).length === 0 ||
+      Object.keys(item2).length === 0 ||
+      Object.keys(item3).length === 0 ||
+      Object.keys(item4).length === 0 ||
+      Object.keys(item5).length === 0
+    ) {
+      alert("Please provide all the meals to raise a voting");
+      return false;
+    }
+    return true;
+  };
 
   function submitPolling() {
     let pollingObject = {
@@ -64,35 +85,44 @@ function SupplierPolling() {
       supId: loggedInUser.supId,
       status: 1,
     };
-    let polling = JSON.stringify(pollingObject);
-    console.log("The final polling data going to the backend is ::" + polling);
-    console.log("Polling object received is ::" + polling);
-    fetch("http://localhost:8080/polling/create", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: polling,
-    })
-      .then((res) => {
-        console.log("Response received is :" + res.json());
-        res.json();
+    // console.log();
+    if (validateMealPolling(pollingObject)) {
+      console.log(pollingObject);
+      let polling = JSON.stringify(pollingObject);
+      console.log(
+        "The final polling data going to the backend is ::" + polling
+      );
+      console.log("Polling object received is ::" + polling);
+      fetch("http://localhost:8080/polling/create", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: polling,
       })
-      .then((val) => {
-        console.log("value" + val);
-        alert(`Polling created for the date ${selectedDate} successfully! `);
-        navigate("/dashboard");
-      });
+        .then((res) => {
+          console.log("Response received is :" + res.json());
+          res.json();
+        })
+        .then((val) => {
+          console.log("value" + val);
+          alert(`Polling created for the date ${selectedDate} successfully! `);
+          navigate("/supplierDashboard");
+        });
+    }
   }
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
   return (
     <div id="supplierPolling">
-      <NavbarComponent />
-      <div classNmae="d-flex justify-content-center align-items-center">
-        <Card className="shadow px-4">
+      {/* <NavbarComponent /> */}
+      <div className="d-flex justify-content-center align-items-center">
+        <Card className="shadow px-4 polling-card">
           <Card.Body>
             <div className="mb-3 mt-md-4">
-              <h2 className="fw-bold mb-2 text-center text-uppercase ">
+              <h2
+                className="fw-bold mb-2 text-center text-uppercase "
+                id="pollingHeader"
+              >
                 Meal Polling
               </h2>
               <div className="mb-3">
@@ -103,6 +133,7 @@ function SupplierPolling() {
                     onChange={handleDateChange}
                     min={minDate}
                     max={maxDate}
+                    id="pollingDatePicker"
                   />
                   <Form.Group className="mb-3" controlId="Item1">
                     <Form.Label>Meal Option 1 :</Form.Label>

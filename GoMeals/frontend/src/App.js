@@ -3,7 +3,6 @@ import "./App.css";
 import Register from "./pages/Register";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-
 import SupplierRegister from "./pages/SupplierRegister";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import SupplierLogin from "./pages/SupplierLogin";
@@ -15,6 +14,7 @@ import CustomerComplainTracker from "./pages/CustomerComplainTracker";
 import SupplierPolling from "./pages/SupplierPolling";
 import CustomerProfile from "./pages/CustomerProfile";
 import SupplierComplain from "./pages/SupplierComplain";
+import SubscriptionRequests from "./pages/SubscriptionRequests";
 import CustomerPolls from "./pages/CustomerPolls";
 import CustomerPaymentHistory from "./pages/CustomerPaymentHistory";
 import FooterComponent from "./components/FooterComponent";
@@ -22,11 +22,13 @@ import SupplierPollingDetails from "./pages/SupplierPollingDetails";
 import SupplierProfile from "./pages/SupplierProfile";
 import NavbarComponent from "./components/NavbarComponent";
 import HeroComponent from "./components/HeroComponent";
+//import { useNavigate } from "react-router-dom";
+
 function App() {
-  // const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [showNavbar, setShowNavbar] = useState(true);
 
-   // Redirect to login page if user is not authenticated
+  // Redirect to login page if user is not authenticated
   //  const isAuthenticated = true; // Replace with your authentication logic
   //  if (!isAuthenticated && location.pathname !== "/login") {
   //    navigate("/login");
@@ -37,14 +39,15 @@ function App() {
         <NavbarComponent />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Register />} />
           <Route path="/supplierRegister" element={<SupplierRegister />} />
-          <Route path="/" element={<HeroComponent />} />
+          {/* <Route path="/" element={<HeroComponent />} /> */}
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/supplierLogin" element={<SupplierLogin />} />
           <Route path="/supplierDashboard" element={<SupplierDashboard />} />
           <Route path="/customerOrders" element={<CustomerDeliveries />} />
           <Route path="/customerPollVote" element={<CustomerPolls />} />
+          <Route path="/customerProfile" element={<CustomerProfile />} />
           <Route
             path="/customerRaiseComplain/:id"
             element={<CustomerRaiseComplain />}
@@ -58,8 +61,8 @@ function App() {
             element={<CustomerPaymentHistory />}
           />
           <Route path="/supplierPolling" element={<SupplierPolling />} />
-          <Route path="/customerProfile" element={<CustomerProfile />} />
-          <Route path="/supplierComplain" element={<SupplierComplain />} />
+          <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
+          <Route path="subscriptionRequests" element={<SubscriptionRequests />}></Route>
           <Route
             path="/supplierPollingDetails"
             element={<SupplierPollingDetails />}

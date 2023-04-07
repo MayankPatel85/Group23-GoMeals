@@ -93,6 +93,15 @@ public class CustomerServiceImplementation implements CustomerService {
         return customer;
     }
 
+    public Customer updateCustomer(Customer customer) {
+        return customerRepository.findById(customer.getCust_id()).map(currentCustomer -> {
+            currentCustomer.setCust_email(customer.getCust_email());
+            currentCustomer.setCust_contact_number(customer.getCust_contact_number());
+            currentCustomer.setCust_address(customer.getCust_address());
+            return customerRepository.save(currentCustomer);
+        }).orElse(null);
+    }
+
     private static Supplier unwrapSupplier(Optional<Supplier> entity) {
         return entity.orElse(null);
     }

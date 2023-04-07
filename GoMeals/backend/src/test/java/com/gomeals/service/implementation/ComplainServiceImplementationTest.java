@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class ComplainServiceImplementationTest {
     @Mock
-    ComplainRepository complainRepository;
+    private ComplainRepository complainRepository;
 
     @InjectMocks
     private ComplainServiceImplementation complainServiceImplementation;
@@ -72,6 +72,21 @@ public class ComplainServiceImplementationTest {
 
     @Test
     void updateComplain() {
+        long millis=System.currentTimeMillis();
+        Date date = new Date(millis);
+
+        Complain complain = new Complain(1,date,"pizza had no cheese","refunded meal",
+                "initiated",1,2,2);
+        Complain newComplain = new Complain(1,date,"pizza had no cheese","refunded meal",
+                "closed",1,2,2);
+
+        when(complainRepository.findById(1)).thenReturn(Optional.of(complain));
+        when(complainRepository.save(complain)).thenReturn(newComplain);
+
+        Complain updatedComplain = complainServiceImplementation.updateComplain(complain);
+
+        assertEquals("closed",updatedComplain.getStatus());
+
     }
 
 }

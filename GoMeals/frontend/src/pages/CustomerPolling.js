@@ -46,7 +46,6 @@ function CustomerPolling(props) {
       body: mealPoll,
     })
       .then((res) => {
-        console.log("Response received is :" + res.json());
         res.json();
       })
       .then((val) => {

@@ -10,6 +10,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
+import { addCustomerNotification } from "../utils";
 
 export default function SupplierComplain() {
   const cookies = new Cookies();
@@ -21,30 +22,24 @@ export default function SupplierComplain() {
   const [showComplainDetail, setShowComplainDetail] = useState(false);
 
   useEffect(() => {
+    // http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}
     setIsLoading(true);
     axios
-      .get(
-        `http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}`
-      )
+      .get(`http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}`)
       .then((response) => {
         setComplains(response.data);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        alert("Error getting data" + e)
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [loggedInUser.supId]);
 
   function handleComplain(index) {
-    console.log("iii" + index);
     setSelectedComplainIndex(index);
-    console.log(selectedComplainIndex);
-    console.log("settttt");
     setSupplierComment(complains[index].supplierComment);
-    console.log(supplierComment);
-
     console.log("ss" + supplierComment);
     setShowComplainDetail(true);
   }
@@ -55,20 +50,21 @@ export default function SupplierComplain() {
       return;
     }
     setIsLoading(true);
-    if (
-      complains.length !== 0 &&
-      complains[selectedComplainIndex].status !== "Initiated"
-    ) {
+    if (complains.length !== 0) {
       complains[selectedComplainIndex].supplierComment = supplierComment;
       complains[selectedComplainIndex].status = "Resolved";
     }
     axios
-      .put(
-        "http://localhost:8080/complain/update",
-        complains[selectedComplainIndex]
-      )
+      .put("http://localhost:8080/complain/update", complains[selectedComplainIndex])
+      .then(() => {
+        addCustomerNotification({
+          "message": `${loggedInUser.supName} has provided feedback to your complain`,
+          "eventType": "Complain Solved",
+          "customerId": complains[selectedComplainIndex].customerId
+        });
+      })
       .catch((e) => {
-        alert("Error submitting feedback" + e);
+        alert("Error submitting feedback" + e)
       })
       .finally(() => {
         setIsLoading(false);
@@ -80,23 +76,14 @@ export default function SupplierComplain() {
 
   return (
     <div>
-      {/* <NavbarComponent /> */}
-      <Modal
-        show={showComplainDetail}
-        onHide={() => setShowComplainDetail(false)}
-      >
+      <Modal show={showComplainDetail} onHide={() => setShowComplainDetail(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Complain</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {isLoading ? (
-            <Spinner />
-          ) : (
+          {isLoading ? (<Spinner />) :
             <Form>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Complain Date</Form.Label>
                 <Form.Control
                   type="email"
@@ -110,17 +97,9 @@ export default function SupplierComplain() {
                 controlId="exampleForm.ControlTextarea1"
               >
                 <Form.Label>Customer Comment</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={complains[selectedComplainIndex]?.customerComment}
-                  disabled
-                />
+                <Form.Control as="textarea" rows={3} value={complains[selectedComplainIndex]?.customerComment} disabled />
               </Form.Group>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Complain Date</Form.Label>
                 <Form.Control
                   type="Complain Status"
@@ -134,60 +113,48 @@ export default function SupplierComplain() {
                 controlId="exampleForm.ControlTextarea1"
               >
                 <Form.Label>Your Feedback</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  value={supplierComment}
-                  onChange={(e) => setSupplierComment(e.target.value)}
-                  disabled={
-                    complains[selectedComplainIndex]?.status === "Initiated"
-                      ? false
-                      : true
-                  }
-                />
+                <Form.Control as="textarea" rows={4} value={supplierComment} onChange={(e) => setSupplierComment(e.target.value)} disabled={complains[selectedComplainIndex]?.status === "Initiated" ? false : true} />
               </Form.Group>
             </Form>
-          )}
+          }
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => setShowComplainDetail(false)}
-          >
+          <Button variant="secondary" onClick={() => setShowComplainDetail(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={submitFeedback}>
+          <Button variant="primary" onClick={submitFeedback} >
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
 
       <Container className="my-5 mx-xs-2 mx-auto customerlist-table">
-        <Table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Complain Date</th>
-              <th>Complain Comment</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {complains?.map((complain, index) => {
-              return (
-                <tr
-                  key={complain.complainId}
-                  onClick={() => handleComplain(index)}
-                >
-                  <td>{index + 1}</td>
-                  <td>{complain.date}</td>
-                  <td>{complain.customerComment}</td>
-                  <td>{complain.status}</td>
+        {complains.length === 0 ? (<div><h4>No Complains</h4></div>) :
+          (
+            <Table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Complain Date</th>
+                  <th>Complain Comment</th>
+                  <th>Status</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+              </thead>
+              <tbody>
+                {complains?.map((complain, index) => {
+                  return (
+                    <tr key={complain.complainId} onClick={() => handleComplain(index)}>
+                      <td>{index + 1}</td>
+                      <td>{complain.date}</td>
+                      <td>{complain.customerComment}</td>
+                      <td>{complain.status}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          )
+        }
         {/* {
                     showComplainDetail &&
                     <Modal.Dialog>

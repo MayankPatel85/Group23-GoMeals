@@ -5,6 +5,7 @@ import { Button, Card } from "react-bootstrap";
 import meal from "../resources/foodplate.jpg";
 import CustomerPolling from "./CustomerPolling";
 import NavbarComponent from "../components/NavbarComponent";
+import "../styles/CustomerPolls.css";
 
 function CustomerPolls() {
   const cookies = new Cookies();
@@ -78,8 +79,9 @@ function CustomerPolls() {
 
   return (
     <div>
-      <NavbarComponent />
-      <div class="m-3 row">
+      {/* <NavbarComponent /> */}
+      <h2 id="customerPollsHeader">Special Meal Vote</h2>
+      <div id="customerPolls">
         {pollingList.map((poll) => (
           <Card
             style={{ width: "18rem" }}

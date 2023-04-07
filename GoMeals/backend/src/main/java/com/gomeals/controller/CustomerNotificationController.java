@@ -19,13 +19,11 @@ public class CustomerNotificationController {
         this.customerNotificationService = customerNotificationService;
     }
     @CrossOrigin
-
     @PostMapping("/create")
     public ResponseEntity<CustomerNotification> createNotification(@RequestBody CustomerNotification notification) {
         return new ResponseEntity<>(customerNotificationService.createNotification(notification), HttpStatus.CREATED);
     }
     @CrossOrigin
-
     @GetMapping("/get/{id}")
     public ResponseEntity<CustomerNotification> getNotificationById(@PathVariable("id") Integer notificationId) {
         return new ResponseEntity<>(customerNotificationService.getNotificationById(notificationId), HttpStatus.OK);
@@ -46,5 +44,16 @@ public class CustomerNotificationController {
     public ResponseEntity<String> deleteNotification(@PathVariable("id") Integer notificationId) {
         customerNotificationService.deleteNotification(notificationId);
         return ResponseEntity.status(HttpStatus.OK).body("Notification was successfully deleted.\n");
+    }
+    @CrossOrigin
+    @PostMapping("/create-all/")
+    public ResponseEntity<String> notifyAllSupplierCustomers(@RequestParam String message, String type, int supplierId) {
+
+        Boolean notificationsCreated = customerNotificationService.notifyAllSupplierCustomers(message, type, supplierId);
+        if (notificationsCreated) {
+            return ResponseEntity.status(HttpStatus.OK).body("Notifications created for all customers.\n");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating notifications.\n");
+        }
     }
 }

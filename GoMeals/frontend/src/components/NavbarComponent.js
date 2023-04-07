@@ -17,8 +17,10 @@ import {
   faUserCircle,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import foodcart from "../resources/shopping-cart.png";
 import "../styles/Navbar.css";
 import Notification from "./Notification";
+
 export default function NavbarComponent() {
   const cookies = new Cookies();
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ export default function NavbarComponent() {
     cookies.remove("loggedInUser");
     navigate("/");
   };
+
   var customerUser = "";
   var supplierUser = "";
   if (loggedInUser) {
@@ -44,7 +47,6 @@ export default function NavbarComponent() {
   // const handleProfile = () => {};
   const getProfileName = () => {
     //boolean to see which type of user has logged in
-
     if (customerUser) {
       return loggedInUser.cust_fname + " " + loggedInUser.cust_lname;
     } else if (supplierUser) {
@@ -52,39 +54,43 @@ export default function NavbarComponent() {
     }
   };
 
-function handleProfile() {
-  if (loggedInUser.userType === "customer") {
-    navigate("/customerProfile");
+  function handleProfile() {
+    if (loggedInUser.userType === "customer") {
+      navigate("/customerProfile");
+    }
   }
-}
 
-function handlePollVote() {
-  navigate("/customerPollVote");
-}
+  function handlePollVote() {
+    navigate("/customerPollVote");
+  }
 
-function handlePaymentHistory() {
-  navigate("/customerPaymentHistory");
-}
+  function handleSubscirptionRequests() {
+    navigate("/subscriptionRequests");
+  }
 
-function handleOrders() {
-  navigate("/customerOrders");
-}
+  function handlePaymentHistory() {
+    navigate("/customerPaymentHistory");
+  }
 
-function handleComplain() {
-  navigate("/complainTracker");
-}
+  function handleOrders() {
+    navigate("/customerOrders");
+  }
 
-function handleSupplierComplain() {
-  navigate("/supplierComplain");
-}
+  function handleComplain() {
+    navigate("/complainTracker");
+  }
 
-function handleSupplierPolling() {
-  navigate("/supplierPolling");
-}
+  function handleSupplierComplain() {
+    navigate("/supplierComplain");
+  }
 
-function handleSupplierPollingDetails() {
-  navigate("/supplierPollingDetails");
-}
+  function handleSupplierPolling() {
+    navigate("/supplierPolling");
+  }
+
+  function handleSupplierPollingDetails() {
+    navigate("/supplierPollingDetails");
+  }
   const location = useLocation();
   const hideNavBar =
     location.pathname === "/login" ||
@@ -92,7 +98,6 @@ function handleSupplierPollingDetails() {
     location.pathname === "/" ||
     location.pathname === "/Supplierlogin" ||
     location.pathname === "/supplierRegister";
-
 
   if (hideNavBar) {
     return null;
@@ -103,16 +108,37 @@ function handleSupplierPollingDetails() {
           <Container
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
+            <Navbar.Brand
+              href={
+                loggedInUser.userType === "supplier"
+                  ? "/supplierDashboard"
+                  : "/dashboard"
+              }
+            >
+              <img
+                src={foodcart}
+                id="foodCart"
+                width="30px"
+                height="30px"
+              ></img>
+              Go Meals
+            </Navbar.Brand>
             <div>
               <Nav className="me-auto">
-                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link
+                  href={
+                    loggedInUser.userType === "supplier"
+                      ? "/supplierDashboard"
+                      : "/dashboard"
+                  }
+                >
+                  Home
+                </Nav.Link>
                 <Nav.Link href="#features">Profile</Nav.Link>
                 {supplierUser && <Nav.Link href="#pricing">Customers</Nav.Link>}
                 {customerUser && <Nav.Link href="/meals">Meals</Nav.Link>}
                 <Nav.Link onClick={toggleNotifications}>
                   <FontAwesomeIcon icon={faBell} />
-
                   {showNotifications && <Notification {...loggedInUser} />}
                 </Nav.Link>
 
@@ -123,40 +149,43 @@ function handleSupplierPollingDetails() {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleProfile}>
-                      Profile
-                    </Dropdown.Item>
-                    {loggedInUser.userType === "supplier" ? (
-                      <>
-                        <Dropdown.Item>Customers</Dropdown.Item>
-                        <Dropdown.Item onClick={handleSupplierComplain}>
-                          Complains
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handleSupplierPolling}>
-                          Polling
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handleSupplierPollingDetails}>
-                          Polling Details
-                        </Dropdown.Item>
-                      </>
-                    ) : (
-                      <>
-                        <Dropdown.Item onClick={handleComplain}>
-                          Complain
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handleOrders}>
-                          Orders
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handlePaymentHistory}>
-                          Payment History
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handlePollVote}>
-                          Meal Poll
-                        </Dropdown.Item>
-                      </>
-                    )}
-                    <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
+                      <Dropdown.Item onClick={handleProfile}>
+                        Profile
+                      </Dropdown.Item>
+                      {loggedInUser.userType === "supplier" ? (
+                        <>
+                          <Dropdown.Item>Customers</Dropdown.Item>
+                          <Dropdown.Item onClick={handleSupplierComplain}>
+                            Complains
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleSupplierPolling}>
+                            Polling
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleSupplierPollingDetails}>
+                            Polling Details
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleSubscirptionRequests}>
+                            Subscription Requests
+                          </Dropdown.Item>
+                        </>
+                      ) : (
+                        <>
+                          <Dropdown.Item onClick={handleComplain}>
+                            Complain
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleOrders}>
+                            Orders
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handlePaymentHistory}>
+                            Payment History
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handlePollVote}>
+                            Meal Poll
+                          </Dropdown.Item>
+                        </>
+                      )}
+                      <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
                   </Dropdown>
                 </div>
               </Nav>
@@ -165,4 +194,5 @@ function handleSupplierPollingDetails() {
         </Navbar>
       </>
     );
-  }}
+  }
+}

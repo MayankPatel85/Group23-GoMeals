@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
   Card,
@@ -6,9 +6,11 @@ import {
   Container,
   Navbar,
   Spinner,
-  Table,
+  Modal,
+  Form,
   DropdownButton,
   Dropdown,
+  Table,
 } from "react-bootstrap";
 import axios from "axios";
 import { Label, Input } from "reactstrap";
@@ -17,9 +19,9 @@ import { Cookies } from "react-cookie";
 import NavbarComponent from "../components/NavbarComponent";
 
 export default function SupplierDashboard() {
-  const [alter, alterstate] = useState("create");
   const [mealchart, showmealchart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCustomerListLoading, setIsCustomerListLoading] = useState(false);
   const [showCustomerList, setShowCustomerList] = useState(false);
   const [customerList, setCustomerList] = useState([]);
   const [subscriptionList, setSubscriptionList] = useState([]);
@@ -27,27 +29,61 @@ export default function SupplierDashboard() {
   const [showDelivery, setshowDelivery] = useState(true);
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
-  console.log("logged" + loggedInUser);
-  
+  const [currentSupplier, setCurrentSupplier] = useState({});
+  const [editProfile, setEditProfile] = useState(false);
+  const [updateSupplierData, setUpdateSupplierData] = useState(false);
+  const [editedSupplierDetail, setEditedSupplierDetail] = useState({
+    supEmail: "",
+    supContactNumber: "",
+    supAddress: "",
+    supPaypalLink: "",
+  });
+  const [alter, alterstate] = useState("create");
+
   const handleClick = (param) => {
     showmealchart(true);
     setShowCustomerList(false);
     setshowDelivery(false);
     alterstate(param);
   };
+
   const handleDelivery = () => {
     setshowDelivery(!showDelivery);
     setShowCustomerList(false);
     showmealchart(false);
     axios
-      .get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
+      .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
       .then((response) => {
-        setDeliveryData(response.data);
-        console.log(response.data);
+        response.data.forEach((custId) => {
+          console.log(custId);
+          const delivery = {
+            deliveryId: 8,
+            deliveryDate: "",
+            deliveryMeal: "",
+            orderStatus: "inprogress",
+            supId: loggedInUser.supId,
+            custId: custId,
+          };
+          console.log(delivery);
+          axios
+            .post("http://localhost:8080/delivery/create", delivery)
+            .then((res) => {
+              alert("Deliveries initiated");
+              axios
+                .get(
+                  `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
+                )
+                .then((response) => {
+                  setDeliveryData(response.data);
+                  console.log(response.data);
+                });
+            });
+        });
       });
   };
+
   function handleShowCustomers() {
-    setIsLoading(true);
+    setIsCustomerListLoading(true);
     setshowDelivery(false);
     console.log("supId" + JSON.stringify(loggedInUser));
     axios
@@ -62,12 +98,13 @@ export default function SupplierDashboard() {
         alert("Error getting data" + e);
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsCustomerListLoading(false);
       });
     setShowCustomerList((prevValue) => {
       return !prevValue;
     });
   }
+
   const handleCreate = () => {
     const mealChart = [
       {
@@ -183,6 +220,92 @@ export default function SupplierDashboard() {
         });
     }
   };
+
+  const handleEditProfile = () => {
+    setEditProfile(true);
+    setEditedSupplierDetail({
+      supEmail: currentSupplier.supEmail,
+      supContactNumber: currentSupplier.supContactNumber,
+      supAddress: currentSupplier.supAddress,
+      supPaypalLink: currentSupplier.paypalLink,
+    });
+  };
+
+  const handleEditingProfile = (event) => {
+    const { name, value } = event.target;
+    setEditedSupplierDetail((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`http://localhost:8080/supplier/get/${loggedInUser.supId}`)
+      .then((response) => {
+        setCurrentSupplier(response.data);
+      })
+      .catch((e) => {
+        alert("Error getting data" + e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [loggedInUser.supId]);
+
+  useEffect(() => {
+    if (updateSupplierData) {
+      axios
+        .put("http://localhost:8080/supplier/update", currentSupplier)
+        .catch((e) => {
+          alert("Error getting data" + e);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setEditProfile(false);
+        });
+    }
+  }, [updateSupplierData]);
+
+  const updateSupplierProfile = () => {
+    if (validateProfileInputs()) {
+      //setIsLoading(true);
+      console.log("before setting", JSON.stringify(editedSupplierDetail));
+      setCurrentSupplier((prevValue) => ({
+        ...prevValue,
+        supEmail: editedSupplierDetail.supEmail,
+        supContactNumber: editedSupplierDetail.supContactNumber,
+        supAddress: editedSupplierDetail.supAddress,
+        supPaypalLink: editedSupplierDetail.supPaypalLink,
+      }));
+      setUpdateSupplierData(true);
+    }
+  };
+
+  const validateProfileInputs = () => {
+    const regexForNumber = /^[0-9\b]+$/;
+    if (
+      editedSupplierDetail.supEmail === "" ||
+      editedSupplierDetail.supContactNumber === "" ||
+      editedSupplierDetail.supAddress === "" ||
+      editedSupplierDetail.supPaypalLink === ""
+    ) {
+      alert("Fields should not be empty.");
+      return false;
+    } else if (
+      editedSupplierDetail.supContactNumber.length !== 10 ||
+      !regexForNumber.test(editedSupplierDetail.supContactNumber)
+    ) {
+      alert("Please provide a valid contact number.");
+      return false;
+    } else if (!editedSupplierDetail.supPaypalLink.includes("paypal.com")) {
+      alert("Please provide valid Paypal link.");
+      return false;
+    }
+    return true;
+  };
+
   const DeliveryColumns = [
     { header: "Customer ID", accessor: "custId" },
     { header: "Delivery ID", accessor: "deliveryId" },
@@ -196,7 +319,7 @@ export default function SupplierDashboard() {
           title={value}
           onSelect={(eventKey) => {
             handleOrderStatusChange(deliveryId, eventKey);
-            value=''
+            value = "";
           }}
         >
           <Dropdown.Item eventKey="completed">completed</Dropdown.Item>
@@ -204,6 +327,7 @@ export default function SupplierDashboard() {
       ),
     },
   ];
+
   const handleOrderStatusChange = (deliveryId, orderStatus) => {
     axios
       .put(
@@ -234,6 +358,124 @@ export default function SupplierDashboard() {
       <Button variant="outline-primary" onClick={handleShowCustomers}>
         View Customers
       </Button>
+      <Modal show={editProfile} onHide={() => setEditProfile(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit your profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                name="supEmail"
+                value={editedSupplierDetail.supEmail}
+                onChange={handleEditingProfile}
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="contactNo">
+              <Form.Label>Contact Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Your contact number"
+                name="supContactNumber"
+                value={editedSupplierDetail.supContactNumber}
+                onChange={handleEditingProfile}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={2}
+                name="supAddress"
+                value={editedSupplierDetail.supAddress}
+                onChange={handleEditingProfile}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="paypalId">
+              <Form.Label>Paypal Link</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Your contact number"
+                name="supPaypalLink"
+                value={editedSupplierDetail.supPaypalLink}
+                onChange={handleEditingProfile}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setEditProfile(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={updateSupplierProfile}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div>
+        {/* <NavbarComponent /> */}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div>
+            <div className="container customer-profile my-4">
+              <div className="col-lg-12">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h2 className="d-inline">Hi, </h2>
+                    <h2 className="d-inline">{currentSupplier.supName}</h2>
+                  </div>
+                  <Button variant="dark" onClick={handleEditProfile}>
+                    Edit Profile
+                  </Button>
+                </div>
+              </div>
+              <div className="row mb-2 profile-item">
+                <div className="col-lg-12">
+                  <h4 className="d-inline">Email</h4>
+                  <hr></hr>
+                </div>
+                <div className="col-lg-12">
+                  <h4 className="d-inline">{currentSupplier.supEmail}</h4>
+                </div>
+              </div>
+              <div className="row mb-2 profile-item">
+                <div className="col-lg-12">
+                  <h4 className="d-inline">Contact number</h4>
+                  <hr></hr>
+                </div>
+                <div className="col-lg-12">
+                  <h4 className="d-inline">
+                    {currentSupplier.supContactNumber}
+                  </h4>
+                </div>
+              </div>
+              <div className="row mb-2 profile-item">
+                <div className="col-lg-12">
+                  <h4 className="d-inline">Address</h4>
+                  <hr></hr>
+                </div>
+                <div className="col-lg-12">
+                  <h4 className="d-inline">{currentSupplier.supAddress}</h4>
+                </div>
+              </div>
+              <div className="row mb-2 profile-item">
+                <div className="col-lg-12">
+                  <h4 className="d-inline">Paypal Link</h4>
+                  <hr></hr>
+                </div>
+                <div className="col-lg-12">
+                  <h4 className="d-inline">{currentSupplier.paypalLink}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       {mealchart && (
         <div>
           <Card className="mechco">
@@ -382,7 +624,7 @@ export default function SupplierDashboard() {
         </div>
       )}
       {showCustomerList ? (
-        isLoading ? (
+        isCustomerListLoading ? (
           <Container className="my-5 mx-auto">
             <Spinner variant="primary" />
           </Container>

@@ -5,8 +5,10 @@ import { useParams } from "react-router";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
-import NavbarComponent from "../components/NavbarComponent";
-
+import "../styles/CustomerRaiseComplain.css";
+import axios from "axios";
+import { addSupplierNotification } from "../utils.js";
+import { faUtensilSpoon } from "@fortawesome/free-solid-svg-icons";
 function CustomerRaiseComplain() {
   const cookies = new Cookies();
   const [delivery, setDelivery] = useState({});
@@ -52,7 +54,11 @@ function CustomerRaiseComplain() {
                 throw new Error("Complain already raised for this delivery");
               }
             });
-            callComplainApi();
+            if (cust_comment === "") {
+              alert("Please provide some details in the comments");
+            } else {
+              callComplainApi();
+            }
           }
         });
     } catch (error) {}
@@ -81,17 +87,31 @@ function CustomerRaiseComplain() {
       })
       .then((val) => {
         console.log(val);
-        alert("Complain raised and complain id is :" + val.complainId);
-        // alert("Complain raised and complain id is :" + val.supplierId);
+        // alert("Complain raised and complain id is :" + val.complainId);
+        notifySupplier();
       });
-    alert("Complain raised successfull! ");
+    alert("Complain raised successfully! ");
     navigate("/dashboard");
+  };
+
+  const notifySupplier = () => {
+    const notify = {
+      message: `${
+        loggedInUser.cust_fname + " " + loggedInUser.cust_lname
+      } has raised a Complain`,
+      eventType: "Complaint",
+      supplierId: delivery.supId,
+    };
+    axios
+      .post("http://localhost:8080/supplier-notification/create", notify)
+      .then(console.log("Notified supplier"));
   };
 
   return (
     <div>
-      <NavbarComponent />
+      {/* <NavbarComponent /> */}
       <Container>
+        <h2 id="customerComplainPageHeader">Complain Portal</h2>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
             <Form onSubmit={raiseComplain} className="form-container">

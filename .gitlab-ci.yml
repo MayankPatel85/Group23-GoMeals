@@ -30,3 +30,14 @@ code-quality:
   script:
     - wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
     - java -jar DesigniteJava.jar -i $CI_PROJECT_DIR -o $CI_PROJECT_DIR
+    - echo "Saving csv files in artifacts . . ."
+  artifacts:
+    paths:
+      - ArchitectureSmells.csv
+      - DesignSmells.csv
+      - ImplementationSmells.csv
+      - MethodMetrics.csv
+      - TestabilitySmells.csv
+      - TestSmells.csv
+      - TypeMetrics.csv
+
