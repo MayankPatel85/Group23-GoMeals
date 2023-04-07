@@ -1,7 +1,11 @@
 package com.gomeals.service.implementation;
 
+import com.gomeals.model.Customer;
 import com.gomeals.model.CustomerNotification;
+import com.gomeals.model.Subscriptions;
 import com.gomeals.repository.CustomerNotificationRepository;
+import com.gomeals.repository.SubscriptionRepository;
+import com.gomeals.repository.SupplierRepository;
 import com.gomeals.service.CustomerNotificationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,12 @@ import java.util.NoSuchElementException;
 public class CustomerNotificationServiceImplementation implements CustomerNotificationService {
 
     private final CustomerNotificationRepository customerNotificationRepository;
-
-    @Autowired
-    public CustomerNotificationServiceImplementation(CustomerNotificationRepository customerNotificationRepository) {
+    private final SubscriptionRepository subscriptionRepository;
+    public CustomerNotificationServiceImplementation(CustomerNotificationRepository customerNotificationRepository,
+                                                     SubscriptionRepository subscriptionRepository) {
         this.customerNotificationRepository = customerNotificationRepository;
+        this.subscriptionRepository = subscriptionRepository;
+
     }
 
     @Override
@@ -57,5 +63,30 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
         } else {
             customerNotificationRepository.deleteById(notificationId);
         }
+    }
+
+    public Boolean notifyAllSupplierCustomers(String message, String type, int supplierId){
+
+        List<Subscriptions> supplierSubscriptions = subscriptionRepository
+                .findSubscriptionsBySupplierIdAndActiveStatus(supplierId,1);
+        if(supplierSubscriptions.isEmpty()){
+            System.out.println("This supplier doesn't have any subscribed customers.");
+            return false;
+        }
+
+        for (Subscriptions subscription : supplierSubscriptions) {
+            CustomerNotification customerNotification = new CustomerNotification();
+            customerNotification.setMessage(message);
+            customerNotification.setEventType(type);
+            customerNotification.setCustomerId(subscription.getCustomerId());
+
+            System.out.println(subscription.getCustomerId());
+
+            customerNotificationRepository.save(customerNotification);
+        }
+        System.out.println("Successfully saved notifications for all the customers.");
+
+        return true;
+
     }
 }
