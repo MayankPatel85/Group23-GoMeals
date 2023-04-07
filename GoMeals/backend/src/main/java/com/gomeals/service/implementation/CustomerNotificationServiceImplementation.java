@@ -79,14 +79,10 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
             customerNotification.setMessage(message);
             customerNotification.setEventType(type);
             customerNotification.setCustomerId(subscription.getCustomerId());
-
-            System.out.println(subscription.getCustomerId());
-
             customerNotificationRepository.save(customerNotification);
         }
         System.out.println("Successfully saved notifications for all the customers.");
 
         return true;
-
     }
 }

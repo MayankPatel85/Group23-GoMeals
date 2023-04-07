@@ -46,9 +46,9 @@ public class CustomerNotificationController {
         return ResponseEntity.status(HttpStatus.OK).body("Notification was successfully deleted.\n");
     }
     @CrossOrigin
-    @PostMapping("/notify-all/")
+    @PostMapping("/create-all/")
     public ResponseEntity<String> notifyAllSupplierCustomers(@RequestParam String message, String type, int supplierId) {
-        System.out.println("ENTRO ACA");
+
         Boolean notificationsCreated = customerNotificationService.notifyAllSupplierCustomers(message, type, supplierId);
         if (notificationsCreated) {
             return ResponseEntity.status(HttpStatus.OK).body("Notifications created for all customers.\n");
