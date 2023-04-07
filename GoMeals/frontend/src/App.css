@@ -37,7 +37,9 @@
   border-left: 100px;
   margin-left: 400px;
   margin-top: 50px;
-  width: 60%;
+  /* width: 60%; */
+
+  display:inline-block;
   align-items: flex-start;
   background-color: #EEE9DA;
   box-shadow: 10px 10px dimgrey;

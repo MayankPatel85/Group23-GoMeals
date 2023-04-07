@@ -98,11 +98,10 @@ public class SupplierServiceImplementation implements SupplierService {
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
             throw new RuntimeException("Supplier not Registered");
-        }
-        else{
+        } else {
             String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
-            if (Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
-                return supplierData;
+            if (!Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
+                throw new RuntimeException("Incorrect password");
             }
         }
         return supplierData;
