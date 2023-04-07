@@ -15,4 +15,6 @@ public interface CustomerNotificationService {
     CustomerNotification updateNotification(CustomerNotification customerNotification);
     // DELETE notification
     void deleteNotification(Integer notificationId);
+    // CREATE notification for all subscribed customers for a supplier
+    Boolean notifyAllSupplierCustomers(String message, String type, int supplierId);
 }
