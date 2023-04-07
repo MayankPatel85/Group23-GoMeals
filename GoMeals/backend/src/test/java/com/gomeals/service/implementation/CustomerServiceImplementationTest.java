@@ -93,6 +93,4 @@ public class CustomerServiceImplementationTest {
         Mockito.verify(response, Mockito.never()).setStatus(HttpServletResponse.SC_OK);
     }
 
-    
-
 }
