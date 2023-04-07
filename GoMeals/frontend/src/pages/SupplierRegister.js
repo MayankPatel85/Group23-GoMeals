@@ -23,13 +23,13 @@ function SupplierRegister() {
       supContactNumber: supContactNumber,
       password: password,
       mealPrice: mealPrice,
-      paypalLink: paypalLink
+      paypalLink: paypalLink,
     };
     axios
       .post("http://localhost:8080/supplier/create", supplier)
       .then((response) => {
         console.log(response.data);
-        navigate("/login");
+        navigate("/supplierLogin");
         alert("Supplier registration was succesful");
       })
       .catch((error) => {
@@ -68,8 +68,6 @@ function SupplierRegister() {
                           />
                         </Form.Group>
 
-
-
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                           <Form.Control
                             type="email"
@@ -107,11 +105,21 @@ function SupplierRegister() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="MealPrice">
-                          <Form.Control type="text" placeholder="Enter meal price" value={mealPrice} onChange={(e) => setMealPrice(e.target.value)}></Form.Control>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter meal price"
+                            value={mealPrice}
+                            onChange={(e) => setMealPrice(e.target.value)}
+                          ></Form.Control>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="PaypalLink">
-                          <Form.Control type="text" placeholder="Enter Paypal link" value={paypalLink} onChange={(e) => setPaypalLink(e.target.value)}></Form.Control>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Paypal link"
+                            value={paypalLink}
+                            onChange={(e) => setPaypalLink(e.target.value)}
+                          ></Form.Control>
                         </Form.Group>
 
                         <Form.Group

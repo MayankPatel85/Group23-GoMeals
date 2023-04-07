@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.type.descriptor.jdbc.TinyIntJdbcType;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "polling")
@@ -29,7 +31,8 @@ public class Polling {
     public Polling() {
     }
 
-    public Polling(int pollId, Date pollDate, String vote, String item1, String item2, String item3, String item4, String item5, boolean status, int supId) {
+    public Polling(int pollId, Date pollDate, String vote, String item1, String item2, String item3, String item4,
+            String item5, boolean status, int supId) {
         this.pollId = pollId;
         this.pollDate = pollDate;
         this.vote = vote;

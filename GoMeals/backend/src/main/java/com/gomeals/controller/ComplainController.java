@@ -24,6 +24,7 @@ public class ComplainController {
     public ResponseEntity<Complain> createComplain(@RequestBody Complain complain) {
         return new ResponseEntity<>(complainService.createComplain(complain), HttpStatus.CREATED);
     }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<Complain> getComplainById(@PathVariable("id") Integer complainId) {
         return new ResponseEntity<>(complainService.getComplainById(complainId), HttpStatus.OK);
@@ -33,22 +34,26 @@ public class ComplainController {
     public ResponseEntity<List<Complain>> getAllComplains() {
         return new ResponseEntity<>(complainService.getAllComplains(), HttpStatus.OK);
     }
+
     @GetMapping("/get/all-customer/{id}")
     public ResponseEntity<List<Complain>> getAllCustomerComplains(@PathVariable("id") Integer customerId) {
         return new ResponseEntity<>(complainService.getComplainsByCustomerId(customerId), HttpStatus.OK);
     }
+
     @GetMapping("/get/all-supplier/{id}")
     public ResponseEntity<List<Complain>> getAllSupplierComplains(@PathVariable("id") Integer supplierId) {
         return new ResponseEntity<>(complainService.getComplainsBySupplierId(supplierId), HttpStatus.OK);
     }
 
     @GetMapping("/all-supplier-customer")
-    public ResponseEntity<List<Complain>> getAllComplainsByCustomerAndSupplier(@RequestParam Integer customerId, Integer supplierId) {
-        return new ResponseEntity<>(complainService.getComplainsByCustomerIdAndSupplierId(customerId,supplierId), HttpStatus.OK);
+    public ResponseEntity<List<Complain>> getAllComplainsByCustomerAndSupplier(@RequestParam Integer customerId,
+            Integer supplierId) {
+        return new ResponseEntity<>(complainService.getComplainsByCustomerIdAndSupplierId(customerId, supplierId),
+                HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Complain> updateComplain(@RequestBody Complain complain){
+    public ResponseEntity<Complain> updateComplain(@RequestBody Complain complain) {
         return new ResponseEntity<>(complainService.updateComplain(complain), HttpStatus.OK);
     }
 

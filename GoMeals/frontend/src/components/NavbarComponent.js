@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import { useLocation } from "react-router-dom";
+
 import {
   Container,
   Dropdown,
@@ -15,7 +17,10 @@ import {
   faUserCircle,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import foodcart from "../resources/shopping-cart.png";
 import "../styles/Navbar.css";
+import Notification from "./Notification";
+
 export default function NavbarComponent() {
   const cookies = new Cookies();
   const navigate = useNavigate();
@@ -29,63 +34,165 @@ export default function NavbarComponent() {
   };
 
   const logout = () => {
-    cookies.remove('loggedInUser');
+    cookies.remove("loggedInUser");
     navigate("/");
   };
 
+  var customerUser = "";
+  var supplierUser = "";
+  if (loggedInUser) {
+    customerUser = loggedInUser.userType === "customer";
+    supplierUser = loggedInUser.userType === "supplier";
+  }
+  // const handleProfile = () => {};
   const getProfileName = () => {
-    if (loggedInUser.userType === 'customer') {
+    //boolean to see which type of user has logged in
+    if (customerUser) {
       return loggedInUser.cust_fname + " " + loggedInUser.cust_lname;
-    } else if (loggedInUser.userType === 'supplier') {
+    } else if (supplierUser) {
       return loggedInUser.supName;
     }
-  }
+  };
 
   function handleProfile() {
-    if(loggedInUser.userType === 'customer') {
+    if (loggedInUser.userType === "customer") {
       navigate("/customerProfile");
     }
   }
 
-  return (
-    <>
-      <Navbar bg="primary" variant="light">
-        <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
-          <div>
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#features">Profile</Nav.Link>
-              <Nav.Link href="#pricing">Customers</Nav.Link>
-              {loggedInUser.userType === 'supplier' && <Nav.Link href="/supplierComplain">Complains</Nav.Link>}
-              <Nav.Link onClick={toggleNotifications}>
-                <FontAwesomeIcon icon={faBell} />
+  function handlePollVote() {
+    navigate("/customerPollVote");
+  }
 
-                {showNotifications && (
-                  <div className="notifications">
-                    <p>Notification 1</p>
-                    <p>Notification 2</p>
-                    <p>Notification 3</p>
-                  </div>
-                )}
-              </Nav.Link>
+  function handleSubscirptionRequests() {
+    navigate("/subscriptionRequests");
+  }
 
-              <div className="navbar-icons">
-                <Dropdown>
-                  <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                    {getProfileName()}
-                  </Dropdown.Toggle>
+  function handlePaymentHistory() {
+    navigate("/customerPaymentHistory");
+  }
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
-                    <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </Nav>
-          </div>
-        </Container>
-      </Navbar>
-    </>
-  );
+  function handleOrders() {
+    navigate("/customerOrders");
+  }
+
+  function handleComplain() {
+    navigate("/complainTracker");
+  }
+
+  function handleSupplierComplain() {
+    navigate("/supplierComplain");
+  }
+
+  function handleSupplierPolling() {
+    navigate("/supplierPolling");
+  }
+
+  function handleSupplierPollingDetails() {
+    navigate("/supplierPollingDetails");
+  }
+  const location = useLocation();
+  const hideNavBar =
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/" ||
+    location.pathname === "/Supplierlogin" ||
+    location.pathname === "/supplierRegister";
+
+  if (hideNavBar) {
+    return null;
+  } else {
+    return (
+      <>
+        <Navbar bg="primary" variant="light">
+          <Container
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <Navbar.Brand
+              href={
+                loggedInUser.userType === "supplier"
+                  ? "/supplierDashboard"
+                  : "/dashboard"
+              }
+            >
+              <img
+                src={foodcart}
+                id="foodCart"
+                width="30px"
+                height="30px"
+              ></img>
+              Go Meals
+            </Navbar.Brand>
+            <div>
+              <Nav className="me-auto">
+                <Nav.Link
+                  href={
+                    loggedInUser.userType === "supplier"
+                      ? "/supplierDashboard"
+                      : "/dashboard"
+                  }
+                >
+                  Home
+                </Nav.Link>
+                <Nav.Link href="#features">Profile</Nav.Link>
+                {supplierUser && <Nav.Link href="#pricing">Customers</Nav.Link>}
+                {customerUser && <Nav.Link href="/meals">Meals</Nav.Link>}
+                <Nav.Link onClick={toggleNotifications}>
+                  <FontAwesomeIcon icon={faBell} />
+                  {showNotifications && <Notification {...loggedInUser} />}
+                </Nav.Link>
+
+                <div className="navbar-icons">
+                  <Dropdown>
+                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                      {getProfileName()}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={handleProfile}>
+                        Profile
+                      </Dropdown.Item>
+                      {loggedInUser.userType === "supplier" ? (
+                        <>
+                          <Dropdown.Item>Customers</Dropdown.Item>
+                          <Dropdown.Item onClick={handleSupplierComplain}>
+                            Complains
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleSupplierPolling}>
+                            Polling
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleSupplierPollingDetails}>
+                            Polling Details
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleSubscirptionRequests}>
+                            Subscription Requests
+                          </Dropdown.Item>
+                        </>
+                      ) : (
+                        <>
+                          <Dropdown.Item onClick={handleComplain}>
+                            Complain
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handleOrders}>
+                            Orders
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handlePaymentHistory}>
+                            Payment History
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={handlePollVote}>
+                            Meal Poll
+                          </Dropdown.Item>
+                        </>
+                      )}
+                      <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </Nav>
+            </div>
+          </Container>
+        </Navbar>
+      </>
+    );
+  }
 }

@@ -1,5 +1,7 @@
 package com.gomeals.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,21 +21,26 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/subscription")
-public class SubscriptionController {
+public class 	SubscriptionController {
 
 	@Autowired
 	SubscriptionService subscriptionService;
 
 	@GetMapping("/get/{subId}")
-	public Subscriptions getSubscription(@PathVariable("subId") int sub_id) {
-
-		return subscriptionService.getSubscription(sub_id);
-
+	public Subscriptions getSubscription(@PathVariable("subId") int subId) {
+		return subscriptionService.getSubscription(subId);
 	}
+
+	@GetMapping("/get/customersSubscriptions/{custId}")
+	public List<Integer> getAllSuppliersForCustomer(@PathVariable int custId) {
+		return subscriptionService.getAllCustomerSubscriptions(custId);
+	}
+
 	@GetMapping("/get/sup/{id}")
-	public List<Integer> getCustomers(@PathVariable int id){
-		return subscriptionService.getCustomers(id);
+	public List<Integer> getCustomers(@PathVariable int id) {
+		return subscriptionService.getCustomersIdForSupplier(id);
 	}
+
 	@PostMapping("/add")
 	public String postSubscription(@RequestBody Subscriptions subscription) {
 
@@ -48,8 +55,12 @@ public class SubscriptionController {
 
 	@DeleteMapping("/delete/{subId}")
 	public String deleteSubscriptions(@PathVariable("subId") int sub_Id) {
-
 		return subscriptionService.deleteSubscription(sub_Id);
+	}
+
+	@GetMapping("/get/pending/{supplierId}")
+	public List<Subscriptions> getPendingSubscription(@PathVariable("supplierId") int supplierId) {
+		return subscriptionService.getPendingSubscription(supplierId);
 	}
 
 }

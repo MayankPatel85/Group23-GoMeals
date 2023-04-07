@@ -8,4 +8,6 @@ public interface CustomerService {
     Customer loginCustomer(Customer customer, HttpServletResponse response);
     Customer getCustomerById(int id);
 
+    Customer updateCustomer(Customer customer);
+
 }

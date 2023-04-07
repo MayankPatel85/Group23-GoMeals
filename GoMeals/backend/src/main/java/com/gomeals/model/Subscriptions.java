@@ -25,6 +25,11 @@ public class Subscriptions {
 	@Column(name = "sup_id")
 	private int supplierId;
 
+	private String status;
+
+	@Transient
+	private Customer customer;
+
 	public int getSub_id() {
 		return sub_id;
 	}
@@ -71,6 +76,22 @@ public class Subscriptions {
 
 	public void setSupplierId(int sup_id) {
 		this.supplierId = sup_id;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public Subscriptions(int sub_id, int meals_remaining, Date sub_date, int activeStatus, int cust_id, int supplierId) {
