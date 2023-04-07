@@ -1,5 +1,4 @@
 package com.gomeals.controller;
-import com.gomeals.model.Customer;
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
 import jakarta.servlet.http.HttpServletResponse;
