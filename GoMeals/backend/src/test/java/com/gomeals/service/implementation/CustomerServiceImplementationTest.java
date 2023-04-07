@@ -93,4 +93,33 @@ public class CustomerServiceImplementationTest {
         Mockito.verify(response, Mockito.never()).setStatus(HttpServletResponse.SC_OK);
     }
 
+
+    @Test
+    public void loginCustomerWithWrongPasswordTest() {
+        // given
+        Customer customer = new Customer();
+        customer.setCust_email("test@example.com");
+        customer.setCust_password(userSecurity.encryptData("password"));
+
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+
+        Customer customerData = new Customer();
+        customerData.setCust_id(1);
+        customerData.setCust_email(customer.getCust_email());
+        customerData.setCust_password(userSecurity.encryptData("incorrect_password"));
+
+        Mockito.when(customerRepository.findByEmail(customer.getCust_email())).thenReturn(customerData);
+        Mockito.when(customerRepository.passwordMatch(customer.getCust_email())).thenReturn(customerData.getCust_password());
+
+        // when
+        Customer result = customerServiceImplementation.loginCustomer(customer, response);
+
+        // then
+        assertNull(result);
+        Mockito.verify(customerRepository, Mockito.times(1)).findByEmail(customer.getCust_email());
+        Mockito.verify(customerRepository, Mockito.times(1)).passwordMatch(customer.getCust_email());
+        Mockito.verify(response, Mockito.times(1)).setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
+
+
 }
