@@ -34,10 +34,11 @@
   flex-direction: column;
 }
 .mechco{
-  border-left: 2rem;
-  margin-left: 25rem;
+  display:inline-block;
+  justify-content: center;
+  /*border-left: 2rem;*/
+  /*margin-left: 15rem;*/
   margin-top: 5rem;
-  width: 70rem;
   align-items: flex-start;
   background-color: #EEE9DA;
   box-shadow: 10px 10px dimgrey;
@@ -151,5 +152,6 @@ cursor: pointer;
 }
 
 #listSuppliersCardContainer{
-  
+
 }
+

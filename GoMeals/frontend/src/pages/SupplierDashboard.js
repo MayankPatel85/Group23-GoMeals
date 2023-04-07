@@ -76,7 +76,7 @@ export default function SupplierDashboard() {
                         axios
                             .post("http://localhost:8080/delivery/create", delivery)
                             .then((res) => {
-                                alert("Deliveries initiated");
+                                swal("Deliveries initiated");
                                 axios
                                     .get(
                                         `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
