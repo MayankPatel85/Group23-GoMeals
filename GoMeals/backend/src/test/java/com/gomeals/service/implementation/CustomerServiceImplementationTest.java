@@ -68,4 +68,31 @@ public class CustomerServiceImplementationTest {
         Mockito.verify(customerRepository, Mockito.times(1)).findByEmail(customer.getCust_email());
         Mockito.verify(customerRepository, Mockito.times(1)).save(customer);
     }
+
+    @Test
+    void loginCustomerWithNonExistingUserTest() {
+        // given
+        Customer customer = new Customer();
+        customer.setCust_email("test@example.com");
+        customer.setCust_password("password");
+
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+
+        Mockito.when(customerRepository.findByEmail(customer.getCust_email())).thenReturn(null);
+
+        // when
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            customerServiceImplementation.loginCustomer(customer, response);
+        });
+
+        // then
+        assertEquals("User not Registered", exception.getMessage());
+
+        Mockito.verify(customerRepository, Mockito.times(1)).findByEmail(customer.getCust_email());
+        Mockito.verify(customerRepository, Mockito.never()).passwordMatch(customer.getCust_email());
+        Mockito.verify(response, Mockito.never()).setStatus(HttpServletResponse.SC_OK);
+    }
+
+    
+
 }
