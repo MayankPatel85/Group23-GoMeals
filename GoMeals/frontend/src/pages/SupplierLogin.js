@@ -4,6 +4,7 @@ import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import swal from "sweetalert";
 
 function Login() {
   const cookies = new Cookies();
@@ -35,7 +36,7 @@ function Login() {
       })
       .catch((error) => {
         console.log(error);
-        alert("login failed");
+        swal("login failed");
       });
   };
 

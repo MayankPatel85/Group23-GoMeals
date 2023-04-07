@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 function Register() {
   const [cust_fname, setFname] = useState("");
@@ -12,6 +13,7 @@ function Register() {
   const [cust_password, setCustPassword] = useState("");
   const [cust_confirm_password, setCustConfirmPassword] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const user = {
@@ -24,25 +26,26 @@ function Register() {
       cust_password: cust_password,
       cust_confirm_password: cust_confirm_password,
     };
-    if(cust_password === cust_confirm_password){
-    axios
-          .post("http://localhost:8080/customer/create", user)
-          .then((response) => {
-            console.log(response.data);
-            navigate("/login");
-            alert("User registration was succesful");
-          })
-          .catch((error) => {
-            console.log(error);
-            if (error.response) {
-              const { data } = error.response;
-              alert(`Registration failed: ${data.message}`);
-            } else {
-              alert("Registration failed. Please try again later.");
-            }
-          });}else{alert("Passwords do not match")}
-
-
+    if (cust_password === cust_confirm_password) {
+      axios
+        .post("http://localhost:8080/customer/create", user)
+        .then((response) => {
+          console.log(response.data);
+          navigate("/login");
+          swal("User registration was succesful");
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response) {
+            const { data } = error.response;
+            swal(`Registration failed: ${data.message}`);
+          } else {
+            swal("Registration failed. Please try again later.");
+          }
+        });
+    } else {
+      swal("Passwords do not match");
+    }
   };
 
   return (
@@ -124,7 +127,9 @@ function Register() {
                             type="password"
                             placeholder="Confirm password"
                             value={cust_confirm_password}
-                            onChange={(e)=> setCustConfirmPassword(e.target.value)}
+                            onChange={(e) =>
+                              setCustConfirmPassword(e.target.value)
+                            }
                           />
                         </Form.Group>
                         <Form.Group
@@ -154,10 +159,10 @@ function Register() {
                           Have a supplier account??{" "}
                           {/* <Link to="/login">login</Link> */}
                           <NavLink
-                              className=""
-                              activeClassName="is-active"
-                              to="/Supplierlogin"
-                              exact
+                            className=""
+                            activeClassName="is-active"
+                            to="/Supplierlogin"
+                            exact
                           >
                             Login
                           </NavLink>

@@ -24,8 +24,8 @@
     "react-notifications-menu": "^1.0.6",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
-    "reactstrap": "^9.1.6",
     "react-stars": "^2.2.5",
+    "reactstrap": "^9.1.6",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.7.3",
     "web-vitals": "^2.1.4"

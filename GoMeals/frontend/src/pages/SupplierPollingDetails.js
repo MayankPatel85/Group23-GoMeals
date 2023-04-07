@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/SupplierPollingDetails.css";
+import swal from "sweetalert";
 
 function SupplierPollingDetails() {
   const cookies = new Cookies();
@@ -32,7 +33,7 @@ function SupplierPollingDetails() {
           loggedInUser.supId
       ).then((res) => {
         console.log();
-        alert(
+        swal(
           "Polling for the date " +
             pollDate +
             " closed. The most voted meal would be highlighted."
