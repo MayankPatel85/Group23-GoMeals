@@ -4,7 +4,7 @@ import axios from "axios";
 import { Spinner, Container, Table, Button } from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
 import { addCustomerNotification } from "../utils";
-
+import swal from "sweetalert";
 function SubscriptionRequests() {
   const [subscriptionRequestList, setSubscriptionRequestList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ function SubscriptionRequests() {
         setSubscriptionRequestList(response.data);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsLoading(false);

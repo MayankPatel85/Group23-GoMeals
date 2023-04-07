@@ -9,6 +9,7 @@ import "../styles/CustomerRaiseComplain.css";
 import axios from "axios";
 import { addSupplierNotification } from "../utils.js";
 import { faUtensilSpoon } from "@fortawesome/free-solid-svg-icons";
+import swal from "sweetalert";
 function CustomerRaiseComplain() {
   const cookies = new Cookies();
   const [delivery, setDelivery] = useState({});
@@ -50,12 +51,12 @@ function CustomerRaiseComplain() {
             complainsData.forEach(function (complain) {
               console.log(complain.deliveryId + " : " + delivery.deliveryId);
               if (complain.deliveryId == delivery.deliveryId) {
-                alert("Complain already raised for this delivery");
+                swal("Complain already raised for this delivery");
                 throw new Error("Complain already raised for this delivery");
               }
             });
             if (cust_comment === "") {
-              alert("Please provide some details in the comments");
+              swal("Please provide some details in the comments");
             } else {
               callComplainApi();
             }
@@ -90,7 +91,7 @@ function CustomerRaiseComplain() {
         // alert("Complain raised and complain id is :" + val.complainId);
         notifySupplier();
       });
-    alert("Complain raised successfully! ");
+    swal("Complain raised successfully! ");
     navigate("/dashboard");
   };
 
