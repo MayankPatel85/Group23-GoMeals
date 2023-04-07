@@ -121,5 +121,4 @@ public class CustomerServiceImplementationTest {
         Mockito.verify(response, Mockito.times(1)).setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-
 }
