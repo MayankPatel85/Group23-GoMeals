@@ -67,4 +67,24 @@ public class SupplierReviewServiceImplTest {
 
         verify(supplierReviewRepository, times(1)).find4supId();
     }
+    @Test
+    public void get3UpStarSupplierTest() {
+        List<Integer> supplierIds = new ArrayList<>();
+        supplierIds.add(1);
+        supplierIds.add(2);
+        supplierIds.add(3);
+
+        when(supplierReviewRepository.find3supId()).thenReturn(supplierIds);
+
+        List<Integer> returnedSupplierIds = supplierReviewService.get3UpStarSupplier();
+
+        Assertions.assertEquals(returnedSupplierIds.size(), supplierIds.size());
+        Assertions.assertEquals(returnedSupplierIds.get(0), supplierIds.get(0));
+        Assertions.assertEquals(returnedSupplierIds.get(1), supplierIds.get(1));
+        Assertions.assertEquals(returnedSupplierIds.get(2), supplierIds.get(2));
+
+        verify(supplierReviewRepository, times(1)).find3supId();
+    }
+
+    
 }
