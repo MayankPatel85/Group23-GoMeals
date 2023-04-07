@@ -86,5 +86,28 @@ public class SupplierReviewServiceImplTest {
         verify(supplierReviewRepository, times(1)).find3supId();
     }
 
-    
+    @Test
+    public void getSupplierReviewByCustomerIdAndSupplierIdTest() {
+        int customerId = 1;
+        int supplierId = 1;
+        SupplierReview supplierReview = new SupplierReview();
+        supplierReview.setSupplierId(1);
+        supplierReview.setCustomerId(customerId);
+        supplierReview.setSupplierId(supplierId);
+        supplierReview.setSupplier_rating(4);
+        supplierReview.setComment("Good food and service.");
+
+        when(supplierReviewRepository.findByCustomerIdAndSupplierId(customerId, supplierId)).thenReturn(supplierReview);
+
+        SupplierReview returnedReview = supplierReviewService.getSupplierReviewByCustomerIdAndSupplierId(customerId, supplierId);
+
+        Assertions.assertEquals(returnedReview.getSupplierId(), supplierReview.getSupplierId());
+        Assertions.assertEquals(returnedReview.getCustomerId(), supplierReview.getCustomerId());
+        Assertions.assertEquals(returnedReview.getSupplierId(), supplierReview.getSupplierId());
+        Assertions.assertEquals(returnedReview.getSupplier_rating(), supplierReview.getSupplier_rating());
+        Assertions.assertEquals(returnedReview.getComment(), supplierReview.getComment());
+
+        verify(supplierReviewRepository, times(1)).findByCustomerIdAndSupplierId(customerId, supplierId);
+    }
+
 }
