@@ -323,8 +323,6 @@ assertEquals("encrypted-password", actualSupplier.getPassword());
 
         when(supplierRepository.findSupplierByEmail(supplier.getSupEmail())).thenReturn(null);
 
-        // supplierService.loginSupplier(supplier, response);
-
         Assertions.assertThrows(RuntimeException.class, () -> {
             supplierService.loginSupplier(supplier, response);
         });
