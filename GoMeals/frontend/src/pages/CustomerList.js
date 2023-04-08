@@ -11,7 +11,7 @@ function CustomerList(props) {
     })
 
     return (
-        <Container className="my-5 mx-auto customerlist-table">
+        <Container className="my-5 mx-auto">
             <Table striped bordered responsive>
                 <thead>
                     <tr>
