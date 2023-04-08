@@ -193,7 +193,7 @@ export default function CustomerDashboard(children, func) {
       <div className="containers" id="listSuppliers">
         <div className="card-containers" id="listSuppliersCardContainer">
           {Object.keys(data).map((key) => (
-            <Card style={{ width: "18rem" }}>
+            <Card style={{ width: "18rem" }} className="mx-2 my-2">
               <Card.Img variant="top" src={food} />
               <Card.Body>
                 <Card.Title>{data[key].supName}</Card.Title>
