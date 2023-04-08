@@ -94,62 +94,59 @@ export default function SupplierDashboard() {
       // setshowDelivery(!showDelivery);
       setShowCustomerList(false);
       showmealchart(false);
-    setshowDelivery(!showDelivery);
+    setshowDelivery(true);
     setShowCustomerList(false);
     showmealchart(false);
-    axios
-      .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
-      .then((response) => {
-        response.data.forEach((custId) => {
-          console.log(custId);
-          const delivery = {
-            deliveryId: 8,
-            deliveryDate: "",
-            deliveryMeal: "",
-            orderStatus: "inprogress",
-            supId: loggedInUser.supId,
-            custId: custId,
-          };
-          console.log(delivery);
-          axios
-            .post("http://localhost:8080/delivery/create", delivery)
-            .then((res) => {
-              swal("Deliveries initiated");
-              axios
-                .get(
-                  `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
-                )
-                .then((response) => {
-                    response.data.forEach((custId) => {
-                        console.log(custId);
-                        const delivery = {
-                            deliveryId: 8,
-                            deliveryDate: "",
-                            deliveryMeal: "",
-                            orderStatus: "inprogress",
-                            supId: loggedInUser.supId,
-                            custId: custId,
-                        };
-                        console.log(delivery);
-                        axios
-                            .post("http://localhost:8080/delivery/create", delivery)
-                            .then((res) => {
-                                swal("Deliveries initiated");
-                                axios
-                                    .get(
-                                        `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
-                                    )
-                                    .then((response) => {
-                                        setDeliveryData(response.data);
-                                        console.log(response.data);
-                                    });
-                            });
-                    });
-                });
-            });
-        });
-      });
-        };
+    // axios
+    //   .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+    //   .then((response) => {
+    //     response.data.forEach((custId) => {
+    //       console.log(custId);
+    //       const delivery = {
+    //         deliveryId: 8,
+    //         deliveryDate: "",
+    //         deliveryMeal: "",
+    //         orderStatus: "inprogress",
+    //         supId: loggedInUser.supId,
+    //         custId: custId,
+    //       };
+    //       console.log(delivery);
+    //       axios
+    //         .post("http://localhost:8080/delivery/create", delivery)
+    //         .then((res) => {
+    //           swal("Deliveries initiated");
+      axios
+          .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+          .then((response) => {
+              response.data.forEach((custId) => {
+                  console.log(custId);
+                  const delivery = {
+                      deliveryId: 8,
+                      deliveryDate: "",
+                      deliveryMeal: "",
+                      orderStatus: "inprogress",
+                      supId: loggedInUser.supId,
+                      custId: custId,
+                  };
+                  console.log(delivery);
+                  axios
+                      .post("http://localhost:8080/delivery/create", delivery)
+                      .then((res) => {
+                          swal("Deliveries initiated");
+
+                      });
+              });
+          });
+      axios
+          .get(
+              `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
+          )
+          .then((response) => {
+              setDeliveryData(response.data);
+              console.log(response.data);
+          });
+
+  };
 
 
         function handleShowCustomers() {
@@ -570,7 +567,7 @@ export default function SupplierDashboard() {
             }
     function DeliveryTable(props) {
         return (
-            showDeliveryTable &&
+            showDeliveryTable &&(
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -600,7 +597,7 @@ export default function SupplierDashboard() {
                         return null;
                     })}
                     </tbody>
-                </Table>
+                </Table>)
 
         )
     }
