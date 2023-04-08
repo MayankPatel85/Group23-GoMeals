@@ -65,6 +65,7 @@ public class CustomerServiceImplementation implements CustomerService {
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 customerData = null;
+                System.out.println("Incorrect password");
             }
         }
         return customerData;
