@@ -6,7 +6,7 @@ import meal from "../resources/foodplate.jpg";
 import CustomerPolling from "./CustomerPolling";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/CustomerPolls.css";
-
+import swal from "sweetalert";
 function CustomerPolls() {
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
@@ -25,7 +25,7 @@ function CustomerPolls() {
       .then((res) => res.json())
       .then((listOfSuppliersData) => {
         if (listOfSuppliersData.length == 0) {
-          alert("No subscriptions available");
+          swal("No subscriptions available");
           navigate("/dashboard");
         } else {
           setListOfSuppliers(listOfSuppliersData);
@@ -64,7 +64,7 @@ function CustomerPolls() {
         } else if (res.status === 204) {
           setModalShow(true);
         } else {
-          alert("You have already voted for this meal");
+          swal("You have already voted for this meal");
         }
       })
       .catch((error) => {

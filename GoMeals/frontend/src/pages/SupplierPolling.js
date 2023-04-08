@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import { useNavigate } from "react-router-dom";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/SupplierPolling.css";
+import swal from "sweetalert";
 function SupplierPolling() {
   const cookies = new Cookies();
   const [item1, setItem1] = useState({});
@@ -40,7 +41,7 @@ function SupplierPolling() {
         supplierPollingList.forEach(function (poll) {
           console.log("pollDate" + poll.pollDate);
           if (poll.pollDate === selectedDate) {
-            alert("A poll for this date has already been raised.");
+            swal("A poll for this date has already been raised.");
             throw new Error("Complain already raised for this delivery");
           } else {
             console.log(poll.pollDate + " : " + selectedDate);
@@ -58,7 +59,7 @@ function SupplierPolling() {
     console.log("In here");
     console.log(selectedDate);
     if (selectedDate === null) {
-      alert("Please enter the date to raise a poll.");
+      swal("Please enter the date to raise a poll.");
       return false;
     } else if (
       Object.keys(item1).length === 0 ||
@@ -67,7 +68,7 @@ function SupplierPolling() {
       Object.keys(item4).length === 0 ||
       Object.keys(item5).length === 0
     ) {
-      alert("Please provide all the meals to raise a voting");
+      swal("Please provide all the meals to raise a voting");
       return false;
     }
     return true;
@@ -104,7 +105,7 @@ function SupplierPolling() {
         })
         .then((val) => {
           console.log("value" + val);
-          alert(`Polling created for the date ${selectedDate} successfully! `);
+          swal(`Polling created for the date ${selectedDate} successfully! `);
           navigate("/supplierDashboard");
         });
     }

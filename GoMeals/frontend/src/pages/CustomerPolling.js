@@ -8,6 +8,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import swal from "sweetalert";
 
 function CustomerPolling(props) {
   let cookies = new Cookies();
@@ -15,7 +16,6 @@ function CustomerPolling(props) {
   const [selectedOption, setSelectedOption] = useState("");
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
-
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -50,7 +50,7 @@ function CustomerPolling(props) {
       })
       .then((val) => {
         console.log("value" + val);
-        alert("Meal voting completed for the date " + props.poll.pollDate);
+        swal("Meal voting completed for the date " + props.poll.pollDate);
         console.log(mealPoll);
         props.onHide();
         navigate("/dashboard");

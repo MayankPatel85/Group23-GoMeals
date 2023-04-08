@@ -74,11 +74,10 @@ public class UserSecurity {
 
     }
 
-    public static void main(String[] args){
-        UserSecurity obj=new UserSecurity();
-        String cipher=obj.encryptData("thewall");
+    public static void main(String[] args) {
+        UserSecurity obj = new UserSecurity();
+        String cipher = obj.encryptData("thewall");
         System.out.println(cipher);
-        System.out.println("Decrypted text:" +obj.decryptData(cipher));
-
+        System.out.println("Decrypted text:" + obj.decryptData(cipher));
     }
 }

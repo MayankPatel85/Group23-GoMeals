@@ -106,6 +106,7 @@ public class DeliveryServiceImplementation implements DeliveryService {
                     return false;
                 }
                 deliveryMeal.append(polling.getVote());
+                break;
             }else if(day.equals(tomorrowDay.toString().toLowerCase())){ // normal day, take the meal for that day
                 for(int i = 1; i < 6; i++){
                     String mealChartMeal = (String) object[i];
@@ -114,13 +115,15 @@ public class DeliveryServiceImplementation implements DeliveryService {
                     }
                     deliveryMeal.append(mealChartMeal).append(",");
                 }
+                break;
             }
-            break;
+
         }
 
         // Save the delivery
         newDelivery.setDeliveryMeal(deliveryMeal.toString());
         newDelivery.setDeliveryDate(tomorrowDate.toLocalDate());
+
         deliveryRepository.save(newDelivery);
 
         // Save notification to the user.

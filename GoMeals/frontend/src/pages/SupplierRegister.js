@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 function SupplierRegister() {
   const [supName, setName] = useState("");
@@ -30,16 +31,16 @@ function SupplierRegister() {
       .then((response) => {
         console.log(response.data);
         navigate("/supplierLogin");
-        alert("Supplier registration was succesful");
+        swal("Supplier registration was succesful");
       })
       .catch((error) => {
         console.log(error);
         if (error.response) {
           const { data } = error.response;
-          alert(`Registration failed: ${data.message}`);
+          swal(`Registration failed: ${data.message}`);
         } else {
           console.log(supplier);
-          alert("Registration failed. Please try again later.");
+          swal("Registration failed. Please try again later.");
         }
       });
   };

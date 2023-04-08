@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +27,7 @@ public class PollingServiceImplementationTest {
     Date date = new Date(millis);
 
     @Test
-    void createPoll() {
+    public void testCreatePoll() {
         Polling polling = new Polling(1, date, "12", "Paneer", "Bread", "Roti", "Chips", "Butter", true, 12);
 
         when(pollingRepository.save(polling)).thenReturn(polling);
@@ -37,7 +38,16 @@ public class PollingServiceImplementationTest {
     }
 
     @Test
-    void getPollById() {
+    public void testCreatePollWhenPollIsNull() {
+        when(pollingRepository.save(null)).thenReturn(null);
+
+        Polling polling = pollingServiceImplementation.createPoll(null);
+
+        assertNull(polling);
+    }
+
+    @Test
+    public void testGetPollById() {
 
         when(pollingRepository.findById(1)).thenReturn(Optional.of(new Polling(1, date, "12", "Paneer", "Bread", "Roti", "Chips", "Butter", true, 12)));
 
@@ -47,7 +57,16 @@ public class PollingServiceImplementationTest {
     }
 
     @Test
-    void updatePoll() {
+    public void testGetPollByIdWhenIdNotExists() {
+        when(pollingRepository.findById(1)).thenReturn(Optional.empty());
+
+        Polling polling = pollingServiceImplementation.getPollById(1);
+
+        assertNull(polling);
+    }
+
+    @Test
+    public void testUpdatePollWhenPollIsPresent() {
         Polling polling = new Polling(1, date, "12", "Paneer", "Bread", "Roti", "Chips", "Butter", true, 12);
 
         when(pollingRepository.findById(1)).thenReturn(Optional.of(polling));
@@ -58,5 +77,16 @@ public class PollingServiceImplementationTest {
 
         assertThat(updatedPolling.getItem1()).isEqualTo("Rice");
         assertThat(updatedPolling.getVote()).isEqualTo("15");
+    }
+
+    @Test
+    public void testUpdatePollWhenPollIsNotPresent() {
+        Polling polling = new Polling(1, date, "12", "Paneer", "Bread", "Roti", "Chips", "Butter", true, 12);
+
+        when(pollingRepository.findById(1)).thenReturn(Optional.empty());
+
+        Polling updatedPolling = pollingServiceImplementation.updatePoll(polling);
+
+        assertNull(updatedPolling);
     }
 }

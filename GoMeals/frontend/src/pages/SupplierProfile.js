@@ -3,6 +3,7 @@ import { Button, Card, Container, Nav, Navbar } from "react-bootstrap";
 import chef from "../resources/chef.jpg";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import swal from "sweetalert";
 
 function Profile(props) {
   const location = useLocation();
@@ -17,7 +18,7 @@ function Profile(props) {
     };
     axios
       .post("http://localhost:8080/supplier-notification/create", notify)
-      .then(alert("Notification sent to the supplier"));
+      .then(swal("Notification sent to the supplier"));
     const subscription = {
       meals_remaining: 30,
       sub_date: currentDate,
@@ -29,7 +30,7 @@ function Profile(props) {
 
     axios
       .post("http://localhost:8080/subscription/add", subscription)
-      .then(alert("Subscription requested"));
+      .then(swal("Subscription requested"));
   };
   useEffect(() => {
     axios
@@ -40,18 +41,8 @@ function Profile(props) {
   });
   return (
     <div>
-      <Navbar bg="primary" variant="light">
-        <Container>
-          <Navbar.Brand href="#home">Go Meals</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Profile</Nav.Link>
-            <Nav.Link href="#pricing">Customers</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-      <h3>Supplier details</h3>
-      <Card style={{ width: "18rem" }}>
+      <h2 className="m-5">Supplier details</h2>
+      <Card style={{ width: "18rem" }} className="mx-auto m-5">
         <Card.Img variant="top" src={chef} />
         <Card.Body>
           <Card.Title></Card.Title>

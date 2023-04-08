@@ -32,14 +32,16 @@ public class PollingServiceImplementation implements PollingService {
     @Override
     public Polling updatePoll(Polling polling) {
         Polling currentPolling = pollingRepository.findById(polling.getPollId()).orElse(null);
-        currentPolling.setPollDate(polling.getPollDate());
-        currentPolling.setItem1(polling.getItem1());
-        currentPolling.setItem2(polling.getItem2());
-        currentPolling.setItem3(polling.getItem3());
-        currentPolling.setItem4(polling.getItem4());
-        currentPolling.setItem5(polling.getItem5());
-        currentPolling.setStatus(polling.getStatus());
-        pollingRepository.save(currentPolling);
+        if(currentPolling != null) {
+            currentPolling.setPollDate(polling.getPollDate());
+            currentPolling.setItem1(polling.getItem1());
+            currentPolling.setItem2(polling.getItem2());
+            currentPolling.setItem3(polling.getItem3());
+            currentPolling.setItem4(polling.getItem4());
+            currentPolling.setItem5(polling.getItem5());
+            currentPolling.setStatus(polling.getStatus());
+            pollingRepository.save(currentPolling);
+        }
         return currentPolling;
     }
 

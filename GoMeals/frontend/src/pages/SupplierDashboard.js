@@ -83,19 +83,42 @@ export default function SupplierDashboard() {
             alterstate(param);
         };
 
-        const handleDelivery = () => {
-            setAddOnEdit(false);
-            showAddOnAlter(false);
-            showAddOns(false);
-            showSupProfile(false);
-            showmealchart(false);
-            setShowDeliveryTable(true);
-            setShowCustomerList(false);
-            // setshowDelivery(!showDelivery);
-            setShowCustomerList(false);
-            showmealchart(false);
-            axios
-                .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+  const handleDelivery = () => {
+      setAddOnEdit(false);
+      showAddOnAlter(false);
+      showAddOns(false);
+      showSupProfile(false);
+      showmealchart(false);
+      setShowDeliveryTable(true);
+      setShowCustomerList(false);
+      // setshowDelivery(!showDelivery);
+      setShowCustomerList(false);
+      showmealchart(false);
+    setshowDelivery(!showDelivery);
+    setShowCustomerList(false);
+    showmealchart(false);
+    axios
+      .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+      .then((response) => {
+        response.data.forEach((custId) => {
+          console.log(custId);
+          const delivery = {
+            deliveryId: 8,
+            deliveryDate: "",
+            deliveryMeal: "",
+            orderStatus: "inprogress",
+            supId: loggedInUser.supId,
+            custId: custId,
+          };
+          console.log(delivery);
+          axios
+            .post("http://localhost:8080/delivery/create", delivery)
+            .then((res) => {
+              swal("Deliveries initiated");
+              axios
+                .get(
+                  `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
+                )
                 .then((response) => {
                     response.data.forEach((custId) => {
                         console.log(custId);
@@ -123,7 +146,11 @@ export default function SupplierDashboard() {
                             });
                     });
                 });
+            });
+        });
+      });
         };
+
 
         function handleShowCustomers() {
             showCurrentChart(false);
@@ -543,7 +570,7 @@ export default function SupplierDashboard() {
             }
     function DeliveryTable(props) {
         return (
-            showDeliveryTable &&(
+            showDeliveryTable && (
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -575,9 +602,10 @@ export default function SupplierDashboard() {
                     </tbody>
                 </Table>
             )
-        );
-
+        )
     }
+
+
             return (
                 <div>
                     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -1000,6 +1028,7 @@ export default function SupplierDashboard() {
                     >
                         <h3>©Go Meals</h3>
                     </Navbar>
+
                 </div>
             );
         }
