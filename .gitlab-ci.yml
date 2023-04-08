@@ -27,7 +27,12 @@ test-services:
     - echo "Starting test stage . . ."
     - chmod +x ./gradlew
     - ./gradlew test
+    - cd build/jacocoHtml
     - echo "Test stage completed!"
+  artifacts:
+    paths:
+      - index.html
+    
 
 code-quality:
   stage: designite
