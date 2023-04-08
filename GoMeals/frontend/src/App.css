@@ -171,3 +171,7 @@ cursor: pointer;
   color:black;
   font-size: large;
 }
+.Box{
+  display: flex;
+  justify-content: center;
+}

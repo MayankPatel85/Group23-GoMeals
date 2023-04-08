@@ -570,7 +570,7 @@ export default function SupplierDashboard() {
             }
     function DeliveryTable(props) {
         return (
-            showDeliveryTable && (
+            showDeliveryTable &&
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -601,7 +601,7 @@ export default function SupplierDashboard() {
                     })}
                     </tbody>
                 </Table>
-            )
+
         )
     }
 
