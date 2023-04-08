@@ -1,11 +1,12 @@
 package com.gomeals.model;
+
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="supplier")
+@Table(name = "supplier")
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,26 +22,27 @@ public class Supplier {
     private String supEmail;
     @Column(name = "govt_issued_id")
     private String govtIssuedId;
-    @Column(name="sup_password")
+    @Column(name = "sup_password")
     private String password;
     @Transient
     private List<Customer> customers = new ArrayList<>();
     @Transient
-    private List<Subscriptions> subscriptions= new ArrayList<>();
-    @Column (name = "meal_price")
+    private List<Subscriptions> subscriptions = new ArrayList<>();
+    @Column(name = "meal_price")
     private Double mealPrice;
-    @Column (name = "paypal_link")
+    @Column(name = "paypal_link")
     private String paypalLink;
     @Transient
     private Double supplierRating;
 
-    //    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    List<mealchart> supIdList= new ArrayList<>();
+    // @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval =
+    // true)
+    // List<mealchart> supIdList= new ArrayList<>();
     public Supplier() {
     }
 
     public Supplier(int sup_id, String sup_address, String sup_contact_number, String sup_name, String sup_email,
-                    String govt_issued_id, String sup_password, Double meal_price, String paypal_link) {
+            String govt_issued_id, String sup_password, Double meal_price, String paypal_link) {
         this.supId = sup_id;
         this.supAddress = sup_address;
         this.supContactNumber = sup_contact_number;
@@ -99,6 +101,7 @@ public class Supplier {
     public void setGovtIssuedId(String govt_issued_id) {
         this.govtIssuedId = govt_issued_id;
     }
+
     public String getPassword() {
         return password;
     }
@@ -118,9 +121,11 @@ public class Supplier {
     public List<Subscriptions> getSubscriptions() {
         return subscriptions;
     }
+
     public void setSubscriptions(List<Subscriptions> subscriptions) {
         this.subscriptions = subscriptions;
     }
+
     public Double getMealPrice() {
         return mealPrice;
     }
@@ -140,6 +145,7 @@ public class Supplier {
     public Double getSupplierRating() {
         return supplierRating;
     }
+
     public void setSupplierRating(Double supplierRating) {
         this.supplierRating = supplierRating;
     }

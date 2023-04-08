@@ -39,10 +39,7 @@ const CustomerDeliveries = ({ history }) => {
   return (
     <div>
       {/* <NavbarComponent /> */}
-      <HeroComponent
-        header="Your Orders"
-        body="Following are the order cards available"
-      />
+      <h2 id="customerPollsHeader">Your Orders</h2>
       <div className="orderCard ">
         <Container>
           {customerOrders.length == 0 ? (
@@ -53,7 +50,7 @@ const CustomerDeliveries = ({ history }) => {
                 <Card
                   style={{ width: "18rem" }}
                   key={customerOrder.deliveryId}
-                  class="border-1 col-4 p-3"
+                  class="border-1 col-4 p-3 m-3"
                 >
                   <Card.Img variant="top" src={mealBox} />
                   <Card.Body>

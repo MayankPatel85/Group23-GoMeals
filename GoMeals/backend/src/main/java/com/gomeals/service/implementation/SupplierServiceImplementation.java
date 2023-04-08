@@ -95,12 +95,11 @@ public class SupplierServiceImplementation implements SupplierService {
         return "Supplier deleted";
     }
 
-    public Supplier loginSupplier(Supplier supplier,HttpServletResponse response) {
+    public Supplier loginSupplier(Supplier supplier, HttpServletResponse response) {
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
             throw new RuntimeException("Supplier not Registered");
-        }
-        else{
+        } else {
             String password = supplierRepository.supplierPasswordMatch(supplier.getSupEmail());
             if (Objects.equals(userSecurity.decryptData(password), supplier.getPassword())) {
                 try {
@@ -110,9 +109,9 @@ public class SupplierServiceImplementation implements SupplierService {
                     System.out.println(e.getMessage());
                 }
                 return supplierData;
-            }else {
+            } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                supplierData=null;
+                supplierData = null;
             }
         }
         return supplierData;

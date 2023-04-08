@@ -17,7 +17,7 @@ import { Label, Input } from "reactstrap";
 import CustomerList from "./CustomerList";
 import { Cookies } from "react-cookie";
 import NavbarComponent from "../components/NavbarComponent";
-
+import swal from "sweetalert";
 export default function SupplierDashboard() {
   const [mealchart, showmealchart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +68,7 @@ export default function SupplierDashboard() {
           axios
             .post("http://localhost:8080/delivery/create", delivery)
             .then((res) => {
-              alert("Deliveries initiated");
+              swal("Deliveries initiated");
               axios
                 .get(
                   `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
@@ -95,7 +95,7 @@ export default function SupplierDashboard() {
         setSubscriptionList(response.data.subscriptions);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsCustomerListLoading(false);
@@ -198,24 +198,24 @@ export default function SupplierDashboard() {
         .post("http://localhost:8080/meal_chart/create", mealChart)
         .then((response) => {
           console.log(response.data);
-          alert("Data stored");
+          swal("Data stored");
           // navigate("/supplierDashboard");
         })
         .catch((error) => {
           console.log(error);
-          alert("Data was not sent");
+          swal("Data was not sent");
         });
     } else {
       axios
         .put("http://localhost:8080/meal_chart/update", mealChart)
         .then((response) => {
           console.log(response.data);
-          alert("Data stored");
+          swal("Data stored");
           // navigate("/supplierDashboard");
         })
         .catch((error) => {
           console.log(error);
-          alert("Data was not sent");
+          swal("Data was not sent");
           console.log(mealChart);
         });
     }
@@ -247,7 +247,7 @@ export default function SupplierDashboard() {
         setCurrentSupplier(response.data);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsLoading(false);
@@ -259,7 +259,7 @@ export default function SupplierDashboard() {
       axios
         .put("http://localhost:8080/supplier/update", currentSupplier)
         .catch((e) => {
-          alert("Error getting data" + e);
+          swal("Error getting data" + e);
         })
         .finally(() => {
           setIsLoading(false);
@@ -291,16 +291,16 @@ export default function SupplierDashboard() {
       editedSupplierDetail.supAddress === "" ||
       editedSupplierDetail.supPaypalLink === ""
     ) {
-      alert("Fields should not be empty.");
+      swal("Fields should not be empty.");
       return false;
     } else if (
       editedSupplierDetail.supContactNumber.length !== 10 ||
       !regexForNumber.test(editedSupplierDetail.supContactNumber)
     ) {
-      alert("Please provide a valid contact number.");
+      swal("Please provide a valid contact number.");
       return false;
     } else if (!editedSupplierDetail.supPaypalLink.includes("paypal.com")) {
-      alert("Please provide valid Paypal link.");
+      swal("Please provide valid Paypal link.");
       return false;
     }
     return true;
