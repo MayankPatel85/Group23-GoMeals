@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Nav from 'react-bootstrap/Nav';
 import {
   Button,
   Card,
@@ -18,11 +19,26 @@ import CustomerList from './CustomerList';
 import { Cookies } from 'react-cookie';
 import NavbarComponent from '../components/NavbarComponent';
 import swal from "sweetalert";
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
 export default function SupplierDashboard() {
     const [alter, alterstate] = useState("create");
+    const [addOnData,setAddOnData]=useState([]);
+    const [addOnEdit,setAddOnEdit]=useState(false);
+    const [datamon, setdatamon] = useState({});
+    const [datatue, setdatatue] = useState({});
+    const [datawed, setdatawed] = useState({});
+    const [datathu, setdatathu] = useState({});
+    const [datafri, setdatafri] = useState({});
+    const [datasat, setdatasat] = useState({});
+    const [datasun, setdatasun] = useState({});
     const [mealchart, showmealchart] = useState(false);
     const [addOns, showAddOns] = useState(false);
+    const [addOnAlter, showAddOnAlter] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showCustomerList, setShowCustomerList] = useState(false);
     const [customerList, setCustomerList] = useState([]);
@@ -32,31 +48,50 @@ export default function SupplierDashboard() {
     const [isCustomerListLoading, setIsCustomerListLoading] = useState(false);
     const [currentSupplier, setCurrentSupplier] = useState({});
     const [editProfile, setEditProfile] = useState(false);
+    const [supProfile,showSupProfile] = useState(true);
     const [updateSupplierData, setUpdateSupplierData] = useState(false);
+    const [showDeliveryTable, setShowDeliveryTable]= useState(false);
+    const [mealChartEdit,showMealChartEdit]= useState(false);
+    const [currentChart,showCurrentChart]=useState(false);
     const [editedSupplierDetail, setEditedSupplierDetail] = useState({
         supEmail: "",
         supContactNumber: "",
         supAddress: "",
         supPaypalLink: "",
     });
+    const [value, setValue] = React.useState('1');
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
     const cookies = new Cookies();
     const loggedInUser = cookies.get('loggedInUser');
     console.log("logged" + loggedInUser);
     const handleca = () => {
         showAddOns(!addOns);
+        showAddOnAlter(!addOnAlter);
 
     }
 
 
         const handleClick = (param) => {
             showmealchart(!mealchart);
+            showCurrentChart(!currentChart);
             setShowCustomerList(false);
             setshowDelivery(false);
             alterstate(param);
         };
 
         const handleDelivery = () => {
-            setshowDelivery(!showDelivery);
+            setAddOnEdit(false);
+            showAddOnAlter(false);
+            showAddOns(false);
+            showSupProfile(false);
+            showmealchart(false);
+            setShowDeliveryTable(true);
+            setShowCustomerList(false);
+            // setshowDelivery(!showDelivery);
             setShowCustomerList(false);
             showmealchart(false);
             axios
@@ -91,8 +126,15 @@ export default function SupplierDashboard() {
         };
 
         function handleShowCustomers() {
-            setIsCustomerListLoading(true);
+            showCurrentChart(false);
+            showMealChartEdit(false);
+            showAddOns(false);
+            showSupProfile(false);
+            showmealchart(false);
+            setShowDeliveryTable(false);
+            setShowCustomerList(true);
             setshowDelivery(false);
+            setIsCustomerListLoading(true);
             console.log("supId" + JSON.stringify(loggedInUser));
             axios
                 .get(`http://localhost:8080/supplier/get/${loggedInUser.supId}`)
@@ -108,9 +150,9 @@ export default function SupplierDashboard() {
                 .finally(() => {
                     setIsCustomerListLoading(false);
                 });
-            setShowCustomerList((prevValue) => {
-                return !prevValue;
-            });
+            // setShowCustomerList((prevValue) => {
+            //     return !prevValue;
+            // });
         }
 
 
@@ -320,6 +362,52 @@ export default function SupplierDashboard() {
                     .finally(() => {
                         setIsLoading(false);
                     });
+                const data1 = { day: "monday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data1)
+                    .then((response) => {
+                        setdatamon(response.data);
+                    });
+                const data2 = { day: "tuesday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data2)
+                    .then((response) => {
+                        setdatatue(response.data);
+                    });
+                const data3 = { day: "wednesday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data3)
+                    .then((response) => {
+                        setdatawed(response.data);
+                    });
+                const data4 = { day: "thursday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data4)
+                    .then((response) => {
+                        setdatathu(response.data);
+                    });
+                const data5 = { day: "friday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data5)
+                    .then((response) => {
+                        setdatafri(response.data);
+                    });
+                const data6 = { day: "saturday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data6)
+                    .then((response) => {
+                        setdatasat(response.data);
+                    });
+                const data7 = { day: "sunday", supId: loggedInUser.supId };
+                axios
+                    .post("http://localhost:8080/meal_chart/get", data7)
+                    .then((response) => {
+                        setdatasun(response.data);
+                    });
+                axios.get(`http://localhost:8080/Addons/get/all-supplier/${loggedInUser.supId}`)
+                    .then((response)=>{
+                        setAddOnData(response.data);
+                })
             }, [loggedInUser.supId]);
 
             useEffect(() => {
@@ -408,26 +496,126 @@ export default function SupplierDashboard() {
                         console.error(error);
                     });
             };
+            const handleProfile=()=>{
+                setAddOnEdit(false);
+                showAddOnAlter(false);
+                showCurrentChart(false);
+                showSupProfile(true);
+                showmealchart(false);
+                setShowDeliveryTable(false);
+                showAddOns(false);
+                setShowCustomerList(false);
+                showMealChartEdit(false);
+            };
+            const handleMC=()=>{
+                setAddOnEdit(false);
+                showAddOnAlter(false);
+                showCurrentChart(true);
+                showSupProfile(false);
+                showmealchart(false);
+                setShowDeliveryTable(false);
+                showAddOns(false);
+                setShowCustomerList(false);
+                showMealChartEdit(true);
 
+            };
+            const handleAn=()=>{
+                setAddOnEdit(true);
+                showAddOnAlter(false);
+                showCurrentChart(false);
+                showAddOns(true);
+                showSupProfile(false);
+                showmealchart(false);
+                setShowDeliveryTable(false);
+                setShowCustomerList(false);
+                showMealChartEdit(false);
+            }
+            const handleDel=()=>{
+                setAddOnEdit(false);
+                showAddOnAlter(false);
+                showCurrentChart(false);
+                showAddOns(false);
+                showSupProfile(false);
+                showmealchart(false);
+                setShowDeliveryTable(true);
+                setShowCustomerList(false);
+                showMealChartEdit(false);
+            }
+    function DeliveryTable(props) {
+        return (
+            showDeliveryTable &&(
+                <Table striped bordered hover>
+                    <thead>
+                    <tr>
+                        {props.columns.map((column) => (
+                            <th key={column.accessor}>{column.header}</th>
+                        ))}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {props.data.map((row) => {
+                        return (
+                            <tr key={row.cust_id}>
+                                {props.columns.map((column) => (
+                                    <td key={column.accessor}>
+                                        {column.Cell ? (
+                                            <column.Cell
+                                                value={row[column.accessor]}
+                                                deliveryId={row.deliveryId}
+                                            />
+                                        ) : (
+                                            row[column.accessor]
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        );
+                        return null;
+                    })}
+                    </tbody>
+                </Table>
+            )
+        );
 
+    }
             return (
                 <div>
+                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                        <TabContext value={value}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                    <Tab label="Profile" value="1" onClick={handleProfile}/>
+                                    <Tab label="Meal Chart" value="2" onClick={handleMC}/>
+                                    <Tab label="Addons" value="3" onClick={handleAn}/>
+                                    <Tab label="Delivery" value="4" onClick={handleDel}/>
+                                    <Tab label="View Customers" value="5" onClick={handleShowCustomers} />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="1"></TabPanel>
+                            <TabPanel value="2"></TabPanel>
+                            <TabPanel value="3"></TabPanel>
+                        </TabContext>
+                    </Box>
+                    <h2>Welcome {loggedInUser.supName}</h2>
                     <br/>
-                    <h2>Welcome Supplier</h2>
-                    <br/>
+                    {addOnEdit&& (<div><Button variant="outline-primary" onClick={handleca}>
+                        Create Add-on
+                    </Button>{" "}</div>)}
+                    {mealChartEdit &&( <div>
                     <Button variant="outline-primary" onClick={() => handleClick("create")}>
                         Create Meal Chart
                     </Button>{" "}
                     <Button variant="outline-primary" onClick={() => handleClick("update")}>
                         Update Meal Chart
                     </Button>{" "}
-                    <Button variant="outline-primary" onClick={handleca}>Create Meal Addons</Button>{' '}
-                    <Button variant="outline-primary" onClick={handleDelivery}>
-                        Delivery
-                    </Button>{" "}
-                    <Button variant="outline-primary" onClick={handleShowCustomers}>
-                        View Customers
-                    </Button>
+                    </div>)}
+                    {/*<Button variant="outline-primary" onClick={handleca}>Create Meal Addons</Button>{' '}*/}
+                    {showDeliveryTable&& (<div><Button variant="outline-primary" onClick={handleDelivery}>
+                       Initiate Deliveries
+                    </Button>{" "}</div>)}
+                    {/*<Button variant="outline-primary" onClick={handleShowCustomers}>*/}
+                    {/*    View Customers*/}
+                    {/*</Button>*/}
                     <Modal show={editProfile} onHide={() => setEditProfile(false)} centered>
                         <Modal.Header closeButton>
                             <Modal.Title>Edit your profile</Modal.Title>
@@ -486,7 +674,7 @@ export default function SupplierDashboard() {
                             </Button>
                         </Modal.Footer>
                     </Modal>
-                    <div>
+                    {supProfile && ( <div>
                         {/* <NavbarComponent /> */}
                         {isLoading ? (
                             <Spinner/>
@@ -545,7 +733,7 @@ export default function SupplierDashboard() {
                                 </div>
                             </div>
                         )}
-                    </div>
+                    </div>)}
                     {mealchart && (
                         <div>
                             <Card className="mechco">
@@ -693,7 +881,30 @@ export default function SupplierDashboard() {
                             </Card>
                         </div>
                     )}
-                    { addOns &&  <div><Card className="mechco">
+                    { addOns &&
+                        <div className="mechco">
+                            <h3>Add-on details</h3>
+                            <hr />
+                        <table>
+                        {addOnData.map((data) => (
+
+                            <div key={data.id}>
+                                <tr>
+                                    <td><h4>Item : </h4></td>
+                                    <td> <h4>{data.item}</h4></td>
+
+                                    <td style={{ paddingLeft: '50px' }}><h4>Price : </h4></td>
+                                    <td><h4>{data.price}</h4></td>
+                                </tr>
+                                <hr />
+                            </div>
+                        ))}
+                        </table>
+                        </div>
+                    }
+
+                    {addOnAlter&& <div>
+                        <Card className="mechco">
                         <Card.Body>
                             <h3>Add on Details</h3>
                             <table>
@@ -721,7 +932,50 @@ export default function SupplierDashboard() {
                         </Card.Body>
                     </Card></div>
                     }
+                    {
+                        currentChart &&
+                            <div className="mechco">
+                            <br/>
+                                <h2> Current Meal Plan </h2>
+                                <hr />
+                                <br/>
+                                <h4>Monday: {datamon.item1}, {datamon.item2}, {datamon.item3},{" "}
+                                    {datamon.item4}, {datamon.item5}</h4>
 
+                        <br />
+                        <h4>
+                        Tuesday: {datatue.item1}, {datatue.item2}, {datatue.item3},{" "}
+                    {datatue.item4}, {datatue.item5}
+                        </h4>
+                        <br />
+                        <h4>
+                        Wednesday: {datawed.item1}, {datawed.item2}, {datawed.item3},{" "}
+                    {datawed.item4}, {datawed.item5},{" "}
+                        </h4>
+                        <br />
+                        <h4>
+                        Thursday: {datathu.item1}, {datathu.item2}, {datathu.item3},{" "}
+                    {datathu.item4}, {datathu.item5},{" "}
+                        </h4>
+                        <br />
+                        <h4>
+                        Friday: {datafri.item1}, {datafri.item2}, {datafri.item3},{" "}
+                    {datafri.item4}, {datafri.item5},{" "}
+                        </h4>
+                        <br />
+                        <h4>
+                        Saturday: {datasat.item1}, {datasat.item2}, {datasat.item3},{" "}
+                    {datasat.item4}, {datasat.item5},{" "}
+                        </h4>
+                        <br />
+                        <h4>
+                        Sunday: {datasun.item1}, {datasun.item2}, {datasun.item3},{" "}
+                    {datasun.item4}, {datasun.item5},{" "}
+                        </h4>
+                                <br />
+                            </div>
+
+                    }
                     {showCustomerList ? (
                         isCustomerListLoading ? (
                             <Container className="my-5 mx-auto">
@@ -750,38 +1004,3 @@ export default function SupplierDashboard() {
             );
         }
 
-        function DeliveryTable(props) {
-            return (
-                <Table striped bordered hover>
-                    <thead>
-                    <tr>
-                        {props.columns.map((column) => (
-                            <th key={column.accessor}>{column.header}</th>
-                        ))}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {props.data.map((row) => {
-                        return (
-                            <tr key={row.cust_id}>
-                                {props.columns.map((column) => (
-                                    <td key={column.accessor}>
-                                        {column.Cell ? (
-                                            <column.Cell
-                                                value={row[column.accessor]}
-                                                deliveryId={row.deliveryId}
-                                            />
-                                        ) : (
-                                            row[column.accessor]
-                                        )}
-                                    </td>
-                                ))}
-                            </tr>
-                        );
-                        return null;
-                    })}
-                    </tbody>
-                </Table>
-            );
-
-}

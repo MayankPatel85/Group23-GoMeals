@@ -46,6 +46,11 @@
 h3{
   align-content: end;
 }
+hr{
+  border: none;
+  height: 3px;
+  background-color: black;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
