@@ -133,18 +133,29 @@ export default function SupplierDashboard() {
                       .post("http://localhost:8080/delivery/create", delivery)
                       .then((res) => {
                           swal("Deliveries initiated");
+                          const currentDate = new Date();
+                          currentDate.setDate(currentDate.getDate() + 1);
+                          const year = currentDate.getFullYear();
+                          const month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+                          const day = ('0' + currentDate.getDate()).slice(-2);
 
-                      });
+                          axios.post(`http://localhost:8080/customer-notification/create-all/?message=${loggedInUser.supName} has initiated delivery for ${year}-${month}-${day}&type=delivery&supplierId=${loggedInUser.supId}`)
+
+                      })
+                      .catch(
+                          swal("Deliveries existing"));
               });
           });
-      axios
-          .get(
-              `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
-          )
-          .then((response) => {
-              setDeliveryData(response.data);
-              console.log(response.data);
-          });
+              axios
+                  .get(
+                      `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
+                  )
+                  .then((response) => {
+                      setDeliveryData(response.data);
+                      console.log("getttt");
+                      console.log(response.data);
+                  });
+
 
   };
 
@@ -199,34 +210,45 @@ export default function SupplierDashboard() {
                     price: document.getElementById("price3").value,
                     supplierId: loggedInUser.supId
                 }
-                axios
-                    .post("http://localhost:8080/Addons/create", addOn1)
-                    .then((response) => {
-                        console.log(response.data);
-                        // navigate("/supplierDashboard");
+                axios.get(`http://localhost:8080/Addons/get/all-supplier/${loggedInUser.supId}`)
+                    .then((response)=>{
+                        console.log(response.data.length);
+                        if(response.data.length>=3){
+                            swal("You allready have 3 Add-ons")
+                        }
+                        if(response.data.length==0){
+                            axios
+                                .post("http://localhost:8080/Addons/create", addOn1)
+                                .then((response) => {
+                                    console.log(response.data);
+                                    // navigate("/supplierDashboard");
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                            axios
+                                .post("http://localhost:8080/Addons/create", addOn2)
+                                .then((response) => {
+                                    console.log(response.data);
+                                    // navigate("/supplierDashboard");
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                            axios.post("http://localhost:8080/Addons/create", addOn3)
+                                .then((response) => {
+                                    console.log(response.data);
+                                    swal("Data stored");
+                                    // navigate("/supplierDashboard");
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    alert("Data was not sent");
+                                });
+
+                        }
                     })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-                axios
-                    .post("http://localhost:8080/Addons/create", addOn2)
-                    .then((response) => {
-                        console.log(response.data);
-                        // navigate("/supplierDashboard");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-                axios.post("http://localhost:8080/Addons/create", addOn3)
-                    .then((response) => {
-                        console.log(response.data);
-                        alert("Data stored");
-                        // navigate("/supplierDashboard");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        alert("Data was not sent");
-                    });
+
 
 
             }
@@ -564,6 +586,14 @@ export default function SupplierDashboard() {
                 setShowDeliveryTable(true);
                 setShowCustomerList(false);
                 showMealChartEdit(false);
+                axios
+                    .get(
+                        `http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`
+                    )
+                    .then((response) => {
+                        setDeliveryData(response.data);
+                        console.log(response.data);
+                    });
             }
     function DeliveryTable(props) {
         return (
@@ -907,28 +937,30 @@ export default function SupplierDashboard() {
                         </div>
                     )}
                     { addOns &&
+
                         <div className="mechco">
                             <h3>Add-on details</h3>
                             <hr />
                         <table>
                         {addOnData.map((data) => (
-
                             <div key={data.id}>
                                 <tr>
                                     <td><h4>Item : </h4></td>
-                                    <td> <h4>{data.item}</h4></td>
+                                    <td style={{ width: '150px' }}> <h4>{data.item}</h4></td>
 
-                                    <td style={{ paddingLeft: '50px' }}><h4>Price : </h4></td>
+                                    <td style={{ paddingLeft: '175px' }}><h4>Price : </h4></td>
                                     <td><h4>{data.price}</h4></td>
                                 </tr>
-                                <hr />
+                              <hr />
                             </div>
                         ))}
                         </table>
                         </div>
                     }
 
-                    {addOnAlter&& <div>
+                    {addOnAlter&&
+
+                        <div>
                         <Card className="mechco">
                         <Card.Body>
                             <h3>Add on Details</h3>
@@ -964,39 +996,74 @@ export default function SupplierDashboard() {
                                 <h2> Current Meal Plan </h2>
                                 <hr />
                                 <br/>
-                                <h4>Monday: {datamon.item1}, {datamon.item2}, {datamon.item3},{" "}
-                                    {datamon.item4}, {datamon.item5}</h4>
+                                <table>
+                                    <tr>
+                                        <td style={{ width: '150px' }}><h4>Monday :</h4></td>
+                                        <td style={{ width: '150px' }}><h4>{datamon.item1}</h4></td>
+                                        <td style={{ width: '150px' }}><h4>{datamon.item2}</h4></td>
+                                        <td style={{ width: '150px' }}><h4>{datamon.item3}</h4></td>
+                                        <td style={{ width: '150px' }}><h4>{datamon.item4}</h4></td>
+                                        <td style={{ width: '150px' }}><h4>{datamon.item5}</h4></td>
+                                    </tr>
+                                    <hr />
+                                    <tr>
+                                        <td><h4>Tuesday :</h4></td>
+                                        <td><h4>{datatue.item1}</h4></td>
+                                        <td><h4>{datatue.item2}</h4></td>
+                                        <td><h4>{datatue.item3}</h4></td>
+                                        <td><h4>{datatue.item4}</h4></td>
+                                        <td><h4>{datatue.item5}</h4></td>
+                                    </tr>
+                                    <hr />
+                                    <tr>
+                                        <td><h4>Wednesday :</h4></td>
+                                        <td><h4>{datawed.item1}</h4></td>
+                                        <td><h4>{datawed.item2}</h4></td>
+                                        <td><h4>{datawed.item3}</h4></td>
+                                        <td><h4>{datawed.item4}</h4></td>
+                                        <td><h4>{datawed.item5}</h4></td>
+                                    </tr>
+                                    <hr />
+                                    <tr>
+                                        <td><h4>Thursday :</h4></td>
+                                        <td><h4>{datathu.item1}</h4></td>
+                                        <td><h4>{datathu.item2}</h4></td>
+                                        <td><h4>{datathu.item3}</h4></td>
+                                        <td><h4>{datathu.item4}</h4></td>
+                                        <td><h4>{datathu.item5}</h4></td>
+                                    </tr>
+                                    <hr />
+                                    <tr>
+                                        <td><h4>Friday :</h4></td>
+                                        <td><h4>{datafri.item1}</h4></td>
+                                        <td><h4>{datafri.item2}</h4></td>
+                                        <td><h4>{datafri.item3}</h4></td>
+                                        <td><h4>{datafri.item4}</h4></td>
+                                        <td><h4>{datafri.item5}</h4></td>
+                                    </tr>
+                                    <hr />
+                                    <tr>
+                                        <td><h4>Saturday :</h4></td>
+                                        <td><h4>{datasat.item1}</h4></td>
+                                        <td><h4>{datasat.item2}</h4></td>
+                                        <td><h4>{datasat.item3}</h4></td>
+                                        <td><h4>{datasat.item4}</h4></td>
+                                        <td><h4>{datasat.item5}</h4></td>
+                                    </tr>
+                                    <hr />
+                                    <tr>
+                                        <td><h4>Sunday :</h4></td>
+                                        <td><h4>{datasun.item1}</h4></td>
+                                        <td><h4>{datasun.item2}</h4></td>
+                                        <td><h4>{datasun.item3}</h4></td>
+                                        <td><h4>{datasun.item4}</h4></td>
+                                        <td><h4>{datasun.item5}</h4></td>
+                                    </tr>
+                                    <hr />
 
+                               </table>
                         <br />
-                        <h4>
-                        Tuesday: {datatue.item1}, {datatue.item2}, {datatue.item3},{" "}
-                    {datatue.item4}, {datatue.item5}
-                        </h4>
-                        <br />
-                        <h4>
-                        Wednesday: {datawed.item1}, {datawed.item2}, {datawed.item3},{" "}
-                    {datawed.item4}, {datawed.item5},{" "}
-                        </h4>
-                        <br />
-                        <h4>
-                        Thursday: {datathu.item1}, {datathu.item2}, {datathu.item3},{" "}
-                    {datathu.item4}, {datathu.item5},{" "}
-                        </h4>
-                        <br />
-                        <h4>
-                        Friday: {datafri.item1}, {datafri.item2}, {datafri.item3},{" "}
-                    {datafri.item4}, {datafri.item5},{" "}
-                        </h4>
-                        <br />
-                        <h4>
-                        Saturday: {datasat.item1}, {datasat.item2}, {datasat.item3},{" "}
-                    {datasat.item4}, {datasat.item5},{" "}
-                        </h4>
-                        <br />
-                        <h4>
-                        Sunday: {datasun.item1}, {datasun.item2}, {datasun.item3},{" "}
-                    {datasun.item4}, {datasun.item5},{" "}
-                        </h4>
+
                                 <br />
                             </div>
 
@@ -1013,9 +1080,10 @@ export default function SupplierDashboard() {
                             />
                         )
                     ) : null}
+
                     <br/>
                     <br/>
-                    {showDelivery && (
+                    {showDeliveryTable && (
                         <DeliveryTable columns={DeliveryColumns} data={deliveryData}/>
                     )}
                     <Navbar
