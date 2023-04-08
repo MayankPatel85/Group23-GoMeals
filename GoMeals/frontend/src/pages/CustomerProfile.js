@@ -81,12 +81,25 @@ function CustomerProfile() {
   };
 
   const updateCustomerProfile = () => {
+    const regexForNumber = /^[0-9\b]+$/;
+    const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (
       editedCustomerDetail.email === "" ||
       editedCustomerDetail.contactNumber === "" ||
       editedCustomerDetail.address === ""
     ) {
       swal("Fields should not be empty");
+      return;
+    } else if (
+      !regexForEmail.test(editedCustomerDetail.email)
+    ) {
+      swal("Please provide a valid email.");
+      return;
+    } else if (
+      editedCustomerDetail.contactNumber.length !== 10 ||
+      !regexForNumber.test(editedCustomerDetail.contactNumber)
+    ) {
+      swal("Please provide a valid contact number.");
       return;
     }
     setIsLoading(true);
@@ -130,6 +143,10 @@ function CustomerProfile() {
   };
 
   const saveReview = () => {
+    if(review.supplier_rating === 0) {
+      swal("Please provide rating.");
+      return;
+    }
     setIsLoading(true);
     axios
       .post("http://localhost:8080/supplierReview/create", review)
@@ -141,9 +158,8 @@ function CustomerProfile() {
         setAddReview(false);
       });
     addSupplierNotification({
-      message: `${
-        customer.cust_fname + " " + customer.cust_lname
-      } has provided review.`,
+      message: `${customer.cust_fname + " " + customer.cust_lname
+        } has provided review.`,
       eventType: "New Review",
       customerId: customer.cust_id,
       supplierId: customer.subscriptions[currentSupplierIndex].supplierId,
@@ -244,6 +260,7 @@ function CustomerProfile() {
                 name="comment"
                 value={review.comment}
                 onChange={handleComment}
+                disabled={currentSupplierReview === "" ? false : true}
               />
             </Form.Group>
           </Form>
@@ -252,13 +269,15 @@ function CustomerProfile() {
           <Button variant="secondary" onClick={() => setAddReview(false)}>
             Close
           </Button>
-          <Button
-            variant="primary"
-            onClick={saveReview}
-            disabled={currentSupplierReview === "" ? false : true}
-          >
-            Save Changes
-          </Button>
+          {
+            currentSupplierReview === "" &&
+            <Button
+              variant="primary"
+              onClick={saveReview}
+            >
+              Save Changes
+            </Button>
+          }
         </Modal.Footer>
       </Modal>
       {isLoading ? (
