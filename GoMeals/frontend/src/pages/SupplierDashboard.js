@@ -285,6 +285,7 @@ export default function SupplierDashboard() {
 
   const validateProfileInputs = () => {
     const regexForNumber = /^[0-9\b]+$/;
+    const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (
       editedSupplierDetail.supEmail === "" ||
       editedSupplierDetail.supContactNumber === "" ||
@@ -292,6 +293,9 @@ export default function SupplierDashboard() {
       editedSupplierDetail.supPaypalLink === ""
     ) {
       swal("Fields should not be empty.");
+      return false;
+    }  else if(!regexForEmail.test(editedSupplierDetail.supEmail)) {
+      swal("Please provide valid email.")
       return false;
     } else if (
       editedSupplierDetail.supContactNumber.length !== 10 ||
