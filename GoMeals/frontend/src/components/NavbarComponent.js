@@ -138,7 +138,7 @@ export default function NavbarComponent() {
                 </Nav.Link>
                 {/* <Nav.Link href="#features">Profile</Nav.Link> */}
                 {supplierUser && <Nav.Link href="#pricing">Customers</Nav.Link>}
-                {supplierUser && <Nav.Link href="/meals">Meals</Nav.Link>}
+                {customerUser && <Nav.Link href="/meals">Meals</Nav.Link>}
                 <Nav.Link onClick={toggleNotifications}>
                   <FontAwesomeIcon icon={faBell} />
                   {showNotifications && <Notification {...loggedInUser} />}
