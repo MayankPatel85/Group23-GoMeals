@@ -31,15 +31,11 @@ public class ComplainServiceImplementationTest {
                 long millis = System.currentTimeMillis();
                 Date date = new Date(millis);
 
-                Complain complain1;
-                complain1 = new Complain(1, date, "pizza had no cheese", "refunded meal",
-                                "initiated", 1, 2, 2);
-
-                Complain complain2;
-                complain2 = new Complain(2, date, "missing 1 taco", "refunded meal",
-                                "initiated", 1, 2, 2);
-
-                when(complainRepository.findAll()).thenReturn(Arrays.asList(complain1, complain2));
+                when(complainRepository.findAll()).thenReturn(Arrays.asList(
+                                new Complain(1, date, "pizza had no cheese", "refunded meal",
+                                                "initiated", 1, 2, 2),
+                                new Complain(2, date, "missing 1 taco", "refunded meal",
+                                                "initiated", 1, 2, 2)));
                 List<Complain> result = complainServiceImplementation.getAllComplains();
 
                 assertEquals(2, result.get(0).getDeliveryId());
@@ -50,10 +46,10 @@ public class ComplainServiceImplementationTest {
         void getComplainById() {
                 long millis = System.currentTimeMillis();
                 Date date = new Date(millis);
-                Complain testcomplaint = new Complain(1, date, "pizza had no cheese", "refunded meal",
-                                "initiated", 1, 2, 2);
+
                 when(complainRepository.findById(1)).thenReturn(
-                                Optional.of(testcomplaint));
+                                Optional.of(new Complain(1, date, "pizza had no cheese", "refunded meal",
+                                                "initiated", 1, 2, 2)));
                 Complain complain = complainServiceImplementation.getComplainById(1);
 
                 assertEquals(2, complain.getSupplierId());

@@ -1,11 +1,8 @@
 package com.gomeals.model;
 
 import jakarta.persistence.*;
-import org.hibernate.type.descriptor.jdbc.TinyIntJdbcType;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "polling")

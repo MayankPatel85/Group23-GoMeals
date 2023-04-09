@@ -1,9 +1,7 @@
 package com.gomeals.controller;
 
-import com.gomeals.model.Complain;
 import com.gomeals.model.MealVoting;
 import com.gomeals.service.MealVotingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

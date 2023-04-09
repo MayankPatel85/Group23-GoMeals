@@ -3,7 +3,6 @@ package com.gomeals.service.implementation;
 import com.gomeals.model.SupplierReview;
 import com.gomeals.repository.SupplierReviewRepository;
 import com.gomeals.service.SupplierReviewService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +14,19 @@ public class SupplierReviewServiceImplementation implements SupplierReviewServic
     SupplierReviewRepository supplierReviewRepository;
 
     @Override
-    public SupplierReview createSupplierReview(SupplierReview supplierReview) {return supplierReviewRepository.save(supplierReview);}
+    public SupplierReview createSupplierReview(SupplierReview supplierReview) {
+        return supplierReviewRepository.save(supplierReview);
+    }
+
     @Override
-    public List<Integer> get4upStarSupplier(){return supplierReviewRepository.find4supId();}
+    public List<Integer> get4upStarSupplier() {
+        return supplierReviewRepository.find4supId();
+    }
+
     @Override
-    public List<Integer> get3UpStarSupplier(){return supplierReviewRepository.find3supId();}
+    public List<Integer> get3UpStarSupplier() {
+        return supplierReviewRepository.find3supId();
+    }
 
     @Override
     public SupplierReview getSupplierReviewByCustomerIdAndSupplierId(int customerId, int supplierId) {

@@ -6,9 +6,6 @@ import com.gomeals.repository.MealChartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.gomeals.model.MealChartID;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

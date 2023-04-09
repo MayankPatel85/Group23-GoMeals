@@ -1,14 +1,10 @@
 package com.gomeals.service.implementation;
 
-import com.gomeals.model.Customer;
 import com.gomeals.model.CustomerNotification;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.repository.CustomerNotificationRepository;
 import com.gomeals.repository.SubscriptionRepository;
-import com.gomeals.repository.SupplierRepository;
 import com.gomeals.service.CustomerNotificationService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

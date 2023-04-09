@@ -4,12 +4,10 @@ import com.gomeals.model.Complain;
 import com.gomeals.repository.ComplainRepository;
 import com.gomeals.service.ComplainService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ComplainServiceImplementation implements ComplainService {

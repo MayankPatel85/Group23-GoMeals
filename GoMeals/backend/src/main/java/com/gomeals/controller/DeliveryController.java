@@ -1,9 +1,7 @@
 package com.gomeals.controller;
 
 import com.gomeals.model.Delivery;
-import com.gomeals.model.Supplier;
 import com.gomeals.service.DeliveryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +18,7 @@ public class DeliveryController {
     public DeliveryController(DeliveryService deliveryService) {
         this.deliveryService = deliveryService;
     }
+
     @CrossOrigin
     @GetMapping("/get/{id}")
     public Delivery getDeliveryById(@PathVariable("id") int id) {

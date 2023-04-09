@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.service.SubscriptionService;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin
 @RequestMapping("/subscription")
-public class 	SubscriptionController {
+public class SubscriptionController {
 
 	@Autowired
 	SubscriptionService subscriptionService;
