@@ -12,6 +12,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/complain")
 @CrossOrigin(origins = "http://localhost:3000")
+/**
+ * This Controller contains methods which handle Complain functions like
+ * creation, deletion, updating, retrieval of single addon based on add-on ID
+ * and retrieving all addons of a particular supplier using the supplier ID
+ */
 public class ComplainController {
 
     private final ComplainService complainService;

@@ -21,11 +21,17 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/subscription")
+
 public class 	SubscriptionController {
 
 	@Autowired
 	SubscriptionService subscriptionService;
 
+	/**
+	 *
+	 * @param subId
+	 * @return
+	 */
 	@GetMapping("/get/{subId}")
 	public Subscriptions getSubscription(@PathVariable("subId") int subId) {
 		return subscriptionService.getSubscription(subId);
