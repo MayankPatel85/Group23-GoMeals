@@ -185,7 +185,7 @@ function SupplierRegister() {
                           <NavLink
                             className=""
                             activeClassName="is-active"
-                            to="/Supplierlogin"
+                            to="/supplierLogin"
                             exact
                           >
                             Login
