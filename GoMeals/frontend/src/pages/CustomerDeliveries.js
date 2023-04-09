@@ -42,7 +42,7 @@ const CustomerDeliveries = ({ history }) => {
       <h2 id="customerPollsHeader">Your Orders</h2>
       <div className="orderCard ">
         <Container>
-          {customerOrders.length == 0 ? (
+          {customerOrders.length === 0 ? (
             <div>No Orders available</div>
           ) : (
             <div class="m-3 row">
