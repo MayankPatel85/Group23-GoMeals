@@ -155,12 +155,12 @@ function SupplierRegister() {
                       </Form>
                       <div className="mt-3">
                         <p className="mb-0  text-center">
-                          Already have an account??{" "}
+                          Already have a supplier account??{" "}
                           {/* <Link to="/login">login</Link> */}
                           <NavLink
                             className=""
                             activeClassName="is-active"
-                            to="/login"
+                            to="/Supplierlogin"
                             exact
                           >
                             Login

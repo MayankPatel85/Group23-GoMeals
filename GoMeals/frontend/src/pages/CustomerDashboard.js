@@ -172,6 +172,7 @@ export default function CustomerDashboard(children, func) {
           Filter
         </Dropdown.Toggle>
 
+
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => fetchdata("lth")}>
             <b>Price :</b> Low to high

@@ -1,3 +1,4 @@
+
 package com.gomeals.service.implementation;
 
 import com.gomeals.model.Customer;
@@ -351,3 +352,4 @@ assertEquals("encrypted-password", actualSupplier.getPassword());
     }
 
 }
+

@@ -34,18 +34,24 @@
   flex-direction: column;
 }
 .mechco{
-  border-left: 100px;
-  margin-left: 400px;
-  margin-top: 50px;
-  /* width: 60%; */
 
   display:inline-block;
+  justify-content: center;
+  /*border-left: 2rem;*/
+  /*margin-left: 15rem;*/
+  margin-top: 5rem;
+  /* width: 60%; */
   align-items: flex-start;
   background-color: #EEE9DA;
   box-shadow: 10px 10px dimgrey;
 }
 h3{
   align-content: end;
+}
+hr{
+  border: none;
+  height: 3px;
+  background-color: black;
 }
 @keyframes App-logo-spin {
   from {
@@ -70,6 +76,9 @@ h3{
   align-items: flex-start;
   /* margin-right: 10%; */
 
+}
+.supplierCard{
+  Margin:50px;
 }
 
 
@@ -150,8 +159,9 @@ cursor: pointer;
 }
 
 #listSuppliersCardContainer{
-  
+
 }
+
 
 .swal-button{
   background-color: blue;
@@ -160,4 +170,8 @@ cursor: pointer;
 .swal-text{
   color:black;
   font-size: large;
+}
+.Box{
+  display: flex;
+  justify-content: center;
 }
