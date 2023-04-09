@@ -2,7 +2,6 @@ package com.gomeals.model;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -24,18 +23,19 @@ public class Delivery {
     @Column(name = "cust_id")
     private int custId;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "sup_id")
-//    private Supplier supplier;
-//
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "cust_id")
-//    private Customer customer;
+    // @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "sup_id")
+    // private Supplier supplier;
+    //
+    // @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "cust_id")
+    // private Customer customer;
 
     public Delivery() {
     }
 
-    public Delivery(int deliveryId, LocalDate deliveryDate, String deliveryMeal, String orderStatus, int supId, int custId) {
+    public Delivery(int deliveryId, LocalDate deliveryDate, String deliveryMeal, String orderStatus, int supId,
+            int custId) {
         this.deliveryId = deliveryId;
         this.deliveryDate = deliveryDate;
         this.deliveryMeal = deliveryMeal;

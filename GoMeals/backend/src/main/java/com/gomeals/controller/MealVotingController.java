@@ -1,19 +1,17 @@
 package com.gomeals.controller;
 
-import com.gomeals.model.Complain;
 import com.gomeals.model.MealVoting;
 import com.gomeals.service.MealVotingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/meal-voting")
-@CrossOrigin(origins = "http://localhost:3000")
 /**
  * This controller contains the methods that handles the meal voting procedure
  */
+@RestController
+@RequestMapping("/meal-voting")
+@CrossOrigin
 public class MealVotingController {
 
     private final MealVotingService mealVotingService;
@@ -25,6 +23,7 @@ public class MealVotingController {
     /**
      * This method is used to Create an entry in the meal voting table
      * Hence creating a poll with multiple meals
+     * 
      * @param mealVoting
      * @return Created MealVoting object
      */
@@ -36,6 +35,7 @@ public class MealVotingController {
     /**
      * This method is used to extract data from the meal voting table using poll id
      * Hence Extracting all the details of a particular meal poll
+     * 
      * @param pollId
      * @return Retrieved MealVoting object
      */
@@ -49,7 +49,9 @@ public class MealVotingController {
     }
 
     /**
-     * This method is used to extract a particular meal voting related to a particular customer
+     * This method is used to extract a particular meal voting related to a
+     * particular customer
+     * 
      * @param pollId
      * @param custId
      * @return Retrieved MealVoting object
@@ -68,6 +70,7 @@ public class MealVotingController {
 
     /**
      * This method is used to extract the meal which is most voted in a poll
+     * 
      * @param pollingId
      * @param supplierId
      * @return String which contains the name of the most voted meal

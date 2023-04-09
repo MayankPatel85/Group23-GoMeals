@@ -16,21 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomeals.model.Subscriptions;
 import com.gomeals.service.SubscriptionService;
 
-import java.util.List;
-
+/**
+ * This controller contains the methods that is required for managing the
+ * subscription related to a customer and a supplier
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/subscription")
-/**
- * This controller contains the methods that is required for managing the subscription related to a customer and a supplier
- */
-public class 	SubscriptionController {
+public class SubscriptionController {
 
 	@Autowired
 	SubscriptionService subscriptionService;
 
 	/**
-	 * This method is used to extract the subscription data using the subscription  ID
+	 * This method is used to extract the subscription data using the subscription
+	 * ID
+	 * 
 	 * @param subId
 	 * @return Retrieved subscription object
 	 */
@@ -40,7 +41,9 @@ public class 	SubscriptionController {
 	}
 
 	/**
-	 * This method is used to extract the suppliers ids of suppliers to which a particular customer has subscribed to
+	 * This method is used to extract the suppliers ids of suppliers to which a
+	 * particular customer has subscribed to
+	 * 
 	 * @param custId
 	 * @return List of supplier id's
 	 */
@@ -50,7 +53,9 @@ public class 	SubscriptionController {
 	}
 
 	/**
-	 * This method is used to extract customer ids of all the customers of a particular supplier
+	 * This method is used to extract customer ids of all the customers of a
+	 * particular supplier
+	 * 
 	 * @param id
 	 * @return List of customer id's
 	 */
@@ -60,8 +65,10 @@ public class 	SubscriptionController {
 	}
 
 	/**
-	 * This method is used to establish a new subscription between a supplier and customer
+	 * This method is used to establish a new subscription between a supplier and
+	 * customer
 	 * by adding an entry to the subscription table
+	 * 
 	 * @param subscription
 	 * @return String containing the status of the subscription
 	 */
@@ -74,6 +81,7 @@ public class 	SubscriptionController {
 
 	/**
 	 * This method is used to update the details of a particular subscription
+	 * 
 	 * @param subscription subscription object
 	 * @return String indicating the status of the subscription
 	 */
@@ -83,7 +91,9 @@ public class 	SubscriptionController {
 	}
 
 	/**
-	 * This method is used to delete a particular subscription using the subscription id
+	 * This method is used to delete a particular subscription using the
+	 * subscription id
+	 * 
 	 * @param sub_Id subscription id
 	 * @return String indicating the status of the deletion
 	 */
@@ -93,8 +103,11 @@ public class 	SubscriptionController {
 	}
 
 	/**
-	 * This method is used to extract the details of all the subscriptions whose details are pending
-	 * Used to display the Pending subscriptions to the suppliers so they can accept or reject
+	 * This method is used to extract the details of all the subscriptions whose
+	 * details are pending
+	 * Used to display the Pending subscriptions to the suppliers so they can accept
+	 * or reject
+	 * 
 	 * @param supplierId supplier id
 	 * @return List of Subscription object
 	 */

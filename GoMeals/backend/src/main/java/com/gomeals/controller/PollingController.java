@@ -8,19 +8,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * This controller contains the methods which is required to handle a poll
+ * created by the supplier
+ */
 @RestController
 @RequestMapping("/polling")
-@CrossOrigin(origins = "http://localhost:3000")
-/**
- * This controller contains the methods which is required to handle a poll created by the supplier
- */
+@CrossOrigin
 public class PollingController {
 
     @Autowired
     PollingService pollingService;
 
     /**
-     * This method is used to retrieve details of a poll from the polling table using the poll id
+     * This method is used to retrieve details of a poll from the polling table
+     * using the poll id
+     * 
      * @param id polling id
      * @return Retrieved Polling object
      */
@@ -30,8 +33,10 @@ public class PollingController {
     }
 
     /**
-     * This method is used to extract the details of all the polls that is initiated by the supplier
+     * This method is used to extract the details of all the polls that is initiated
+     * by the supplier
      * from the polling table
+     * 
      * @param supId supplier id
      * @return List of Polling objects which are active
      */
@@ -43,6 +48,7 @@ public class PollingController {
     /**
      * This method used to create an entries in the polling table
      * Hence creating a poll
+     * 
      * @param polling polling object
      * @return Created polling object
      */
@@ -54,6 +60,7 @@ public class PollingController {
     /**
      * This method used to update the entries in the polling table
      * Hence updating a poll
+     * 
      * @param polling polling object
      * @return updated polling object
      */
@@ -65,6 +72,7 @@ public class PollingController {
     /**
      * This method used to delete the entries in the polling table
      * Hence deleting a poll
+     * 
      * @param id polling id
      * @return String indicating the status of the deletion
      */
@@ -74,7 +82,9 @@ public class PollingController {
     }
 
     /**
-     * This method is used to extract all the polls created by the supplier from the polling table
+     * This method is used to extract all the polls created by the supplier from the
+     * polling table
+     * 
      * @param supId
      * @return List containing the retrieved polling objects
      */

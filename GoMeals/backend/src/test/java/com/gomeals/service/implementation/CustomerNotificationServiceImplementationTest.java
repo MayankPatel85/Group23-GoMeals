@@ -18,77 +18,91 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class CustomerNotificationServiceImplementationTest {
 
-    @Mock
-    private CustomerNotificationRepository customerNotificationRepository;
+        @Mock
+        private CustomerNotificationRepository custNotifyRepo;
 
-    @InjectMocks
-    private CustomerNotificationServiceImplementation customerNotificationServiceImplementation;
+        @InjectMocks
+        private CustomerNotificationServiceImplementation custNotifyServiceImpl;
 
-    @Test
-    void createNotification() {
-        CustomerNotification customerNotification = new CustomerNotification(1,"a delivery was created",
-                "delivery",5);
-        when(customerNotificationRepository.save((customerNotification))).thenReturn(
-                new CustomerNotification(1,"a delivery was created",
-                        "delivery",5)
-        );
-        CustomerNotification newCustomerNotification = customerNotificationServiceImplementation.createNotification(
-                customerNotification);
+        @Test
+        void createNotification() {
+                CustomerNotification customerNotification = new CustomerNotification(1, "a delivery was created",
+                                "delivery", 5);
+                CustomerNotification savedCustomerNotify = new CustomerNotification(1, "a delivery was created",
+                                "delivery", 5);
+                when(custNotifyRepo.save((customerNotification))).thenReturn(savedCustomerNotify);
+                CustomerNotification newCustomerNotification = custNotifyServiceImpl
+                                .createNotification(
+                                                customerNotification);
 
-        assertEquals("delivery",newCustomerNotification.getEventType());
-    }
+                assertEquals("delivery", newCustomerNotification.getEventType());
+        }
 
-    @Test
-    void getNotificationById() {
-        when(customerNotificationRepository.findById(1)).thenReturn(
-                Optional.of(new CustomerNotification(1,"a delivery was created",
-                        "delivery",5))
-        );
-        CustomerNotification customerNotification = customerNotificationServiceImplementation
-                .getNotificationById(1);
+        @Test
+        void getNotificationById() {
 
-        assertEquals(5,customerNotification.getCustomerId());
-    }
+                CustomerNotification searchCustNotify = new CustomerNotification(1, "a delivery was created",
+                                "delivery", 5);
+                when(custNotifyRepo.findById(1)).thenReturn(
+                                Optional.of(searchCustNotify));
+                CustomerNotification customerNotification = custNotifyServiceImpl
+                                .getNotificationById(1);
 
-    @Test
-    void getAllNotificationsByCustomerId() {
-        when(customerNotificationRepository.findAllByCustomerId(5)).thenReturn(Arrays.asList(
-                new CustomerNotification(1,"a delivery was created",
-                        "delivery",5),
-                new CustomerNotification(2,"Eren has approved your subscription request.",
-                        "subscription",5),
-                new CustomerNotification(3,"Jane Doe has provided feedback to your complain",
-                        "complain solved",5)
-        ));
-        List<CustomerNotification> result = customerNotificationServiceImplementation.getAllNotificationsByCustomerId(5);
+                assertEquals(5, customerNotification.getCustomerId());
+        }
 
-        assertEquals("delivery",result.get(0).getEventType());
-        assertEquals("Eren has approved your subscription request.",result.get(1).getMessage());
-    }
+        @Test
+        void getAllNotificationsByCustomerId() {
 
-    @Test
-    void updateNotification() {
-        CustomerNotification customerNotification = new CustomerNotification(1,
-                "Jane Doe has provided feedback to your complain", "subscription",5);
-        CustomerNotification newCustomerNotification = new CustomerNotification(1,
-                "John Doe has provided feedback to your complain", "subscription",5);
+                CustomerNotification notification1;
+                notification1 = new CustomerNotification(1, "a delivery was created",
+                                "delivery", 5);
+                CustomerNotification notification2;
+                notification2 = new CustomerNotification(2,
+                                "Eren has approved your subscription request.",
+                                "subscription", 5);
+                CustomerNotification notification3;
+                notification3 = new CustomerNotification(3,
+                                "Jane Doe has provided feedback to your complain",
+                                "complain solved", 5);
+                when(custNotifyRepo.findAllByCustomerId(5)).thenReturn(Arrays.asList(
+                                notification1,
+                                notification2,
+                                notification3));
+                List<CustomerNotification> result = custNotifyServiceImpl.getAllNotificationsByCustomerId(5);
 
-        when(customerNotificationRepository.findById(1)).thenReturn(Optional.of(customerNotification));
-        when(customerNotificationRepository.save(customerNotification)).thenReturn(newCustomerNotification);
+                assertEquals("delivery", result.get(0).getEventType());
+                assertEquals("Eren has approved your subscription request.", result.get(1).getMessage());
+        }
 
-        CustomerNotification updatedCustomerNotification = customerNotificationServiceImplementation
-                .updateNotification(customerNotification);
+        @Test
+        void updateNotification() {
+                CustomerNotification customerNotification;
+                customerNotification = new CustomerNotification(1,
+                                "Jane Doe has provided feedback to your complain", "subscription", 5);
+                CustomerNotification newCustomerNotification;
+                newCustomerNotification = new CustomerNotification(1,
+                                "John Doe has provided feedback to your complain", "subscription", 5);
 
-        assertEquals("John Doe has provided feedback to your complain",updatedCustomerNotification.getMessage());
-    }
+                when(custNotifyRepo.findById(1)).thenReturn(Optional.of(customerNotification));
+                when(custNotifyRepo.save(customerNotification)).thenReturn(newCustomerNotification);
 
-    @Test
-    void deleteNotification() {
-        CustomerNotification customerNotification = new CustomerNotification(1,"Eren has approved your subscription request.",
-                "subscription",5);
+                CustomerNotification updatedCustomerNotification = custNotifyServiceImpl
+                                .updateNotification(customerNotification);
 
-        when(customerNotificationRepository.findById(1)).thenReturn(Optional.of(customerNotification));
-        customerNotificationServiceImplementation.deleteNotification(1);
-        verify(customerNotificationRepository).deleteById(1);
-    }
+                assertEquals("John Doe has provided feedback to your complain",
+                                updatedCustomerNotification.getMessage());
+        }
+
+        @Test
+        void deleteNotification() {
+                CustomerNotification customerNotification;
+                customerNotification = new CustomerNotification(1,
+                                "Eren has approved your subscription request.",
+                                "subscription", 5);
+
+                when(custNotifyRepo.findById(1)).thenReturn(Optional.of(customerNotification));
+                custNotifyServiceImpl.deleteNotification(1);
+                verify(custNotifyRepo).deleteById(1);
+        }
 }

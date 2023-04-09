@@ -14,7 +14,7 @@ public class Addons {
 
     private float price;
 
-    @Column (name = "sup_id")
+    @Column(name = "sup_id")
     private int supplierId;
 
     public int getAddonId() {
@@ -57,16 +57,6 @@ public class Addons {
     }
 
     public Addons() {
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                " addon_id='" + getAddonId() + "'" +
-                ", item='" + getItem() + "'" +
-                ", price='" + getPrice() + "'" +
-                ", sup_id='" + getSupplierId() + "'" +
-                "}";
     }
 
 }

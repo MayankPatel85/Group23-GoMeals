@@ -64,23 +64,26 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Override
 	public List<Integer> getAllCustomerSubscriptions(int custId) {
 		List<Integer> listOfSuppliersForCustomers = new ArrayList<>();
+		List<Subscriptions> litstOfSubscriptions;
+		litstOfSubscriptions = subscriptionRepository.findSubscriptionsByCustomerIdAndActiveStatus(custId, 1);
 
-		subscriptionRepository.findSubscriptionsByCustomerIdAndActiveStatus(custId, 1)
-
-				.forEach(subscription -> listOfSuppliersForCustomers.add(subscription.getSupplierId()));
+		litstOfSubscriptions.forEach(subscription -> listOfSuppliersForCustomers.add(subscription.getSupplierId()));
 
 		return listOfSuppliersForCustomers;
 	}
 
 	@Override
 	public List<Subscriptions> getPendingSubscription(int supplierId) {
-		List<Subscriptions> pendingSubscriptions = subscriptionRepository.findByActiveStatusAndStatusAndSupplierId(0,
+		List<Subscriptions> pendingSubscriptions;
+		pendingSubscriptions = subscriptionRepository.findByActiveStatusAndStatusAndSupplierId(0,
 				"Pending", supplierId);
 		if (pendingSubscriptions.isEmpty()) {
 			return Collections.emptyList();
 		}
 		pendingSubscriptions.forEach(pendingSubscription -> {
-			Customer currentCustomer = customerRepository.findById(pendingSubscription.getCustomerId()).orElse(null);
+			Customer currentCustomer;
+
+			currentCustomer = customerRepository.findById(pendingSubscription.getCustomerId()).orElse(null);
 			pendingSubscription.setCustomer(currentCustomer);
 		});
 		return pendingSubscriptions;

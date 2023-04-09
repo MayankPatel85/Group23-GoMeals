@@ -1,7 +1,6 @@
 package com.gomeals.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.gomeals.model.Addons;
@@ -28,7 +27,7 @@ public class AddonsServiceImpl implements AddonsService {
     @Transactional
     public String createAddon(Addons addon) {
         addonsRepository.save(addon);
-        return "Addon added successully";
+        return "Addon added successfully";
     }
 
     @Override
