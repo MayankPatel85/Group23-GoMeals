@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Nav from 'react-bootstrap/Nav';
+import Nav from "react-bootstrap/Nav";
 import {
   Button,
   Card,
@@ -14,16 +14,16 @@ import {
   Table,
 } from "react-bootstrap";
 import axios from "axios";
-import { Label, Input } from 'reactstrap';
-import CustomerList from './CustomerList';
-import { Cookies } from 'react-cookie';
-import NavbarComponent from '../components/NavbarComponent';
+import { Label, Input } from "reactstrap";
+import CustomerList from "./CustomerList";
+import { Cookies } from "react-cookie";
+import NavbarComponent from "../components/NavbarComponent";
 import swal from "sweetalert";
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import { API_HEADER } from "../utils.js";
 
 export default function SupplierDashboard() {
@@ -60,21 +60,19 @@ export default function SupplierDashboard() {
     supAddress: "",
     supPaypalLink: "",
   });
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const cookies = new Cookies();
-  const loggedInUser = cookies.get('loggedInUser');
+  const loggedInUser = cookies.get("loggedInUser");
   console.log("logged" + loggedInUser);
   const handleca = () => {
     showAddOns(!addOns);
     showAddOnAlter(!addOnAlter);
-
-  }
-
+  };
 
   const handleClick = (param) => {
     showmealchart(!mealchart);
@@ -137,29 +135,25 @@ export default function SupplierDashboard() {
               const currentDate = new Date();
               currentDate.setDate(currentDate.getDate() + 1);
               const year = currentDate.getFullYear();
-              const month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-              const day = ('0' + currentDate.getDate()).slice(-2);
+              const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+              const day = ("0" + currentDate.getDate()).slice(-2);
 
-              axios.post(`${API_HEADER}customer-notification/create-all/?message=${loggedInUser.supName} has initiated delivery for ${year}-${month}-${day}&type=delivery&supplierId=${loggedInUser.supId}`)
-
+              axios.post(
+                `${API_HEADER}customer-notification/create-all/?message=${loggedInUser.supName} has initiated delivery for ${year}-${month}-${day}&type=delivery&supplierId=${loggedInUser.supId}`
+              );
+              window.location.reload();
             })
-            .catch(
-              swal("Deliveries existing"));
+            .catch(swal("Deliveries existing"));
         });
       });
     axios
-      .get(
-        `${API_HEADER}delivery/get/supplier/${loggedInUser.supId}`
-      )
+      .get(`${API_HEADER}delivery/get/supplier/${loggedInUser.supId}`)
       .then((response) => {
         setDeliveryData(response.data);
         console.log("getttt");
         console.log(response.data);
       });
-
-
   };
-
 
   function handleShowCustomers() {
     showCurrentChart(false);
@@ -181,7 +175,7 @@ export default function SupplierDashboard() {
         setSubscriptionList(response.data.subscriptions);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsCustomerListLoading(false);
@@ -191,32 +185,31 @@ export default function SupplierDashboard() {
     // });
   }
 
-
   const handleAddon = () => {
     const addOn1 = {
       addonId: "",
       item: document.getElementById("addon1").value,
       price: document.getElementById("price1").value,
-      supplierId: loggedInUser.supId
-    }
+      supplierId: loggedInUser.supId,
+    };
     const addOn2 = {
       addonId: "",
       item: document.getElementById("addon2").value,
       price: document.getElementById("price2").value,
-      supplierId: loggedInUser.supId
-    }
+      supplierId: loggedInUser.supId,
+    };
     const addOn3 = {
       addonId: "",
       item: document.getElementById("addon3").value,
       price: document.getElementById("price3").value,
-      supplierId: loggedInUser.supId
-    }
+      supplierId: loggedInUser.supId,
+    };
     axios
       .get(`${API_HEADER}Addons/get/all-supplier/${loggedInUser.supId}`)
       .then((response) => {
         console.log(response.data.length);
         if (response.data.length >= 3) {
-          swal("You allready have 3 Add-ons")
+          swal("You allready have 3 Add-ons");
         }
         if (response.data.length === 0) {
           axios
@@ -249,103 +242,95 @@ export default function SupplierDashboard() {
               console.log(error);
               swal("Error uploading new Add ons");
             });
-        };
+        }
       });
-
-
-
-  }
+  };
   const handleCreate = () => {
-    const mealChart = [{
-      id: {
-        day: "monday",
-        supId: loggedInUser.supId
+    const mealChart = [
+      {
+        id: {
+          day: "monday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("monday1").value,
+        item2: document.getElementById("monday2").value,
+        item3: document.getElementById("monday3").value,
+        item4: document.getElementById("monday4").value,
+        item5: document.getElementById("monday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("monday1").value,
-      item2: document.getElementById("monday2").value,
-      item3: document.getElementById("monday3").value,
-      item4: document.getElementById("monday4").value,
-      item5: document.getElementById("monday5").value,
-      specialDate: "2022-02-01"
-
-    },
-    {
-      id: {
-        day: "tuesday",
-        supId: loggedInUser.supId
+      {
+        id: {
+          day: "tuesday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("tuesday1").value,
+        item2: document.getElementById("tuesday2").value,
+        item3: document.getElementById("tuesday3").value,
+        item4: document.getElementById("tuesday4").value,
+        item5: document.getElementById("tuesday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("tuesday1").value,
-      item2: document.getElementById("tuesday2").value,
-      item3: document.getElementById("tuesday3").value,
-      item4: document.getElementById("tuesday4").value,
-      item5: document.getElementById("tuesday5").value,
-      specialDate: "2022-02-01"
-    },
-    {
-      id: {
-        day: "wednesday",
-        supId: loggedInUser.supId
+      {
+        id: {
+          day: "wednesday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("wednesday1").value,
+        item2: document.getElementById("wednesday2").value,
+        item3: document.getElementById("wednesday3").value,
+        item4: document.getElementById("wednesday4").value,
+        item5: document.getElementById("wednesday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("wednesday1").value,
-      item2: document.getElementById("wednesday2").value,
-      item3: document.getElementById("wednesday3").value,
-      item4: document.getElementById("wednesday4").value,
-      item5: document.getElementById("wednesday5").value,
-      specialDate: "2022-02-01"
-
-    },
-    {
-      id: {
-        day: "thursday",
-        supId: loggedInUser.supId
+      {
+        id: {
+          day: "thursday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("thursday1").value,
+        item2: document.getElementById("thursday2").value,
+        item3: document.getElementById("thursday3").value,
+        item4: document.getElementById("thursday4").value,
+        item5: document.getElementById("thursday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("thursday1").value,
-      item2: document.getElementById("thursday2").value,
-      item3: document.getElementById("thursday3").value,
-      item4: document.getElementById("thursday4").value,
-      item5: document.getElementById("thursday5").value,
-      specialDate: "2022-02-01"
-
-    },
-    {
-      id: {
-        day: "friday",
-        supId: loggedInUser.supId
+      {
+        id: {
+          day: "friday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("friday1").value,
+        item2: document.getElementById("friday2").value,
+        item3: document.getElementById("friday3").value,
+        item4: document.getElementById("friday4").value,
+        item5: document.getElementById("friday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("friday1").value,
-      item2: document.getElementById("friday2").value,
-      item3: document.getElementById("friday3").value,
-      item4: document.getElementById("friday4").value,
-      item5: document.getElementById("friday5").value,
-      specialDate: "2022-02-01"
-
-    },
-    {
-      id: {
-        day: "saturday",
-        supId: loggedInUser.supId
+      {
+        id: {
+          day: "saturday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("saturday1").value,
+        item2: document.getElementById("saturday2").value,
+        item3: document.getElementById("saturday3").value,
+        item4: document.getElementById("saturday4").value,
+        item5: document.getElementById("saturday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("saturday1").value,
-      item2: document.getElementById("saturday2").value,
-      item3: document.getElementById("saturday3").value,
-      item4: document.getElementById("saturday4").value,
-      item5: document.getElementById("saturday5").value,
-      specialDate: "2022-02-01"
-
-    },
-    {
-      id: {
-        day: "sunday",
-        supId: loggedInUser.supId
+      {
+        id: {
+          day: "sunday",
+          supId: loggedInUser.supId,
+        },
+        item1: document.getElementById("sunday1").value,
+        item2: document.getElementById("sunday2").value,
+        item3: document.getElementById("sunday3").value,
+        item4: document.getElementById("sunday4").value,
+        item5: document.getElementById("sunday5").value,
+        specialDate: "2022-02-01",
       },
-      item1: document.getElementById("sunday1").value,
-      item2: document.getElementById("sunday2").value,
-      item3: document.getElementById("sunday3").value,
-      item4: document.getElementById("sunday4").value,
-      item5: document.getElementById("sunday5").value,
-      specialDate: "2022-02-01"
-
-    },
     ];
     // item1:
     if (alter === "create") {
@@ -353,31 +338,28 @@ export default function SupplierDashboard() {
         .post(API_HEADER + "meal_chart/create", mealChart)
         .then((response) => {
           console.log(response.data);
-          alert("Data stored");
+          swal("Data stored");
           // navigate("/supplierDashboard");
         })
         .catch((error) => {
           console.log(error);
-          alert("Data was not sent");
+          swal("Data was not sent");
         });
     } else {
       axios
         .put(API_HEADER + "meal_chart/update", mealChart)
         .then((response) => {
           console.log(response.data);
-          alert("Data stored");
+          swal("Data stored");
           // navigate("/supplierDashboard");
-
         })
         .catch((error) => {
           console.log(error);
-          alert("Data was not sent");
-          console.log(mealChart)
+          swal("Data was not sent");
+          console.log(mealChart);
         });
     }
-
-  }
-
+  };
 
   const handleEditProfile = () => {
     setEditProfile(true);
@@ -405,57 +387,44 @@ export default function SupplierDashboard() {
         setCurrentSupplier(response.data);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsLoading(false);
       });
     const data1 = { day: "monday", supId: loggedInUser.supId };
-    axios
-      .post(API_HEADER + "meal_chart/get", data1)
-      .then((response) => {
-        setdatamon(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data1).then((response) => {
+      setdatamon(response.data);
+    });
     const data2 = { day: "tuesday", supId: loggedInUser.supId };
-    axios
-      .post(API_HEADER + "meal_chart/get", data2)
-      .then((response) => {
-        setdatatue(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data2).then((response) => {
+      setdatatue(response.data);
+    });
     const data3 = { day: "wednesday", supId: loggedInUser.supId };
-    axios
-      .post(API_HEADER + "meal_chart/get", data3)
-      .then((response) => {
-        setdatawed(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data3).then((response) => {
+      setdatawed(response.data);
+    });
     const data4 = { day: "thursday", supId: loggedInUser.supId };
-    axios
-      .post(API_HEADER + "meal_chart/get", data4)
-      .then((response) => {
-        setdatathu(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data4).then((response) => {
+      setdatathu(response.data);
+    });
     const data5 = { day: "friday", supId: loggedInUser.supId };
-    axios
-      .post(API_HEADER + "meal_chart/get", data5)
-      .then((response) => {
-        setdatafri(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data5).then((response) => {
+      setdatafri(response.data);
+    });
     const data6 = { day: "saturday", supId: loggedInUser.supId };
-    axios
-      .post(API_HEADER + "meal_chart/get", data6)
-      .then((response) => {
-        setdatasat(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data6).then((response) => {
+      setdatasat(response.data);
+    });
     const data7 = { day: "sunday", supId: loggedInUser.supId };
+    axios.post(API_HEADER + "meal_chart/get", data7).then((response) => {
+      setdatasun(response.data);
+    });
     axios
-      .post(API_HEADER + "meal_chart/get", data7)
-      .then((response) => {
-        setdatasun(response.data);
-      });
-    axios.get(`${API_HEADER}Addons/get/all-supplier/${loggedInUser.supId}`)
+      .get(`${API_HEADER}Addons/get/all-supplier/${loggedInUser.supId}`)
       .then((response) => {
         setAddOnData(response.data);
-      })
+      });
   }, [loggedInUser.supId]);
 
   useEffect(() => {
@@ -463,7 +432,7 @@ export default function SupplierDashboard() {
       axios
         .put(API_HEADER + "supplier/update", currentSupplier)
         .catch((e) => {
-          alert("Error getting data" + e);
+          swal("Error getting data" + e);
         })
         .finally(() => {
           setIsLoading(false);
@@ -516,6 +485,7 @@ export default function SupplierDashboard() {
       )
       .then((response) => {
         console.log(response.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -542,7 +512,6 @@ export default function SupplierDashboard() {
     showAddOns(false);
     setShowCustomerList(false);
     showMealChartEdit(true);
-
   };
   const handleAn = () => {
     setAddOnEdit(true);
@@ -554,7 +523,7 @@ export default function SupplierDashboard() {
     setShowDeliveryTable(false);
     setShowCustomerList(false);
     showMealChartEdit(false);
-  }
+  };
   const handleDel = () => {
     setAddOnEdit(false);
     showAddOnAlter(false);
@@ -566,9 +535,7 @@ export default function SupplierDashboard() {
     setShowCustomerList(false);
     showMealChartEdit(false);
     axios
-      .get(
-        `${API_HEADER}delivery/get/supplier/${loggedInUser.supId}`
-      )
+      .get(`${API_HEADER}delivery/get/supplier/${loggedInUser.supId}`)
       .then((response) => {
         setDeliveryData(response.data);
         console.log(response.data);
@@ -587,7 +554,7 @@ export default function SupplierDashboard() {
       swal("Fields should not be empty.");
       return false;
     } else if (!regexForEmail.test(editedSupplierDetail.supEmail)) {
-      swal("Please provide valid email.")
+      swal("Please provide valid email.");
       return false;
     } else if (
       editedSupplierDetail.supContactNumber.length !== 10 ||
@@ -634,23 +601,47 @@ export default function SupplierDashboard() {
               return null;
             })}
           </tbody>
-        </Table>)
-
-    )
-  };
-
+        </Table>
+      )
+    );
+  }
 
   return (
     <div className="supplier-dashboard">
       <Box sx={{ flex: 1, typography: 'body1' }}>
         <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="Profile" value="1" onClick={handleProfile} sx={{ flexGrow: 1 }} />
-              <Tab label="Meal Chart" value="2" onClick={handleMC} sx={{ flexGrow: 1 }} />
-              <Tab label="Addons" value="3" onClick={handleAn} sx={{ flexGrow: 1 }} />
-              <Tab label="Delivery" value="4" onClick={handleDel} sx={{ flexGrow: 1 }} />
-              <Tab label="View Customers" value="5" onClick={handleShowCustomers} sx={{ flexGrow: 1 }} />
+              <Tab
+                label="Profile"
+                value="1"
+                onClick={handleProfile}
+                sx={{ flexGrow: 1 }}
+              />
+              <Tab
+                label="Meal Chart"
+                value="2"
+                onClick={handleMC}
+                sx={{ flexGrow: 1 }}
+              />
+              <Tab
+                label="Addons"
+                value="3"
+                onClick={handleAn}
+                sx={{ flexGrow: 1 }}
+              />
+              <Tab
+                label="Delivery"
+                value="4"
+                onClick={handleDel}
+                sx={{ flexGrow: 1 }}
+              />
+              <Tab
+                label="View Customers"
+                value="5"
+                onClick={handleShowCustomers}
+                sx={{ flexGrow: 1 }}
+              />
             </TabList>
           </Box>
           {/* <TabPanel value="1"></TabPanel>
@@ -660,21 +651,37 @@ export default function SupplierDashboard() {
       </Box>
       <h2>Welcome {loggedInUser.supName}</h2>
       <br />
-      {addOnEdit && (<div><Button variant="outline-primary" onClick={handleca}>
-        Create Add-on
-      </Button>{" "}</div>)}
-      {mealChartEdit && (<div>
-        <Button variant="outline-primary" onClick={() => handleClick("create")}>
-          Create Meal Chart
-        </Button>{" "}
-        <Button variant="outline-primary" onClick={() => handleClick("update")}>
-          Update Meal Chart
-        </Button>{" "}
-      </div>)}
+      {addOnEdit && (
+        <div>
+          <Button variant="outline-primary" onClick={handleca}>
+            Create Add-on
+          </Button>{" "}
+        </div>
+      )}
+      {mealChartEdit && (
+        <div>
+          <Button
+            variant="outline-primary"
+            onClick={() => handleClick("create")}
+          >
+            Create Meal Chart
+          </Button>{" "}
+          <Button
+            variant="outline-primary"
+            onClick={() => handleClick("update")}
+          >
+            Update Meal Chart
+          </Button>{" "}
+        </div>
+      )}
       {/*<Button variant="outline-primary" onClick={handleca}>Create Meal Addons</Button>{' '}*/}
-      {showDeliveryTable && (<div><Button variant="outline-primary" onClick={handleDelivery}>
-        Initiate Deliveries
-      </Button>{" "}</div>)}
+      {showDeliveryTable && (
+        <div>
+          <Button variant="outline-primary" onClick={handleDelivery}>
+            Initiate Deliveries
+          </Button>{" "}
+        </div>
+      )}
       {/*<Button variant="outline-primary" onClick={handleShowCustomers}>*/}
       {/*    View Customers*/}
       {/*</Button>*/}
@@ -736,66 +743,68 @@ export default function SupplierDashboard() {
           </Button>
         </Modal.Footer>
       </Modal>
-      {supProfile && (<div>
-        {/* <NavbarComponent /> */}
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div>
-            <div className="container customer-profile my-4">
-              <div className="col-lg-12">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h2 className="d-inline">Hi, </h2>
-                    <h2 className="d-inline">{currentSupplier.supName}</h2>
+      {supProfile && (
+        <div>
+          {/* <NavbarComponent /> */}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <div>
+              <div className="container customer-profile my-4">
+                <div className="col-lg-12">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h2 className="d-inline">Hi, </h2>
+                      <h2 className="d-inline">{currentSupplier.supName}</h2>
+                    </div>
+                    <Button variant="dark" onClick={handleEditProfile}>
+                      Edit Profile
+                    </Button>
                   </div>
-                  <Button variant="dark" onClick={handleEditProfile}>
-                    Edit Profile
-                  </Button>
                 </div>
-              </div>
-              <div className="row mb-2 profile-item">
-                <div className="col-lg-12">
-                  <h4 className="d-inline">Email</h4>
-                  <hr></hr>
+                <div className="row mb-2 profile-item">
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">Email</h4>
+                    <hr></hr>
+                  </div>
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">{currentSupplier.supEmail}</h4>
+                  </div>
                 </div>
-                <div className="col-lg-12">
-                  <h4 className="d-inline">{currentSupplier.supEmail}</h4>
+                <div className="row mb-2 profile-item">
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">Contact number</h4>
+                    <hr></hr>
+                  </div>
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">
+                      {currentSupplier.supContactNumber}
+                    </h4>
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-2 profile-item">
-                <div className="col-lg-12">
-                  <h4 className="d-inline">Contact number</h4>
-                  <hr></hr>
+                <div className="row mb-2 profile-item">
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">Address</h4>
+                    <hr></hr>
+                  </div>
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">{currentSupplier.supAddress}</h4>
+                  </div>
                 </div>
-                <div className="col-lg-12">
-                  <h4 className="d-inline">
-                    {currentSupplier.supContactNumber}
-                  </h4>
-                </div>
-              </div>
-              <div className="row mb-2 profile-item">
-                <div className="col-lg-12">
-                  <h4 className="d-inline">Address</h4>
-                  <hr></hr>
-                </div>
-                <div className="col-lg-12">
-                  <h4 className="d-inline">{currentSupplier.supAddress}</h4>
-                </div>
-              </div>
-              <div className="row mb-2 profile-item">
-                <div className="col-lg-12">
-                  <h4 className="d-inline">Paypal Link</h4>
-                  <hr></hr>
-                </div>
-                <div className="col-lg-12">
-                  <h4 className="d-inline">{currentSupplier.paypalLink}</h4>
+                <div className="row mb-2 profile-item">
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">Paypal Link</h4>
+                    <hr></hr>
+                  </div>
+                  <div className="col-lg-12">
+                    <h4 className="d-inline">{currentSupplier.paypalLink}</h4>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>)}
+          )}
+        </div>
+      )}
       {mealchart && (
         <div>
           <Card className="mechco">
@@ -943,60 +952,81 @@ export default function SupplierDashboard() {
           </Card>
         </div>
       )}
-      {addOns &&
+      {addOns && (
         <div className="mx-4">
           <h3>Add-on details</h3>
           <hr />
           <Table striped bordered responsive>
             <tbody>
-            {addOnData.map((data) => {
-              return (
-                <tr key={data.id}>
-                  <td><h5>Item</h5></td>
-                  <td><h5>{data.item}</h5></td>
-                  <td><h5>Price</h5></td>
-                  <td><h5>{data.price}</h5></td>
-                </tr>
-              );
-            })}
+              {addOnData.map((data) => {
+                return (
+                  <tr key={data.id}>
+                    <td>
+                      <h5>Item</h5>
+                    </td>
+                    <td>
+                      <h5>{data.item}</h5>
+                    </td>
+                    <td>
+                      <h5>Price</h5>
+                    </td>
+                    <td>
+                      <h5>{data.price}</h5>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         </div>
-      }
+      )}
 
-      {addOnAlter &&
-
+      {addOnAlter && (
         <div>
-          <Card>
+          <Card className="mechco">
             <Card.Body>
               <h3>Add on Details</h3>
               <table>
                 <tr>
                   <td>Addon1:</td>
-                  <td><input type="text" id="addon1" /></td>
+                  <td>
+                    <input type="text" id="addon1" />
+                  </td>
                   <td>Price</td>
-                  <td><input type="text" id="price1" /></td>
+                  <td>
+                    <input type="text" id="price1" />
+                  </td>
                 </tr>
                 <tr>
                   <td>Addon2:</td>
-                  <td><input type="text" id="addon2" /></td>
+                  <td>
+                    <input type="text" id="addon2" />
+                  </td>
                   <td>Price</td>
-                  <td><input type="text" id="price2" /></td>
+                  <td>
+                    <input type="text" id="price2" />
+                  </td>
                 </tr>
                 <tr>
                   <td>Addon3:</td>
-                  <td><input type="text" id="addon3" /></td>
+                  <td>
+                    <input type="text" id="addon3" />
+                  </td>
                   <td>Price</td>
-                  <td><input type="text" id="price3" /></td>
+                  <td>
+                    <input type="text" id="price3" />
+                  </td>
                 </tr>
               </table>
               <br />
-              <Button variant="outline-primary" onClick={handleAddon}>Upload</Button>{' '}
+              <Button variant="outline-primary" onClick={handleAddon}>
+                Upload
+              </Button>{" "}
             </Card.Body>
-          </Card></div>
-      }
-      {
-        currentChart &&
+          </Card>
+        </div>
+      )}
+      {currentChart && (
         <div className="mx-4">
           <br />
           <h2> Current Meal Plan </h2>
@@ -1004,71 +1034,153 @@ export default function SupplierDashboard() {
           <br />
           <Table striped bordered responsive>
             <tbody>
-            <tr>
-              <td style={{ width: '150px' }}><h5>Monday</h5></td>
-              <td style={{ width: '150px' }}><h5>{datamon.item1}</h5></td>
-              <td style={{ width: '150px' }}><h5>{datamon.item2}</h5></td>
-              <td style={{ width: '150px' }}><h5>{datamon.item3}</h5></td>
-              <td style={{ width: '150px' }}><h5>{datamon.item4}</h5></td>
-              <td style={{ width: '150px' }}><h5>{datamon.item5}</h5></td>
-            </tr>
-            <tr>
-              <td><h5>Tuesday</h5></td>
-              <td><h5>{datatue.item1}</h5></td>
-              <td><h5>{datatue.item2}</h5></td>
-              <td><h5>{datatue.item3}</h5></td>
-              <td><h5>{datatue.item4}</h5></td>
-              <td><h5>{datatue.item5}</h5></td>
-            </tr>
-            <tr>
-              <td><h5>Wednesday</h5></td>
-              <td><h5>{datawed.item1}</h5></td>
-              <td><h5>{datawed.item2}</h5></td>
-              <td><h5>{datawed.item3}</h5></td>
-              <td><h5>{datawed.item4}</h5></td>
-              <td><h5>{datawed.item5}</h5></td>
-            </tr>
-            <tr>
-              <td><h5>Thursday</h5></td>
-              <td><h5>{datathu.item1}</h5></td>
-              <td><h5>{datathu.item2}</h5></td>
-              <td><h5>{datathu.item3}</h5></td>
-              <td><h5>{datathu.item4}</h5></td>
-              <td><h5>{datathu.item5}</h5></td>
-            </tr>
-            <tr>
-              <td><h5>Friday</h5></td>
-              <td><h5>{datafri.item1}</h5></td>
-              <td><h5>{datafri.item2}</h5></td>
-              <td><h5>{datafri.item3}</h5></td>
-              <td><h5>{datafri.item4}</h5></td>
-              <td><h5>{datafri.item5}</h5></td>
-            </tr>
-            <tr>
-              <td><h5>Saturday</h5></td>
-              <td><h5>{datasat.item1}</h5></td>
-              <td><h5>{datasat.item2}</h5></td>
-              <td><h5>{datasat.item3}</h5></td>
-              <td><h5>{datasat.item4}</h5></td>
-              <td><h5>{datasat.item5}</h5></td>
-            </tr>
-            <tr>
-              <td><h5>Sunday</h5></td>
-              <td><h5>{datasun.item1}</h5></td>
-              <td><h5>{datasun.item2}</h5></td>
-              <td><h5>{datasun.item3}</h5></td>
-              <td><h5>{datasun.item4}</h5></td>
-              <td><h5>{datasun.item5}</h5></td>
-            </tr>
+              <tr>
+                <td style={{ width: "150px" }}>
+                  <h5>Monday</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item1}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item2}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item3}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item4}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Tuesday</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Wednesday</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Thursday</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Friday</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Saturday</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Sunday</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item5}</h5>
+                </td>
+              </tr>
             </tbody>
-
           </Table>
           <br />
 
           <br />
         </div>
-
-      }
+      )}
       {showCustomerList ? (
         isCustomerListLoading ? (
           <Container className="my-5 mx-auto">
@@ -1100,4 +1212,3 @@ export default function SupplierDashboard() {
     </div>
   );
 }
-

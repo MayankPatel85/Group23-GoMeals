@@ -1,4 +1,5 @@
 package com.gomeals.controller;
+
 import com.gomeals.model.SupplierReview;
 import com.gomeals.service.SupplierReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/supplierReview")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class SupplierReviewController {
     @Autowired
     SupplierReviewService supplierReviewService;
@@ -24,11 +25,12 @@ public class SupplierReviewController {
     }
 
     @GetMapping("/get/4us")
-    public List<Integer> get4upStarSupplier(){
-        return  supplierReviewService.get4upStarSupplier();
+    public List<Integer> get4upStarSupplier() {
+        return supplierReviewService.get4upStarSupplier();
     }
+
     @GetMapping("/get/3us")
-    public List<Integer> get3UpStarSupplier(){
-        return  supplierReviewService.get3UpStarSupplier();
+    public List<Integer> get3UpStarSupplier() {
+        return supplierReviewService.get3UpStarSupplier();
     }
 }

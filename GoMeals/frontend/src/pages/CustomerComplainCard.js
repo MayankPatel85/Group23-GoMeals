@@ -5,7 +5,7 @@ import ComplainModalComponent from "../components/ComplainModalComponent";
 function ComplainCard(props) {
   const [show, setShow] = useState(false);
   return (
-    <Card border="dark" style={{ width: "18rem" }} className="m-5">
+    <Card border="dark" style={{ width: "18rem" }}>
       <Card.Header>Complain raised on : {props.complain.date} </Card.Header>
       <Card.Body>
         <Card.Title>Complain Status : {props.complain.status}</Card.Title>

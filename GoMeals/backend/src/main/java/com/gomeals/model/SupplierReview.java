@@ -1,7 +1,6 @@
 package com.gomeals.model;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "supplier_review")
@@ -9,27 +8,28 @@ import java.io.Serializable;
 public class SupplierReview {
 
     @Id
-    @Column (name="cust_id")
+    @Column(name = "cust_id")
     private Integer customerId;
 
     @Id
-    @Column (name="sup_id")
+    @Column(name = "sup_id")
     private Integer supplierId;
     private String comment;
 
     private int supplier_rating;
     private String supplier_reviewcol;
 
-    public SupplierReview(){
+    public SupplierReview() {
 
     }
 
-    public SupplierReview(Integer customerId, Integer supplierId, String comment, int supplier_rating,String supplier_reviewcol) {
+    public SupplierReview(Integer customerId, Integer supplierId, String comment, int supplier_rating,
+            String supplier_reviewcol) {
         this.customerId = customerId;
         this.supplierId = supplierId;
         this.comment = comment;
         this.supplier_rating = supplier_rating;
-        this.supplier_reviewcol=supplier_reviewcol;
+        this.supplier_reviewcol = supplier_reviewcol;
     }
 
     public Integer getCustomerId() {
@@ -72,5 +72,3 @@ public class SupplierReview {
         this.supplier_reviewcol = supplier_reviewcol;
     }
 }
-
-

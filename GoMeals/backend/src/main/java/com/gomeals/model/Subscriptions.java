@@ -94,7 +94,8 @@ public class Subscriptions {
 		this.customer = customer;
 	}
 
-	public Subscriptions(int sub_id, int meals_remaining, Date sub_date, int activeStatus, int cust_id, int supplierId) {
+	public Subscriptions(int sub_id, int meals_remaining, Date sub_date, int activeStatus, int cust_id,
+			int supplierId) {
 		super();
 		this.sub_id = sub_id;
 		this.meals_remaining = meals_remaining;
@@ -106,12 +107,6 @@ public class Subscriptions {
 
 	public Subscriptions() {
 		super();
-	}
-
-	@Override
-	public String toString() {
-		return "Subscriptions [sub_id=" + sub_id + ", meals_remaining=" + meals_remaining + ", sub_date=" + sub_date
-				+ ", active_status=" + activeStatus + ", cust_id=" + customerId + ", sup_id=" + supplierId + "]";
 	}
 
 }
