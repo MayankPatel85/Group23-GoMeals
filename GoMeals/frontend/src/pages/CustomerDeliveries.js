@@ -8,6 +8,8 @@ import { Container } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import NavbarComponent from "../components/NavbarComponent";
 import HeroComponent from "../components/HeroComponent";
+import { API_HEADER } from "../utils.js";
+
 const CustomerDeliveries = ({ history }) => {
   const cookies = new Cookies();
   const [customerOrders, setCustomerOrders] = useState([]);
@@ -23,7 +25,7 @@ const CustomerDeliveries = ({ history }) => {
   ];
 
   useEffect(() => {
-    fetch("http://localhost:8080/delivery/get/customer/" + loggedInUser.cust_id)
+    fetch(API_HEADER + "delivery/get/customer/" + loggedInUser.cust_id)
       .then((res) => res.json())
       .then((val) => setCustomerOrders(val))
       .then(() => {

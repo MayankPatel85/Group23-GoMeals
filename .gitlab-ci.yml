@@ -28,7 +28,7 @@ test-services:
     - chmod +x ./gradlew
     - ./gradlew test
     - echo "Test stage completed!"
-
+   
 code-quality:
   stage: designite
   tags:

@@ -7,6 +7,7 @@ import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import HeroComponent from "../components/HeroComponent";
+import { API_HEADER } from "../utils.js";
 
 export default function CustomerDashboard(children, func) {
   const [data, setdata] = useState({});
@@ -28,20 +29,20 @@ export default function CustomerDashboard(children, func) {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const fetchdata = (param) => {
     axios
-      .get("http://localhost:8080/supplierReview/get/4us")
+      .get(API_HEADER + "supplierReview/get/4us")
       .then((response) => {
         // console.log(response.data)
         sets4List(response.data);
       });
     axios
-      .get("http://localhost:8080/supplierReview/get/3us")
+      .get(API_HEADER + "supplierReview/get/3us")
       .then((response) => {
         // console.log(response.data)
         sets3List(response.data);
       });
 
     console.log(param);
-    axios.get("http://localhost:8080/supplier/get/all").then((response) => {
+    axios.get(API_HEADER + "supplier/get/all").then((response) => {
       if (param === "normal") {
         setdata(response.data);
       }
@@ -89,50 +90,50 @@ export default function CustomerDashboard(children, func) {
 
   const handleClick = (param, e) => {
     const id = param;
-    axios.get(`http://localhost:8080/supplier/get/${id}`).then((response) => {
+    axios.get(`${API_HEADER}supplier/get/${id}`).then((response) => {
       setSupName(response.data);
       setSupId(id);
     });
     console.log(loggedInUser.cust_id);
     const data1 = { day: "monday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data1)
+      .post(API_HEADER + "meal_chart/get", data1)
       .then((response) => {
         setdatamon(response.data);
       });
     const data2 = { day: "tuesday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data2)
+      .post(API_HEADER + "meal_chart/get", data2)
       .then((response) => {
         setdatatue(response.data);
       });
     const data3 = { day: "wednesday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data3)
+      .post(API_HEADER + "meal_chart/get", data3)
       .then((response) => {
         setdatawed(response.data);
       });
     const data4 = { day: "thursday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data4)
+      .post(API_HEADER + "meal_chart/get", data4)
       .then((response) => {
         setdatathu(response.data);
       });
     const data5 = { day: "friday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data5)
+      .post(API_HEADER + "meal_chart/get", data5)
       .then((response) => {
         setdatafri(response.data);
       });
     const data6 = { day: "saturday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data6)
+      .post(API_HEADER + "meal_chart/get", data6)
       .then((response) => {
         setdatasat(response.data);
       });
     const data7 = { day: "sunday", supId: param };
     axios
-      .post("http://localhost:8080/meal_chart/get", data7)
+      .post(API_HEADER + "meal_chart/get", data7)
       .then((response) => {
         setdatasun(response.data);
       });

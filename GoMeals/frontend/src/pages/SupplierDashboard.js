@@ -24,6 +24,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import { API_HEADER } from "../utils.js";
 
 export default function SupplierDashboard() {
   const [alter, alterstate] = useState("create");
@@ -96,7 +97,7 @@ export default function SupplierDashboard() {
     setShowCustomerList(false);
     showmealchart(false);
     // axios
-    //   .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+    //   .get(`API_HEADERsubscription/get/sup/${loggedInUser.supId}`)
     //   .then((response) => {
     //     response.data.forEach((custId) => {
     //       console.log(custId);
@@ -110,11 +111,11 @@ export default function SupplierDashboard() {
     //       };
     //       console.log(delivery);
     //       axios
-    //         .post("http://localhost:8080/delivery/create", delivery)
+    //         .post("API_HEADERdelivery/create", delivery)
     //         .then((res) => {
     //           swal("Deliveries initiated");
     axios
-      .get(`http://localhost:8080/subscription/get/sup/${loggedInUser.supId}`)
+      .get(`${API_HEADER}subscription/get/sup/${loggedInUser.supId}`)
       .then((response) => {
         response.data.forEach((custId) => {
           console.log(custId);
@@ -128,7 +129,7 @@ export default function SupplierDashboard() {
           };
           console.log(delivery);
           axios
-            .post("http://localhost:8080/delivery/create", delivery)
+            .post(API_HEADER + "delivery/create", delivery)
             .then((res) => {
               swal("Deliveries initiated");
               const currentDate = new Date();
@@ -138,14 +139,14 @@ export default function SupplierDashboard() {
               const day = ("0" + currentDate.getDate()).slice(-2);
 
               axios.post(
-                `http://localhost:8080/customer-notification/create-all/?message=${loggedInUser.supName} has initiated delivery for ${year}-${month}-${day}&type=delivery&supplierId=${loggedInUser.supId}`
+                `${API_HEADER}customer-notification/create-all/?message=${loggedInUser.supName} has initiated delivery for ${year}-${month}-${day}&type=delivery&supplierId=${loggedInUser.supId}`
               );
             })
             .catch(swal("Deliveries existing"));
         });
       });
     axios
-      .get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
+      .get(`${API_HEADER}delivery/get/supplier/${loggedInUser.supId}`)
       .then((response) => {
         setDeliveryData(response.data);
         console.log("getttt");
@@ -165,7 +166,7 @@ export default function SupplierDashboard() {
     setIsCustomerListLoading(true);
     console.log("supId" + JSON.stringify(loggedInUser));
     axios
-      .get(`http://localhost:8080/supplier/get/${loggedInUser.supId}`)
+      .get(`${API_HEADER}supplier/get/${loggedInUser.supId}`)
       .then((response) => {
         setCustomerList(() => {
           return response.data.customers;
@@ -203,9 +204,7 @@ export default function SupplierDashboard() {
       supplierId: loggedInUser.supId,
     };
     axios
-      .get(
-        `http://localhost:8080/Addons/get/all-supplier/${loggedInUser.supId}`
-      )
+      .get(`${API_HEADER}Addons/get/all-supplier/${loggedInUser.supId}`)
       .then((response) => {
         console.log(response.data.length);
         if (response.data.length >= 3) {
@@ -213,7 +212,7 @@ export default function SupplierDashboard() {
         }
         if (response.data.length === 0) {
           axios
-            .post("http://localhost:8080/Addons/create", addOn1)
+            .post(API_HEADER + "Addons/create", addOn1)
             .then((response) => {
               console.log(response.data);
               // navigate("/supplierDashboard");
@@ -222,7 +221,7 @@ export default function SupplierDashboard() {
               console.log(error);
             });
           axios
-            .post("http://localhost:8080/Addons/create", addOn2)
+            .post(API_HEADER + "Addons/create", addOn2)
             .then((response) => {
               console.log(response.data);
               // navigate("/supplierDashboard");
@@ -231,7 +230,7 @@ export default function SupplierDashboard() {
               console.log(error);
             });
           axios
-            .post("http://localhost:8080/Addons/create", addOn3)
+            .post(API_HEADER + "Addons/create", addOn3)
             .then((response) => {
               console.log(response.data);
               swal("Add ons successfully added!");
@@ -335,7 +334,7 @@ export default function SupplierDashboard() {
     // item1:
     if (alter === "create") {
       axios
-        .post("http://localhost:8080/meal_chart/create", mealChart)
+        .post(API_HEADER + "meal_chart/create", mealChart)
         .then((response) => {
           console.log(response.data);
           alert("Data stored");
@@ -347,7 +346,7 @@ export default function SupplierDashboard() {
         });
     } else {
       axios
-        .put("http://localhost:8080/meal_chart/update", mealChart)
+        .put(API_HEADER + "meal_chart/update", mealChart)
         .then((response) => {
           console.log(response.data);
           alert("Data stored");
@@ -382,7 +381,7 @@ export default function SupplierDashboard() {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:8080/supplier/get/${loggedInUser.supId}`)
+      .get(`${API_HEADER}supplier/get/${loggedInUser.supId}`)
       .then((response) => {
         setCurrentSupplier(response.data);
       })
@@ -393,51 +392,35 @@ export default function SupplierDashboard() {
         setIsLoading(false);
       });
     const data1 = { day: "monday", supId: loggedInUser.supId };
-    axios
-      .post("http://localhost:8080/meal_chart/get", data1)
-      .then((response) => {
-        setdatamon(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data1).then((response) => {
+      setdatamon(response.data);
+    });
     const data2 = { day: "tuesday", supId: loggedInUser.supId };
-    axios
-      .post("http://localhost:8080/meal_chart/get", data2)
-      .then((response) => {
-        setdatatue(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data2).then((response) => {
+      setdatatue(response.data);
+    });
     const data3 = { day: "wednesday", supId: loggedInUser.supId };
-    axios
-      .post("http://localhost:8080/meal_chart/get", data3)
-      .then((response) => {
-        setdatawed(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data3).then((response) => {
+      setdatawed(response.data);
+    });
     const data4 = { day: "thursday", supId: loggedInUser.supId };
-    axios
-      .post("http://localhost:8080/meal_chart/get", data4)
-      .then((response) => {
-        setdatathu(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data4).then((response) => {
+      setdatathu(response.data);
+    });
     const data5 = { day: "friday", supId: loggedInUser.supId };
-    axios
-      .post("http://localhost:8080/meal_chart/get", data5)
-      .then((response) => {
-        setdatafri(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data5).then((response) => {
+      setdatafri(response.data);
+    });
     const data6 = { day: "saturday", supId: loggedInUser.supId };
-    axios
-      .post("http://localhost:8080/meal_chart/get", data6)
-      .then((response) => {
-        setdatasat(response.data);
-      });
+    axios.post(API_HEADER + "meal_chart/get", data6).then((response) => {
+      setdatasat(response.data);
+    });
     const data7 = { day: "sunday", supId: loggedInUser.supId };
+    axios.post(API_HEADER + "meal_chart/get", data7).then((response) => {
+      setdatasun(response.data);
+    });
     axios
-      .post("http://localhost:8080/meal_chart/get", data7)
-      .then((response) => {
-        setdatasun(response.data);
-      });
-    axios
-      .get(
-        `http://localhost:8080/Addons/get/all-supplier/${loggedInUser.supId}`
-      )
+      .get(`${API_HEADER}Addons/get/all-supplier/${loggedInUser.supId}`)
       .then((response) => {
         setAddOnData(response.data);
       });
@@ -446,7 +429,7 @@ export default function SupplierDashboard() {
   useEffect(() => {
     if (updateSupplierData) {
       axios
-        .put("http://localhost:8080/supplier/update", currentSupplier)
+        .put(API_HEADER + "supplier/update", currentSupplier)
         .catch((e) => {
           alert("Error getting data" + e);
         })
@@ -466,7 +449,7 @@ export default function SupplierDashboard() {
         supEmail: editedSupplierDetail.supEmail,
         supContactNumber: editedSupplierDetail.supContactNumber,
         supAddress: editedSupplierDetail.supAddress,
-        paypalLink: editedSupplierDetail.supPaypalLink,
+        supPaypalLink: editedSupplierDetail.supPaypalLink,
       }));
       setUpdateSupplierData(true);
     }
@@ -497,7 +480,7 @@ export default function SupplierDashboard() {
   const handleOrderStatusChange = (deliveryId, orderStatus) => {
     axios
       .put(
-        `http://localhost:8080/delivery/update-status/?deliveryId=${deliveryId}&orderStatus=${orderStatus}`
+        `${API_HEADER}delivery/update-status/?deliveryId=${deliveryId}&orderStatus=${orderStatus}`
       )
       .then((response) => {
         console.log(response.data);
@@ -550,7 +533,7 @@ export default function SupplierDashboard() {
     setShowCustomerList(false);
     showMealChartEdit(false);
     axios
-      .get(`http://localhost:8080/delivery/get/supplier/${loggedInUser.supId}`)
+      .get(`${API_HEADER}delivery/get/supplier/${loggedInUser.supId}`)
       .then((response) => {
         setDeliveryData(response.data);
         console.log(response.data);
@@ -968,37 +951,37 @@ export default function SupplierDashboard() {
         </div>
       )}
       {addOns && (
-        <div className="mechco">
+        <div className="mx-4">
           <h3>Add-on details</h3>
           <hr />
-          <table>
-            {addOnData.map((data) => (
-              <div key={data.id}>
-                <tr>
-                  <td>
-                    <h4>Item : </h4>
-                  </td>
-                  <td style={{ width: "150px" }}>
-                    {" "}
-                    <h4>{data.item}</h4>
-                  </td>
-                  <td style={{ paddingLeft: "175px" }}>
-                    <h4>Price : </h4>
-                  </td>
-                  <td>
-                    <h4>{data.price}</h4>
-                  </td>
-                </tr>
-                <hr />
-              </div>
-            ))}
-          </table>
+          <Table striped bordered responsive>
+            <tbody>
+              {addOnData.map((data) => {
+                return (
+                  <tr key={data.id}>
+                    <td>
+                      <h5>Item</h5>
+                    </td>
+                    <td>
+                      <h5>{data.item}</h5>
+                    </td>
+                    <td>
+                      <h5>Price</h5>
+                    </td>
+                    <td>
+                      <h5>{data.price}</h5>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
         </div>
       )}
 
       {addOnAlter && (
         <div>
-          <Card className="mechco">
+          <Card>
             <Card.Body>
               <h3>Add on Details</h3>
               <table>
@@ -1042,160 +1025,155 @@ export default function SupplierDashboard() {
         </div>
       )}
       {currentChart && (
-        <div className="mechco">
+        <div className="mx-4">
           <br />
           <h2> Current Meal Plan </h2>
           <hr />
           <br />
-          <table>
-            <tr>
-              <td style={{ width: "150px" }}>
-                <h4>Monday :</h4>
-              </td>
-              <td style={{ width: "150px" }}>
-                <h4>{datamon.item1}</h4>
-              </td>
-              <td style={{ width: "150px" }}>
-                <h4>{datamon.item2}</h4>
-              </td>
-              <td style={{ width: "150px" }}>
-                <h4>{datamon.item3}</h4>
-              </td>
-              <td style={{ width: "150px" }}>
-                <h4>{datamon.item4}</h4>
-              </td>
-              <td style={{ width: "150px" }}>
-                <h4>{datamon.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-            <tr>
-              <td>
-                <h4>Tuesday :</h4>
-              </td>
-              <td>
-                <h4>{datatue.item1}</h4>
-              </td>
-              <td>
-                <h4>{datatue.item2}</h4>
-              </td>
-              <td>
-                <h4>{datatue.item3}</h4>
-              </td>
-              <td>
-                <h4>{datatue.item4}</h4>
-              </td>
-              <td>
-                <h4>{datatue.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-            <tr>
-              <td>
-                <h4>Wednesday :</h4>
-              </td>
-              <td>
-                <h4>{datawed.item1}</h4>
-              </td>
-              <td>
-                <h4>{datawed.item2}</h4>
-              </td>
-              <td>
-                <h4>{datawed.item3}</h4>
-              </td>
-              <td>
-                <h4>{datawed.item4}</h4>
-              </td>
-              <td>
-                <h4>{datawed.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-            <tr>
-              <td>
-                <h4>Thursday :</h4>
-              </td>
-              <td>
-                <h4>{datathu.item1}</h4>
-              </td>
-              <td>
-                <h4>{datathu.item2}</h4>
-              </td>
-              <td>
-                <h4>{datathu.item3}</h4>
-              </td>
-              <td>
-                <h4>{datathu.item4}</h4>
-              </td>
-              <td>
-                <h4>{datathu.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-            <tr>
-              <td>
-                <h4>Friday :</h4>
-              </td>
-              <td>
-                <h4>{datafri.item1}</h4>
-              </td>
-              <td>
-                <h4>{datafri.item2}</h4>
-              </td>
-              <td>
-                <h4>{datafri.item3}</h4>
-              </td>
-              <td>
-                <h4>{datafri.item4}</h4>
-              </td>
-              <td>
-                <h4>{datafri.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-            <tr>
-              <td>
-                <h4>Saturday :</h4>
-              </td>
-              <td>
-                <h4>{datasat.item1}</h4>
-              </td>
-              <td>
-                <h4>{datasat.item2}</h4>
-              </td>
-              <td>
-                <h4>{datasat.item3}</h4>
-              </td>
-              <td>
-                <h4>{datasat.item4}</h4>
-              </td>
-              <td>
-                <h4>{datasat.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-            <tr>
-              <td>
-                <h4>Sunday :</h4>
-              </td>
-              <td>
-                <h4>{datasun.item1}</h4>
-              </td>
-              <td>
-                <h4>{datasun.item2}</h4>
-              </td>
-              <td>
-                <h4>{datasun.item3}</h4>
-              </td>
-              <td>
-                <h4>{datasun.item4}</h4>
-              </td>
-              <td>
-                <h4>{datasun.item5}</h4>
-              </td>
-            </tr>
-            <hr />
-          </table>
+          <Table striped bordered responsive>
+            <tbody>
+              <tr>
+                <td style={{ width: "150px" }}>
+                  <h5>Monday</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item1}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item2}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item3}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item4}</h5>
+                </td>
+                <td style={{ width: "150px" }}>
+                  <h5>{datamon.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Tuesday</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datatue.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Wednesday</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datawed.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Thursday</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datathu.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Friday</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datafri.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Saturday</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datasat.item5}</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h5>Sunday</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item1}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item2}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item3}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item4}</h5>
+                </td>
+                <td>
+                  <h5>{datasun.item5}</h5>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
           <br />
 
           <br />
