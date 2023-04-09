@@ -3,6 +3,7 @@ import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function Register() {
   const [cust_fname, setFname] = useState("");
@@ -28,7 +29,7 @@ function Register() {
     };
     if (validateInputs()) {
       axios
-        .post("http://localhost:8080/customer/create", user)
+        .post(API_HEADER + "customer/create", user)
         .then((response) => {
           console.log(response.data);
           navigate("/login");
