@@ -37,39 +37,48 @@ function App() {
     <div className="App">
       <Router>
         <NavbarComponent />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Register />} />
-          <Route path="/supplierRegister" element={<SupplierRegister />} />
-          {/* <Route path="/" element={<HeroComponent />} /> */}
-          <Route path="/dashboard" element={<CustomerDashboard />} />
-          <Route path="/supplierLogin" element={<SupplierLogin />} />
-          <Route path="/supplierDashboard" element={<SupplierDashboard />} />
-          <Route path="/customerOrders" element={<CustomerDeliveries />} />
-          <Route path="/customerPollVote" element={<CustomerPolls />} />
-          <Route path="/customerProfile" element={<CustomerProfile />} />
-          <Route
-            path="/customerRaiseComplain/:id"
-            element={<CustomerRaiseComplain />}
-          />
-          <Route
-            path="/complainTracker"
-            element={<CustomerComplainTracker />}
-          />
-          <Route
-            path="/customerPaymentHistory"
-            element={<CustomerPaymentHistory />}
-          />
-          <Route path="/supplierPolling" element={<SupplierPolling />} />
-          <Route path="/supplierComplain" element={<SupplierComplain />}></Route>
-          <Route path="subscriptionRequests" element={<SubscriptionRequests />}></Route>
-          <Route
-            path="/supplierPollingDetails"
-            element={<SupplierPollingDetails />}
-          />
-          <Route path="/supplierProfile" element={<SupplierProfile />} />
-        </Routes>
+        <div style={{minHeight: '100vh'}}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Register />} />
+            <Route path="/supplierRegister" element={<SupplierRegister />} />
+            {/* <Route path="/" element={<HeroComponent />} /> */}
+            <Route path="/dashboard" element={<CustomerDashboard />} />
+            <Route path="/supplierLogin" element={<SupplierLogin />} />
+            <Route path="/supplierDashboard" element={<SupplierDashboard />} />
+            <Route path="/customerOrders" element={<CustomerDeliveries />} />
+            <Route path="/customerPollVote" element={<CustomerPolls />} />
+            <Route path="/customerProfile" element={<CustomerProfile />} />
+            <Route
+              path="/customerRaiseComplain/:id"
+              element={<CustomerRaiseComplain />}
+            />
+            <Route
+              path="/complainTracker"
+              element={<CustomerComplainTracker />}
+            />
+            <Route
+              path="/customerPaymentHistory"
+              element={<CustomerPaymentHistory />}
+            />
+            <Route path="/supplierPolling" element={<SupplierPolling />} />
+            <Route
+              path="/supplierComplain"
+              element={<SupplierComplain />}
+            ></Route>
+            <Route
+              path="subscriptionRequests"
+              element={<SubscriptionRequests />}
+            ></Route>
+            <Route
+              path="/supplierPollingDetails"
+              element={<SupplierPollingDetails />}
+            />
+            <Route path="/supplierProfile" element={<SupplierProfile />} />
+          </Routes>
+        </div>
       </Router>
+
       <FooterComponent />
     </div>
   );
