@@ -24,7 +24,7 @@ function CustomerPolls() {
     )
       .then((res) => res.json())
       .then((listOfSuppliersData) => {
-        if (listOfSuppliersData.length == 0) {
+        if (listOfSuppliersData.length === 0) {
           swal("No subscriptions available");
           navigate("/dashboard");
         } else {

@@ -50,7 +50,7 @@ function CustomerRaiseComplain() {
           if (Array.isArray(complainsData)) {
             complainsData.forEach(function (complain) {
               console.log(complain.deliveryId + " : " + delivery.deliveryId);
-              if (complain.deliveryId == delivery.deliveryId) {
+              if (complain.deliveryId === delivery.deliveryId) {
                 swal("Complain already raised for this delivery");
                 throw new Error("Complain already raised for this delivery");
               }

@@ -9,7 +9,6 @@ import {
   Form,
   Spinner,
 } from "react-bootstrap";
-import NavbarComponent from "../components/NavbarComponent";
 import { addCustomerNotification } from "../utils";
 import swal from "sweetalert";
 
@@ -23,7 +22,6 @@ export default function SupplierComplain() {
   const [showComplainDetail, setShowComplainDetail] = useState(false);
 
   useEffect(() => {
-    // http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}
     setIsLoading(true);
     axios
       .get(
@@ -157,9 +155,12 @@ export default function SupplierComplain() {
           >
             Close
           </Button>
-          <Button variant="primary" onClick={submitFeedback}>
-            Save Changes
-          </Button>
+          {
+            complains[selectedComplainIndex]?.status === "Initiated" &&
+              <Button variant="primary" onClick={submitFeedback}>
+                Save Changes
+              </Button> 
+          }
         </Modal.Footer>
       </Modal>
 

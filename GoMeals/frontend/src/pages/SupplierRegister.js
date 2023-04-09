@@ -26,7 +26,8 @@ function SupplierRegister() {
       mealPrice: mealPrice,
       paypalLink: paypalLink,
     };
-    axios
+    if(validateInputs()) {
+      axios
       .post("http://localhost:8080/supplier/create", supplier)
       .then((response) => {
         console.log(response.data);
@@ -43,7 +44,30 @@ function SupplierRegister() {
           swal("Registration failed. Please try again later.");
         }
       });
+    }
   };
+
+  const validateInputs = () => {
+    const regexForNumber = /^[0-9\b]+$/;
+    const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (supName === "" || supEmail === "" || supAddress === ""
+      || govtIssuedId === "" || supContactNumber === "" || password === ""
+      || mealPrice === "" || paypalLink === "") {
+      swal("Please provide inout for all fields.");
+      return false;
+    } else if (!regexForEmail.test(supEmail)) {
+      swal("Please provide valid email.");
+      return false;
+    } else if (supContactNumber.length !== 10 || !regexForNumber.test(supContactNumber)) {
+      swal("Please provide valid contact number");
+      return false;
+    } else if (!regexForNumber.test(mealPrice)) {
+      swal("Please provide valid meal price");
+      return false;
+    }
+    return true;
+  };
+
 
   return (
     <>
@@ -155,12 +179,12 @@ function SupplierRegister() {
                       </Form>
                       <div className="mt-3">
                         <p className="mb-0  text-center">
-                          Already have an account??{" "}
+                          Already have a supplier account??{" "}
                           {/* <Link to="/login">login</Link> */}
                           <NavLink
                             className=""
                             activeClassName="is-active"
-                            to="/login"
+                            to="/Supplierlogin"
                             exact
                           >
                             Login

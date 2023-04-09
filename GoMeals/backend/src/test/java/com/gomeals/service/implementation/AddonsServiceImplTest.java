@@ -95,13 +95,13 @@ public class AddonsServiceImplTest {
         List<Addons> expectedSupplierAddons = new ArrayList<>();
         Mockito.when(addonsRepository.findAllBySupplierId(supplierId)).thenReturn(expectedSupplierAddons);
         List<Addons> actualSupplierAddons = addonsServiceImpl.getAllSupplierAddons(supplierId);
-        assertNull(actualSupplierAddons);
+        assertEquals(0, actualSupplierAddons.size());
     }
 
     @Test
     void testGetAllSupplierAddonsWithNullSupplierId() {
         int supplierId = 0;
         List<Addons> actualSupplierAddons = addonsServiceImpl.getAllSupplierAddons(supplierId);
-        assertNull(actualSupplierAddons);
+        assertEquals(0, actualSupplierAddons.size());
     }
 }
