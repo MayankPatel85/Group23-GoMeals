@@ -3,6 +3,7 @@
     top: 80%;
     right: 10%;
     min-width: 25vw;
+    max-width: 25vw;
     max-height: 50vh;
     overflow-y: scroll;
     word-wrap: break-word;
