@@ -27,11 +27,10 @@ test-services:
     - echo "Starting test stage . . ."
     - chmod +x ./gradlew
     - ./gradlew test
-    - cd build/jacocoHtml
     - echo "Test stage completed!"
   artifacts:
     paths:
-      - index.html
+      - home/gitlab-runner/builds/bfh6m6xq/0/courses/2023-winter/csci-5308/group23/GoMeals/backend/build/jacocoHtml/index.html
     
 
 code-quality:
