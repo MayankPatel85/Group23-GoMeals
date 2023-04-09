@@ -11,4 +11,5 @@ export const addSupplierNotification = (supplierNotification) => {
         .post("http://localhost:8080/supplier-notification/create", supplierNotification)
 }
 
-export const API_HEADER = "http://csci5308vm23.research.cs.dal.ca:8080/";
+// export const API_HEADER = "http://csci5308vm23.research.cs.dal.ca:8080/";
+export const API_HEADER = "http://localhost:8080/"

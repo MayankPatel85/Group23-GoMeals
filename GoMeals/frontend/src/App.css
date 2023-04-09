@@ -1,5 +1,24 @@
 .App {
   text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+root {
+  height: 100vh;
+}
+
+.supplier-dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.appc {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .App-logo {
@@ -29,7 +48,7 @@
 }
 .body{
   background-color: #FEDEFF;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
 }

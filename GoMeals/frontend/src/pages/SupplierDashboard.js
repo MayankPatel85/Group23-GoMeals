@@ -641,7 +641,7 @@ export default function SupplierDashboard() {
 
 
   return (
-    <div>
+    <div className="supplier-dashboard">
       <Box sx={{ flex: 1, typography: 'body1' }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -653,9 +653,9 @@ export default function SupplierDashboard() {
               <Tab label="View Customers" value="5" onClick={handleShowCustomers} sx={{ flexGrow: 1 }} />
             </TabList>
           </Box>
-          <TabPanel value="1"></TabPanel>
+          {/* <TabPanel value="1"></TabPanel>
           <TabPanel value="2"></TabPanel>
-          <TabPanel value="3"></TabPanel>
+          <TabPanel value="3"></TabPanel> */}
         </TabContext>
       </Box>
       <h2>Welcome {loggedInUser.supName}</h2>
@@ -1082,11 +1082,13 @@ export default function SupplierDashboard() {
         )
       ) : null}
 
-      <br />
-      <br />
       {showDeliveryTable && (
         <DeliveryTable columns={DeliveryColumns} data={deliveryData} />
       )}
+
+      <br />
+      <br />
+
       <Navbar
         bg="primary"
         variant="light"
@@ -1094,7 +1096,7 @@ export default function SupplierDashboard() {
       >
         <h3>©Go Meals</h3>
       </Navbar>
-
+      
     </div>
   );
 }
