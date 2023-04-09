@@ -28,9 +28,13 @@ test-services:
     - chmod +x ./gradlew
     - ./gradlew test
     - echo "Test stage completed!"
+    - pwd
+    - cd build/jacocoHtml/
+    - pwd
+    - ls
   artifacts:
     paths:
-      - home/gitlab-runner/builds/bfh6m6xq/0/courses/2023-winter/csci-5308/group23/GoMeals/backend/build/jacocoHtml/index.html
+      - index.html
     
 
 code-quality:
