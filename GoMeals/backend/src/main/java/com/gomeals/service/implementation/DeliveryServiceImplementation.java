@@ -18,10 +18,12 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.gomeals.constants.DeliveryStatus.*;
-
+/**
+ * Service implementation for handling delivery operations.
+ * Implements the DeliveryService interface.
+ */
 @Service
 public class DeliveryServiceImplementation implements DeliveryService {
-
     @Autowired
     DeliveryRepository deliveryRepository;
     @Autowired
@@ -35,6 +37,11 @@ public class DeliveryServiceImplementation implements DeliveryService {
     @Autowired
     CustomerNotificationRepository custNotifiyRepo;
 
+    /**
+     * Creates a delivery for a customer.
+     * @param delivery The Delivery object to create.
+     * @return Boolean value indicating if the delivery was successfully created or not.
+     */
     @Transactional
     @Override
     public Boolean createDelivery(Delivery delivery) {
@@ -155,11 +162,20 @@ public class DeliveryServiceImplementation implements DeliveryService {
         }
         return true;
     }
-
+    /**
+     * Retrieves a delivery by its ID.
+     * @param id The ID of the delivery to retrieve.
+     * @return The Delivery object if found, otherwise null.
+     */
     @Override
     public Delivery getDeliveryById(int id) {
         return deliveryRepository.findById(id).orElse(null);
     }
+    /**
+     * Updates a delivery.
+     * @param delivery The Delivery object to update.
+     * @return The updated Delivery object if successful, otherwise null.
+     */
 
     @Override
     public Delivery updateDelivery(@RequestBody Delivery delivery) {
@@ -173,17 +189,31 @@ public class DeliveryServiceImplementation implements DeliveryService {
                     return deliveryRepository.save(currentDelivery);
                 }).orElse(null);
     }
-
+    /**
+     * Deletes a delivery by its ID.
+     * @param id The ID of the delivery to delete.
+     * @return A string indicating that the delivery was deleted.
+     */
     @Override
     public String deleteDeliveryById(int id) {
         deliveryRepository.deleteById(id);
         return "Delivery deleted!";
     }
-
+    /**
+     * Retrieves a list of deliveries for a given customer ID.
+     * @param id The ID of the customer.
+     * @return A list of Delivery objects for the given customer ID.
+     */
     @Override
     public List<Delivery> getByCustId(int id) {
         return deliveryRepository.findByCustId(id);
     }
+    /**
+     * Updates the existing delivery.
+     * @param id The ID of the customer.
+     * @param status status of the delivery
+     * @return Updated delivery object.
+     */
 
     @Transactional
     @Override
@@ -216,6 +246,11 @@ public class DeliveryServiceImplementation implements DeliveryService {
         return delivery;
     }
 
+    /**
+     * Retrieves all deliveries that the supplier has initiated
+     * @param delivery
+     * @return List of delivery objects
+     */
     public String validateDeliveryAndSubscription(Delivery delivery, Subscriptions subscription, String status) {
         if (delivery == null) {
             return null;

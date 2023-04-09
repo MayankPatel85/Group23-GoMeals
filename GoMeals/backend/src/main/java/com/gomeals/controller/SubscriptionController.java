@@ -29,9 +29,9 @@ public class SubscriptionController {
 	SubscriptionService subscriptionService;
 
 	/**
-	 * This method is used to extract the subscription data using the subscription
-	 * ID
-	 * 
+	 * This method is used to extract the subscription data using the subscription  ID
+	 * This is used when supplier views a particular customer
+
 	 * @param subId
 	 * @return Retrieved subscription object
 	 */
@@ -41,9 +41,14 @@ public class SubscriptionController {
 	}
 
 	/**
+<<<<<<< HEAD
+	 * This method is used to extract the suppliers ids of suppliers to which a particular customer has subscribed to
+	 * This is used when customer views all the suppliers they have subscribed to
+=======
 	 * This method is used to extract the suppliers ids of suppliers to which a
 	 * particular customer has subscribed to
 	 * 
+>>>>>>> 0a4897253eb6e200cc9b05a40ad8840bf7c0c017
 	 * @param custId
 	 * @return List of supplier id's
 	 */
@@ -53,9 +58,14 @@ public class SubscriptionController {
 	}
 
 	/**
+<<<<<<< HEAD
+	 * This method is used to extract customer ids of all the customers of a particular supplier
+	 * This is used when supplier needs a list of their customers
+=======
 	 * This method is used to extract customer ids of all the customers of a
 	 * particular supplier
 	 * 
+>>>>>>> 0a4897253eb6e200cc9b05a40ad8840bf7c0c017
 	 * @param id
 	 * @return List of customer id's
 	 */
@@ -81,7 +91,11 @@ public class SubscriptionController {
 
 	/**
 	 * This method is used to update the details of a particular subscription
+<<<<<<< HEAD
+	 * This is used when a customer renews the subscription
+=======
 	 * 
+>>>>>>> 0a4897253eb6e200cc9b05a40ad8840bf7c0c017
 	 * @param subscription subscription object
 	 * @return String indicating the status of the subscription
 	 */
@@ -91,9 +105,14 @@ public class SubscriptionController {
 	}
 
 	/**
+<<<<<<< HEAD
+	 * This method is used to delete a particular subscription using the subscription id
+	 * This is used when a customer cancels the subscription
+=======
 	 * This method is used to delete a particular subscription using the
 	 * subscription id
 	 * 
+>>>>>>> 0a4897253eb6e200cc9b05a40ad8840bf7c0c017
 	 * @param sub_Id subscription id
 	 * @return String indicating the status of the deletion
 	 */
