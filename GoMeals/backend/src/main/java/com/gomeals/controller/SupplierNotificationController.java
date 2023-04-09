@@ -9,10 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/supplier-notification")
-@CrossOrigin(origins = "http://localhost:3000")
 /**
  * This controller contains all the functions required to manage the notifications that will be sent to the supplier
  */
+@CrossOrigin
 public class SupplierNotificationController {
 
     private final SupplierNotificationService supplierNotificationService;

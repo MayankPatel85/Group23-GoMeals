@@ -4,7 +4,6 @@ import com.gomeals.model.Complain;
 import com.gomeals.repository.ComplainRepository;
 import com.gomeals.service.ComplainService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class ComplainServiceImplementation implements ComplainService {
      * @return The created complain object.
      */
     @Override
-    public Complain createComplain(Complain complain){
+    public Complain createComplain(Complain complain) {
         return complainRepository.save(complain);
     }
     /**
@@ -38,7 +37,7 @@ public class ComplainServiceImplementation implements ComplainService {
      * @return The complain object with the given ID, or null if not found.
      */
     @Override
-    public Complain getComplainById(Integer complainId){
+    public Complain getComplainById(Integer complainId) {
         Complain complain = complainRepository.findById(complainId).orElse(null);
         return complain;
     }
@@ -86,9 +85,8 @@ public class ComplainServiceImplementation implements ComplainService {
      */
     @Override
     public List<Complain> getComplainsByCustomerIdAndSupplierId(Integer customerId, Integer supplierId) {
-        List<Complain> complains = new ArrayList<>();
-        complainRepository.findComplainsByCustomerIdAndSupplierId(customerId,supplierId).forEach(complain ->
-                complains.add(complain));
+        List<Complain> complains;
+        complains = complainRepository.findComplainsByCustomerIdAndSupplierId(customerId, supplierId);
         return complains;
     }
     /**
@@ -108,12 +106,12 @@ public class ComplainServiceImplementation implements ComplainService {
      */
     @Transactional
     @Override
-    public void deleteComplain(Integer complainId){ //throws NoSuchElementException {
-        if(complainRepository.findById(complainId).isPresent()){
+    public void deleteComplain(Integer complainId) { // throws NoSuchElementException {
+        if (complainRepository.findById(complainId).isPresent()) {
             complainRepository.deleteById(complainId);
-        }else{
+        } else {
 
-           // throw new NoSuchElementException("Complain not found with id: "+complainId );
+            // throw new NoSuchElementException("Complain not found with id: "+complainId );
         }
     }
 }

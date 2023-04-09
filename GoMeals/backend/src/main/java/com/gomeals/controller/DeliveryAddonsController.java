@@ -12,9 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/deliveryAddons")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 /**
- * This controller has the functions handling the add-ons which will be added to a delivery
+ * This controller has the functions handling the add-ons which will be added to
+ * a delivery
  */
 public class DeliveryAddonsController {
     @Autowired
@@ -22,6 +23,7 @@ public class DeliveryAddonsController {
 
     /**
      * This method is used to add an addon to an existing delivery
+     * 
      * @param deliveryAddons
      * @return Created DeliveryAddons object
      */
@@ -31,38 +33,44 @@ public class DeliveryAddonsController {
     }
 
     /**
-     * This method is used to retrieve a particular Add-on object added to a delivery using Delivery addon id
+     * This method is used to retrieve a particular Add-on object added to a
+     * delivery using Delivery addon id
+     * 
      * @param deliveryAddonsId
      * @return Retrived DeliveryAddons object
      */
     @PostMapping("/getDeliveryAddons")
     public ResponseEntity<DeliveryAddons> getDeliveryAddonsById(@RequestBody DeliveryAddonsId deliveryAddonsId) {
-        return new ResponseEntity<>(deliveryAddonsService.getDeliveryAddonsById(deliveryAddonsId),HttpStatus.OK);
+        return new ResponseEntity<>(deliveryAddonsService.getDeliveryAddonsById(deliveryAddonsId), HttpStatus.OK);
     }
 
     /**
-     * This method is used to retrieve a particular Add-on object added to a delivery using Delivery id
+     * This method is used to retrieve a particular Add-on object added to a
+     * delivery using Delivery id
+     * 
      * @param deliveryId
      * @return Retrived DeliveryAddon object
      */
     @CrossOrigin
     @GetMapping("/get/{id}")
     public ResponseEntity<List<DeliveryAddons>> getDeliveryAddonsByDeliveryId(@PathVariable("id") Integer deliveryId) {
-        return new ResponseEntity<>(deliveryAddonsService.getDeliveryAddonsByDeliveryId(deliveryId),HttpStatus.OK);
+        return new ResponseEntity<>(deliveryAddonsService.getDeliveryAddonsByDeliveryId(deliveryId), HttpStatus.OK);
     }
 
     /**
      * This method is used to update an Add-on which is already added to a delivery
+     * 
      * @param deliveryAddon
      * @return Updated DeliiveryAddon object
      */
     @PutMapping("/update")
-    public ResponseEntity<DeliveryAddons> updateDeliveryAddon(@RequestBody DeliveryAddons deliveryAddon){
-        return new ResponseEntity<>(deliveryAddonsService.updateDeliveryAddon(deliveryAddon),HttpStatus.OK);
+    public ResponseEntity<DeliveryAddons> updateDeliveryAddon(@RequestBody DeliveryAddons deliveryAddon) {
+        return new ResponseEntity<>(deliveryAddonsService.updateDeliveryAddon(deliveryAddon), HttpStatus.OK);
     }
 
     /**
      * This method is used to delete an Add-on which is already added to a delivery
+     * 
      * @param deliveryAddonId object
      * @return String indicating the status of the deletion
      */
@@ -73,12 +81,14 @@ public class DeliveryAddonsController {
     }
 
     /**
-     * This method is used to delete all the addons related to a delivery using the delivery ID
+     * This method is used to delete all the addons related to a delivery using the
+     * delivery ID
+     * 
      * @param deliveryId
      * @return String indicating the status of the deletion
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteAllByDeliveryId(@PathVariable("id") Integer deliveryId){
+    public ResponseEntity<String> deleteAllByDeliveryId(@PathVariable("id") Integer deliveryId) {
         deliveryAddonsService.deleteAllByDeliveryId(deliveryId);
         return ResponseEntity.status(HttpStatus.OK).body("All delivery addons were successfully deleted.\n");
     }

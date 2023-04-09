@@ -5,8 +5,6 @@ import com.gomeals.model.Polling;
 import com.gomeals.repository.MealVotingRepository;
 import com.gomeals.repository.PollingRepository;
 import com.gomeals.service.MealVotingService;
-import com.gomeals.service.PollingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

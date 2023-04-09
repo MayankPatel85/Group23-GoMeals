@@ -14,10 +14,10 @@ import java.util.NoSuchElementException;
 @Service
 public class SupplierNotificationServiceImplementation implements SupplierNotificationService {
 
-    private final SupplierNotificationRepository supplierNotificationRepository;
+    private final SupplierNotificationRepository supNotifyRepo;
 
-    public SupplierNotificationServiceImplementation(SupplierNotificationRepository supplierNotificationRepository) {
-        this.supplierNotificationRepository = supplierNotificationRepository;
+    public SupplierNotificationServiceImplementation(SupplierNotificationRepository supNotifyRepo) {
+        this.supNotifyRepo = supNotifyRepo;
     }
     /**
      * Create a new notification.
@@ -28,7 +28,7 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
 
     @Override
     public SupplierNotification createNotification(SupplierNotification supplierNotification) {
-        return supplierNotificationRepository.save(supplierNotification);
+        return supNotifyRepo.save(supplierNotification);
     }
 
     /**
@@ -39,7 +39,7 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
      */
     @Override
     public SupplierNotification getNotificationById(Integer notificationId) {
-        return supplierNotificationRepository.findById(notificationId).orElse(null);
+        return supNotifyRepo.findById(notificationId).orElse(null);
     }
 
     /**
@@ -51,9 +51,7 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
     @Override
     public List<SupplierNotification> getAllNotificationsBySupplierId(Integer supplierId) {
         List<SupplierNotification> notifications = new ArrayList<>();
-        supplierNotificationRepository.findAllBySupplierId(supplierId).forEach(notification ->
-                notifications.add(notification)
-        );
+        supNotifyRepo.findAllBySupplierId(supplierId).forEach(notification -> notifications.add(notification));
         return notifications;
     }
 
@@ -65,12 +63,12 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
      */
     @Override
     public SupplierNotification updateNotification(SupplierNotification supplierNotification) {
-        return supplierNotificationRepository.findById(supplierNotification.getNotificationId()).map(
+        return supNotifyRepo.findById(supplierNotification.getNotificationId()).map(
                 currentNotification -> {
                     currentNotification.setMessage(supplierNotification.getMessage());
                     currentNotification.setEventType(supplierNotification.getEventType());
                     currentNotification.setSupplierId(supplierNotification.getSupplierId());
-                    return supplierNotificationRepository.save(currentNotification);
+                    return supNotifyRepo.save(currentNotification);
                 }).orElse(null);
     }
 
@@ -82,10 +80,10 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
      */
     @Override
     public void deleteNotification(Integer notificationId) {
-        if(supplierNotificationRepository.findById(notificationId).isEmpty()){
-            throw new NoSuchElementException("Notification not found with id: "+notificationId );
-        }else{
-            supplierNotificationRepository.deleteById(notificationId);
+        if (supNotifyRepo.findById(notificationId).isEmpty()) {
+            throw new NoSuchElementException("Notification not found with id: " + notificationId);
+        } else {
+            supNotifyRepo.deleteById(notificationId);
         }
     }
 

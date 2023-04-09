@@ -1,9 +1,7 @@
 package com.gomeals.controller;
 
 import com.gomeals.model.Delivery;
-import com.gomeals.model.Supplier;
 import com.gomeals.service.DeliveryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +10,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/delivery")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
+
 /**
- * This controller contains all the methods related to CRUD operation of a Particular delivery
+ * This controller contains all the methods related to CRUD operation of a
+ * Particular delivery
  */
 public class DeliveryController {
 
@@ -25,7 +25,9 @@ public class DeliveryController {
     }
 
     /**
-     * This method is used To retrieve details regarding a particular delivery using the delivery ID
+     * This method is used To retrieve details regarding a particular delivery using
+     * the delivery ID
+     * 
      * @param id
      * @return Retrieved Delivery object
      */
@@ -36,7 +38,9 @@ public class DeliveryController {
     }
 
     /**
-     * This method is used To retrieve details of a delivery related to a particular customer using the customer ID
+     * This method is used To retrieve details of a delivery related to a particular
+     * customer using the customer ID
+     * 
      * @param id
      * @return Retrieved List of Delivery object
      */
@@ -47,7 +51,9 @@ public class DeliveryController {
     }
 
     /**
-     * This method is used To retrieve details of a delivery related to a particular supplier using the customer ID
+     * This method is used To retrieve details of a delivery related to a particular
+     * supplier using the customer ID
+     * 
      * @param id
      * @return Retrieved List of Delivery object
      */
@@ -59,6 +65,7 @@ public class DeliveryController {
 
     /**
      * This method is used to add an entry to the delivery table initiate a delivery
+     * 
      * @param delivery
      * @return String indicating the status of delivery creation
      */
@@ -73,7 +80,9 @@ public class DeliveryController {
     }
 
     /**
-     * This method is used to update an entry in the delivery table hence updating the initiated delivery
+     * This method is used to update an entry in the delivery table hence updating
+     * the initiated delivery
+     * 
      * @param delivery
      * @return Updated delivery object
      */
@@ -84,6 +93,7 @@ public class DeliveryController {
 
     /**
      * This method is used to update the status of a delivery
+     * 
      * @param deliveryId
      * @param orderStatus
      * @return Delivery object with updated status
@@ -99,7 +109,9 @@ public class DeliveryController {
     }
 
     /**
-     * This method is used to delete a particular entry in the delivery table hence deleting the initiated delivery
+     * This method is used to delete a particular entry in the delivery table hence
+     * deleting the initiated delivery
+     * 
      * @param id
      * @return String indicating the status of the deletion
      */

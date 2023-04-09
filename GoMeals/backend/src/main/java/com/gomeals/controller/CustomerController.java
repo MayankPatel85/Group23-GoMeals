@@ -8,15 +8,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customer")
-@CrossOrigin(origins = "http://localhost:3000")
+
+@CrossOrigin
 /**
- * This controller contains the methods which performs CRUD operation on the customer model
+ * This controller contains the methods which performs CRUD operation on the
+ * customer model
  */
 public class CustomerController {
     @Autowired
     CustomerService CustomerService;
+
     /**
      * This method returns a single customer details based on its ID
+     * 
      * @param id Add-on ID
      * @return customer object
      */
@@ -26,9 +30,11 @@ public class CustomerController {
     public Customer getCustomerById(@PathVariable("id") int id) {
         return CustomerService.getCustomerById(id);
     }
+
     /**
      * This method accepts a customer object stores it in the database
      * and returns the object which is stored in the database
+     * 
      * @param Customer object
      * @return customer object
      */
@@ -41,16 +47,20 @@ public class CustomerController {
 
     /**
      * This method is used to authenticate the customer and approve the login
+     * 
      * @param customer
      * @param response
      * @return customer object
      */
     @PostMapping("/login")
-    public Customer loginCustomer(@RequestBody Customer customer,HttpServletResponse response) { return CustomerService.loginCustomer(customer,response);}
+    public Customer loginCustomer(@RequestBody Customer customer, HttpServletResponse response) {
+        return CustomerService.loginCustomer(customer, response);
+    }
 
     /**
      * This method accepts a customer object updates its details in the database
      * and returns the object which is updated in the database
+     * 
      * @param customer object
      * @return customer object
      */

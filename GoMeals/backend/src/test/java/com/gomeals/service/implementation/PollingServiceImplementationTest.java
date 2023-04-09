@@ -23,7 +23,7 @@ public class PollingServiceImplementationTest {
     @InjectMocks
     PollingServiceImplementation pollingServiceImplementation;
 
-    long millis=System.currentTimeMillis();
+    long millis = System.currentTimeMillis();
     Date date = new Date(millis);
 
     @Test
@@ -48,8 +48,8 @@ public class PollingServiceImplementationTest {
 
     @Test
     public void testGetPollById() {
-
-        when(pollingRepository.findById(1)).thenReturn(Optional.of(new Polling(1, date, "12", "Paneer", "Bread", "Roti", "Chips", "Butter", true, 12)));
+        Polling testPolling = new Polling(1, date, "12", "Paneer", "Bread", "Roti", "Chips", "Butter", true, 12);
+        when(pollingRepository.findById(1)).thenReturn(Optional.of(testPolling));
 
         Polling polling = pollingServiceImplementation.getPollById(1);
 

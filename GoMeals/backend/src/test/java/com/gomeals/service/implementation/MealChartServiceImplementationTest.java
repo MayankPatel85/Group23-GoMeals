@@ -26,7 +26,7 @@ public class MealChartServiceImplementationTest {
     MealChartRepository mealChartRepository;
 
     @InjectMocks
-    MealChartServiceImplementation mealChartServiceImplementation;
+    MealChartServiceImplementation mealChartServImpl;
 
     private MealChartID mealChartID;
 
@@ -47,7 +47,7 @@ public class MealChartServiceImplementationTest {
     public void testGetMealChart() {
         when(mealChartRepository.findById(mealChartID)).thenReturn(Optional.of(mealChart));
 
-        MealChart getMealChart = mealChartServiceImplementation.getMealChart(mealChartID);
+        MealChart getMealChart = mealChartServImpl.getMealChart(mealChartID);
 
         assertNotNull(getMealChart);
     }
@@ -56,7 +56,7 @@ public class MealChartServiceImplementationTest {
     public void testGetMealChartWhenIdNotFound() {
         when(mealChartRepository.findById(mealChartID)).thenReturn(Optional.empty());
 
-        MealChart getMealChart = mealChartServiceImplementation.getMealChart(mealChartID);
+        MealChart getMealChart = mealChartServImpl.getMealChart(mealChartID);
 
         assertNull(getMealChart);
     }
@@ -67,7 +67,7 @@ public class MealChartServiceImplementationTest {
 
         when(mealChartRepository.saveAll(mealCharts)).thenReturn(mealCharts);
 
-        String result = mealChartServiceImplementation.addMealChart(mealCharts);
+        String result = mealChartServImpl.addMealChart(mealCharts);
 
         assertEquals("Objects saved", result);
     }
@@ -78,7 +78,7 @@ public class MealChartServiceImplementationTest {
 
         when(mealChartRepository.findById(mealChartID)).thenReturn(Optional.ofNullable(mealChart));
 
-        String result = mealChartServiceImplementation.updateMealChart(Arrays.asList(newMealChart));
+        String result = mealChartServImpl.updateMealChart(Arrays.asList(newMealChart));
 
         assertEquals("updated", result);
     }
@@ -86,7 +86,7 @@ public class MealChartServiceImplementationTest {
     @Test
     public void testDeleteMealChartByIdSuccess() {
         Mockito.doNothing().when(mealChartRepository).deleteById(mealChartID);
-        String result = mealChartServiceImplementation.deleteMealChart(mealChartID);
+        String result = mealChartServImpl.deleteMealChart(mealChartID);
         assertEquals("Meal Chart Deleted", result);
     }
 }

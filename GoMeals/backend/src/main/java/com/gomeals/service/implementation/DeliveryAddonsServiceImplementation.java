@@ -5,10 +5,7 @@ import com.gomeals.model.DeliveryAddonsId;
 import com.gomeals.repository.DeliveryAddonsRepository;
 import com.gomeals.service.DeliveryAddonsService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +14,10 @@ import java.util.List;
  * DeliveryAddons objects.
  */
 @Service
-public class DeliveryAddonsServiceImplementation implements DeliveryAddonsService{
+public class DeliveryAddonsServiceImplementation implements DeliveryAddonsService {
 
     private final DeliveryAddonsRepository deliveryAddonsRepository;
+
     public DeliveryAddonsServiceImplementation(DeliveryAddonsRepository deliveryAddonsRepository) {
         this.deliveryAddonsRepository = deliveryAddonsRepository;
     }
@@ -51,9 +49,8 @@ public class DeliveryAddonsServiceImplementation implements DeliveryAddonsServic
      */
     @Override
     public List<DeliveryAddons> getDeliveryAddonsByDeliveryId(Integer deliveryId) {
-        List<DeliveryAddons> deliveryAddons = new ArrayList<>();
-        deliveryAddonsRepository.findDeliveryAddonsByDeliveryId(deliveryId).forEach(deliveryAddon ->
-                deliveryAddons.add(deliveryAddon));
+        List<DeliveryAddons> deliveryAddons;
+        deliveryAddons = deliveryAddonsRepository.findDeliveryAddonsByDeliveryId(deliveryId);
         return deliveryAddons;
     }
     /**
