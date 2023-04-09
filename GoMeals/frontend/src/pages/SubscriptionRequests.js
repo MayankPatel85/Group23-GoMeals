@@ -5,6 +5,8 @@ import { Spinner, Container, Table, Button } from "react-bootstrap";
 import NavbarComponent from "../components/NavbarComponent";
 import { addCustomerNotification } from "../utils";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
+
 function SubscriptionRequests() {
   const [subscriptionRequestList, setSubscriptionRequestList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +18,7 @@ function SubscriptionRequests() {
     setIsLoading(true);
     axios
       .get(
-        `http://localhost:8080/subscription/get/pending/${loggedInUser.supId}`
+        `${API_HEADER}subscription/get/pending/${loggedInUser.supId}`
       )
       .then((response) => {
         setSubscriptionRequestList(response.data);
@@ -40,7 +42,7 @@ function SubscriptionRequests() {
     console.log(currentRequest);
     setIsLoading(true);
     axios
-      .put("http://localhost:8080/subscription/update", currentRequest)
+      .put(API_HEADER + "subscription/update", currentRequest)
       .then(() => {
         addCustomerNotification({
           message: `${loggedInUser.supName} has appproved your subscription request.`,
