@@ -93,6 +93,13 @@ export default function NavbarComponent() {
   function handleSupplierPollingDetails() {
     navigate("/supplierPollingDetails");
   }
+
+  function handleHomePage() {
+    navigate(
+      loggedInUser.userType === "supplier" ? "/supplierDashboard" : "/dashboard"
+    );
+  }
+
   const location = useLocation();
   const hideNavBar =
     location.pathname === "/login" ||
@@ -111,11 +118,12 @@ export default function NavbarComponent() {
             style={{ display: "flex", justifyContent: "space-between" }}
           >
             <Navbar.Brand
-              href={
-                loggedInUser.userType === "supplier"
-                  ? "/supplierDashboard"
-                  : "/dashboard"
-              }
+              // href={
+              //   loggedInUser.userType === "supplier"
+              //     ? "/supplierDashboard"
+              //     : "/dashboard"
+              // }
+              onClick={handleHomePage}
             >
               <img
                 src={foodcart}
@@ -128,11 +136,12 @@ export default function NavbarComponent() {
             <div>
               <Nav className="me-auto">
                 <Nav.Link
-                  href={
-                    loggedInUser.userType === "supplier"
-                      ? "/supplierDashboard"
-                      : "/dashboard"
-                  }
+                  // href={
+                  //   loggedInUser.userType === "supplier"
+                  //     ? "/supplierDashboard"
+                  //     : "/dashboard"
+                  // }
+                  onClick={handleHomePage}
                 >
                   Home
                 </Nav.Link>
