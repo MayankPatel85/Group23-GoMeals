@@ -6,7 +6,6 @@ import { Modal } from "react-bootstrap";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import NavbarComponent from "../components/NavbarComponent";
 import HeroComponent from "../components/HeroComponent";
 
 export default function CustomerDashboard(children, func) {
@@ -43,22 +42,22 @@ export default function CustomerDashboard(children, func) {
 
     console.log(param);
     axios.get("http://localhost:8080/supplier/get/all").then((response) => {
-      if (param == "normal") {
+      if (param === "normal") {
         setdata(response.data);
       }
-      if (param == "lth") {
+      if (param === "lth") {
         setdata(response.data.sort((a, b) => a.mealPrice - b.mealPrice));
       }
-      if (param == "htl") {
+      if (param === "htl") {
         setdata(response.data.sort((a, b) => b.mealPrice - a.mealPrice));
       }
-      if (param == "4ustar") {
+      if (param === "4ustar") {
         const filteredData = response.data.filter((obj) =>
           s4list.includes(obj.supId)
         );
         setdata(filteredData);
       }
-      if (param == "3ustar") {
+      if (param === "3ustar") {
         const filteredData1 = response.data.filter((obj) =>
           s3list.includes(obj.supId)
         );
@@ -171,6 +170,7 @@ export default function CustomerDashboard(children, func) {
         >
           Filter
         </Dropdown.Toggle>
+
 
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => fetchdata("lth")}>

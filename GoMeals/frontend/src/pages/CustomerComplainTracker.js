@@ -39,7 +39,7 @@ function CustomerComplainTracker() {
       <div id="pollingDetails">
         {complainList.map((complain) =>
           deliveries.map((delivery) =>
-            complain.deliveryId == delivery.deliveryId ? (
+            complain.deliveryId === delivery.deliveryId ? (
               <ComplainCard complain={complain} delivery={delivery} />
             ) : (
               <></>
