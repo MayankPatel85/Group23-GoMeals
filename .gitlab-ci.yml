@@ -34,7 +34,7 @@ test-services:
     - ls
   artifacts:
     paths:
-      - index.html
+      - /GoMeals/backend/build/jacocoHtml/index.html
     
 
 code-quality:
