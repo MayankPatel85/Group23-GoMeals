@@ -9,8 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/supplier-notification")
-@CrossOrigin(origins = "http://localhost:3000")
-
+@CrossOrigin
 public class SupplierNotificationController {
 
     private final SupplierNotificationService supplierNotificationService;
@@ -28,6 +27,7 @@ public class SupplierNotificationController {
     public ResponseEntity<SupplierNotification> getNotificationById(@PathVariable("id") Integer notificationId) {
         return new ResponseEntity<>(supplierNotificationService.getNotificationById(notificationId), HttpStatus.OK);
     }
+
     @CrossOrigin
     @GetMapping("/get/all-supplier/{id}")
     public ResponseEntity<List<SupplierNotification>> getAllNotificationsBySupplierId(

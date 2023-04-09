@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/polling")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class PollingController {
 
     @Autowired

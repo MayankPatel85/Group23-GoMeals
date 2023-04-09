@@ -1,4 +1,5 @@
 package com.gomeals.controller;
+
 import com.gomeals.model.Supplier;
 import com.gomeals.service.SupplierService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,10 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/supplier")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class SupplierController {
     @Autowired
     SupplierService supplierService;
+
     @CrossOrigin
     @PostMapping("/create")
     public Supplier registerSupplier(@RequestBody Supplier supplier) {
@@ -40,8 +42,9 @@ public class SupplierController {
     public String deleteSupplier(@PathVariable int id) {
         return supplierService.deleteSupplier(id);
     }
+
     @PostMapping("/login")
-    public Supplier loginSupplier(@RequestBody Supplier supplier,HttpServletResponse response) { return supplierService.loginSupplier(supplier,response);}
+    public Supplier loginSupplier(@RequestBody Supplier supplier, HttpServletResponse response) {
+        return supplierService.loginSupplier(supplier, response);
+    }
 }
-
-

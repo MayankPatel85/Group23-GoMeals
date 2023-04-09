@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/meal-voting")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class MealVotingController {
 
     private final MealVotingService mealVotingService;

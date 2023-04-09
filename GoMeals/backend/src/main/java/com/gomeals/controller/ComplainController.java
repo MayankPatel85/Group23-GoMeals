@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/complain")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class ComplainController {
 
     private final ComplainService complainService;

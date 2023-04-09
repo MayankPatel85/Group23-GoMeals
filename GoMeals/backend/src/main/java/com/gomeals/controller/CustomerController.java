@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customer")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class CustomerController {
 
     @Autowired
@@ -29,7 +29,9 @@ public class CustomerController {
     }
 
     @PostMapping("/login")
-    public Customer loginCustomer(@RequestBody Customer customer,HttpServletResponse response) { return CustomerService.loginCustomer(customer,response);}
+    public Customer loginCustomer(@RequestBody Customer customer, HttpServletResponse response) {
+        return CustomerService.loginCustomer(customer, response);
+    }
 
     @PutMapping("/update")
     public Customer updateCustomer(@RequestBody Customer customer) {

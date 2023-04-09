@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customer-notification")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class CustomerNotificationController {
 
     private final CustomerNotificationService customerNotificationService;
@@ -18,11 +18,13 @@ public class CustomerNotificationController {
     public CustomerNotificationController(CustomerNotificationService customerNotificationService) {
         this.customerNotificationService = customerNotificationService;
     }
+
     @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<CustomerNotification> createNotification(@RequestBody CustomerNotification notification) {
         return new ResponseEntity<>(customerNotificationService.createNotification(notification), HttpStatus.CREATED);
     }
+
     @CrossOrigin
     @GetMapping("/get/{id}")
     public ResponseEntity<CustomerNotification> getNotificationById(@PathVariable("id") Integer notificationId) {
@@ -31,25 +33,32 @@ public class CustomerNotificationController {
 
     @CrossOrigin
     @GetMapping("/get/all-customer/{id}")
-    public ResponseEntity<List<CustomerNotification>> getAllNotificationsByCustomerId(@PathVariable("id") Integer customerId) {
-        return new ResponseEntity<>(customerNotificationService.getAllNotificationsByCustomerId(customerId), HttpStatus.OK);
+    public ResponseEntity<List<CustomerNotification>> getAllNotificationsByCustomerId(
+            @PathVariable("id") Integer customerId) {
+        return new ResponseEntity<>(customerNotificationService.getAllNotificationsByCustomerId(customerId),
+                HttpStatus.OK);
     }
+
     @CrossOrigin
     @PutMapping("/update")
     public ResponseEntity<CustomerNotification> updateNotification(@RequestBody CustomerNotification notification) {
         return new ResponseEntity<>(customerNotificationService.updateNotification(notification), HttpStatus.OK);
     }
+
     @CrossOrigin
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteNotification(@PathVariable("id") Integer notificationId) {
         customerNotificationService.deleteNotification(notificationId);
         return ResponseEntity.status(HttpStatus.OK).body("Notification was successfully deleted.\n");
     }
+
     @CrossOrigin
     @PostMapping("/create-all/")
-    public ResponseEntity<String> notifyAllSupplierCustomers(@RequestParam String message, String type, int supplierId) {
+    public ResponseEntity<String> notifyAllSupplierCustomers(@RequestParam String message, String type,
+            int supplierId) {
 
-        Boolean notificationsCreated = customerNotificationService.notifyAllSupplierCustomers(message, type, supplierId);
+        Boolean notificationsCreated = customerNotificationService.notifyAllSupplierCustomers(message, type,
+                supplierId);
         if (notificationsCreated) {
             return ResponseEntity.status(HttpStatus.OK).body("Notifications created for all customers.\n");
         } else {

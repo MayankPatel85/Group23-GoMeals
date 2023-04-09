@@ -50,7 +50,7 @@ public class AddOnController {
     @GetMapping("/get/all-supplier/{supplierId}")
     public ResponseEntity<List<Addons>> getAllSupplierAddons(@PathVariable("supplierId") int supplierId) {
         List<Addons> supplierAddons = addonsService.getAllSupplierAddons(supplierId);
-        if(supplierAddons == null){
+        if (supplierAddons == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(supplierAddons, HttpStatus.OK);
