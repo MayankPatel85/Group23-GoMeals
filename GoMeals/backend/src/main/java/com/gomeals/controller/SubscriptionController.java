@@ -31,6 +31,7 @@ public class 	SubscriptionController {
 
 	/**
 	 * This method is used to extract the subscription data using the subscription  ID
+	 * This is used when supplier views a particular customer
 	 * @param subId
 	 * @return Retrieved subscription object
 	 */
@@ -41,6 +42,7 @@ public class 	SubscriptionController {
 
 	/**
 	 * This method is used to extract the suppliers ids of suppliers to which a particular customer has subscribed to
+	 * This is used when customer views all the suppliers they have subscribed to
 	 * @param custId
 	 * @return List of supplier id's
 	 */
@@ -51,6 +53,7 @@ public class 	SubscriptionController {
 
 	/**
 	 * This method is used to extract customer ids of all the customers of a particular supplier
+	 * This is used when supplier needs a list of their customers
 	 * @param id
 	 * @return List of customer id's
 	 */
@@ -74,6 +77,7 @@ public class 	SubscriptionController {
 
 	/**
 	 * This method is used to update the details of a particular subscription
+	 * This is used when a customer renews the subscription
 	 * @param subscription subscription object
 	 * @return String indicating the status of the subscription
 	 */
@@ -84,6 +88,7 @@ public class 	SubscriptionController {
 
 	/**
 	 * This method is used to delete a particular subscription using the subscription id
+	 * This is used when a customer cancels the subscription
 	 * @param sub_Id subscription id
 	 * @return String indicating the status of the deletion
 	 */

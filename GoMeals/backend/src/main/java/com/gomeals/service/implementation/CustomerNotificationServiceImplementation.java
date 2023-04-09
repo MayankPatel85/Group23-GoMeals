@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+/**
+ * Implementation of the CustomerNotificationService interface that provides
+ * CRUD operations for managing customer notifications.
+ */
 
 @Service
 public class CustomerNotificationServiceImplementation implements CustomerNotificationService {
@@ -26,17 +30,33 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
         this.subscriptionRepository = subscriptionRepository;
 
     }
-
+    /**
+     * Creates a new customer notification.
+     *
+     * @param customerNotification The customer notification object to be created.
+     * @return The created customer notification object.
+     */
     @Override
     public CustomerNotification createNotification(CustomerNotification customerNotification) {
         return customerNotificationRepository.save(customerNotification);
     }
 
+    /**
+     * Retrieves a customer notification by its ID.
+     *
+     * @param notificationId The ID of the customer notification to be retrieved.
+     * @return The customer notification object if found, or null if not found.
+     */
     @Override
     public CustomerNotification getNotificationById(Integer notificationId) {
         return customerNotificationRepository.findById(notificationId).orElse(null);
     }
-
+    /**
+     * Retrieves all customer notifications by customer ID.
+     *
+     * @param customerId The ID of the customer for whom the notifications are to be retrieved.
+     * @return A list of customer notification objects associated with the given customer ID.
+     */
     @Override
     public List<CustomerNotification> getAllNotificationsByCustomerId(Integer customerId) {
         List<CustomerNotification> notifications = new ArrayList<>();
@@ -44,7 +64,12 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
                 .forEach(notification -> notifications.add(notification));
         return notifications;
     }
-
+/**
+ * Updates an existing customer notification.
+ *
+ * @param customerNotification The customer notification object to be updated.
+ * @return The updated customer notification object if found, or null if not found.
+ */
     @Override
     public CustomerNotification updateNotification(CustomerNotification customerNotification) {
         return customerNotificationRepository.findById(customerNotification.getNotificationId()).map(
@@ -55,7 +80,12 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
                     return customerNotificationRepository.save(currentNotification);
                 }).orElse(null);
     }
-
+    /**
+     * Deletes a customer notification by its ID.
+     *
+     * @param notificationId The ID of the customer notification to be deleted.
+     * @throws NoSuchElementException if the customer notification with the given ID is not found.
+     */
     @Override
     public void deleteNotification(Integer notificationId) {
         if (customerNotificationRepository.findById(notificationId).isEmpty()) {
@@ -65,6 +95,14 @@ public class CustomerNotificationServiceImplementation implements CustomerNotifi
         }
     }
 
+/**
+ * Notifies all customers subscribed to a supplier.
+ *
+ * @param message The notification message
+ * @param type The notification type
+ * @param supplierId The ID of the supplier
+ * @return True if notifications are successfully sent, false ifnot
+ */
     public Boolean notifyAllSupplierCustomers(String message, String type, int supplierId){
 
         List<Subscriptions> supplierSubscriptions = subscriptionRepository

@@ -30,7 +30,13 @@ public class CustomerServiceImplementation implements CustomerService {
     }
 
     UserSecurity userSecurity = new UserSecurity();
-
+    /**
+     * Create a new customer.
+     *
+     * @param customer The customer object to be created.
+     * @return The created customer object.
+     * @throws RuntimeException If the email already exists.
+     */
 
     @Override
     public Customer createCustomer(Customer customer) {
@@ -46,7 +52,12 @@ public class CustomerServiceImplementation implements CustomerService {
         return loggedInUser;
     }
 
-
+    /**
+     * Print the value of the "loggedInUser" cookie.
+     *
+     * @param customer The value of the "loggedInUser" cookie.
+     * @return The value of the "loggedInUser" cookie.
+     */
     @Override
     public Customer loginCustomer(Customer customer, HttpServletResponse response) {
         Customer customerData = customerRepository.findByEmail(customer.getCust_email());
@@ -70,7 +81,12 @@ public class CustomerServiceImplementation implements CustomerService {
         }
         return customerData;
     }
-
+    /**
+     * Get a customer by ID with their associated suppliers and subscriptions.
+     *
+     * @param id The ID of the customer.
+     * @return The customer object with associated suppliers and subscriptions.
+     */
     @Override
     public Customer getCustomerById(int id) {
         Customer customer = customerRepository.findById(id).orElse(null);
@@ -94,6 +110,12 @@ public class CustomerServiceImplementation implements CustomerService {
         return customer;
     }
 
+    /**
+     * Update a customer's information.
+     *
+     * @param customer The customer object with updated information.
+     * @return The updated customer object.
+     */
     public Customer updateCustomer(Customer customer) {
         return customerRepository.findById(customer.getCust_id()).map(currentCustomer -> {
             currentCustomer.setCust_email(customer.getCust_email());
@@ -102,7 +124,12 @@ public class CustomerServiceImplementation implements CustomerService {
             return customerRepository.save(currentCustomer);
         }).orElse(null);
     }
-
+    /**
+     * Utility method to unwrap an Optional<Supplier> to Supplier object.
+     *
+     * @param entity The Optional<Supplier> object.
+     * @return The unwrapped Supplier object or null if not present.
+     */
     private static Supplier unwrapSupplier(Optional<Supplier> entity) {
         return entity.orElse(null);
     }

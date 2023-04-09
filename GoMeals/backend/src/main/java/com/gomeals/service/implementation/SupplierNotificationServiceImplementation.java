@@ -17,17 +17,35 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
     public SupplierNotificationServiceImplementation(SupplierNotificationRepository supplierNotificationRepository) {
         this.supplierNotificationRepository = supplierNotificationRepository;
     }
+    /**
+     * Create a new notification.
+     *
+     * @param supplierNotification the SupplierNotification object to be created
+     * @return the created SupplierNotification object
+     */
 
     @Override
     public SupplierNotification createNotification(SupplierNotification supplierNotification) {
         return supplierNotificationRepository.save(supplierNotification);
     }
 
+    /**
+     * Get a notification by ID.
+     *
+     * @param notificationId the ID of the notification to be retrieved
+     * @return the retrieved SupplierNotification object, or null if not found
+     */
     @Override
     public SupplierNotification getNotificationById(Integer notificationId) {
         return supplierNotificationRepository.findById(notificationId).orElse(null);
     }
 
+    /**
+     * Get all notifications by supplier ID.
+     *
+     * @param supplierId the ID of the supplier for which notifications are to be retrieved
+     * @return a list of SupplierNotification objects for the given supplier ID
+     */
     @Override
     public List<SupplierNotification> getAllNotificationsBySupplierId(Integer supplierId) {
         List<SupplierNotification> notifications = new ArrayList<>();
@@ -37,6 +55,12 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
         return notifications;
     }
 
+    /**
+     * Update a notification.
+     *
+     * @param supplierNotification the SupplierNotification object to be updated
+     * @return the updated SupplierNotification object, or null if not found
+     */
     @Override
     public SupplierNotification updateNotification(SupplierNotification supplierNotification) {
         return supplierNotificationRepository.findById(supplierNotification.getNotificationId()).map(
@@ -48,6 +72,12 @@ public class SupplierNotificationServiceImplementation implements SupplierNotifi
                 }).orElse(null);
     }
 
+    /**
+     * Delete a notification by ID.
+     *
+     * @param notificationId the ID of the notification to be deleted
+     * @throws NoSuchElementException if the notification with the given ID is not found
+     */
     @Override
     public void deleteNotification(Integer notificationId) {
         if(supplierNotificationRepository.findById(notificationId).isEmpty()){

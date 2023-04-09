@@ -36,6 +36,12 @@ public class SupplierServiceImplementation implements SupplierService {
 
     UserSecurity userSecurity = new UserSecurity();
 
+    /**
+     * Retrieve the details of a supplier by supplier ID
+     *
+     * @param id The ID of the supplier
+     * @return The Supplier object containing the details of the supplier
+     */
     public Supplier getSupplierDetails(int id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
         if (supplier != null) {
@@ -58,6 +64,11 @@ public class SupplierServiceImplementation implements SupplierService {
         return supplier;
     }
 
+    /**
+     * Retrieve details of all suppliers
+     *
+     * @return List of Supplier objects containing the details of all suppliers
+     */
     public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
 
@@ -69,6 +80,13 @@ public class SupplierServiceImplementation implements SupplierService {
         return suppliers;
     }
 
+    /**
+     * Register a new supplier
+     *
+     * @param supplier The Supplier object containing the details of the supplier to be registered
+     * @return The registered Supplier object
+     * @throws RuntimeException If the supplier email already exists
+     */
     public Supplier registerSupplier(Supplier supplier) {
         if (supplierRepository.findSupplierByEmail(supplier.getSupEmail()) != null) {
             throw new RuntimeException("Email already exists");
@@ -77,6 +95,12 @@ public class SupplierServiceImplementation implements SupplierService {
         return supplierRepository.save(supplier);
     }
 
+    /**
+     * Update the details of a supplier
+     *
+     * @param supplier The Supplier object containing the updated details of the supplier
+     * @return The updated Supplier object
+     */
     public Supplier updateSupplier(@RequestBody Supplier supplier) {
         Supplier s = supplierRepository.findById(supplier.getSupId()).orElse(null);
         s.setSupName(supplier.getSupName());
@@ -90,11 +114,25 @@ public class SupplierServiceImplementation implements SupplierService {
 
     }
 
+    /**
+     * Delete a supplier by supplier ID
+     *
+     * @param id The ID of the supplier to be deleted
+     * @return A String indicating that the supplier has been deleted
+     */
     public String deleteSupplier(int id) {
         supplierRepository.deleteById(id);
         return "Supplier deleted";
     }
 
+    /**
+     * Login a supplier
+     *
+     * @param supplier The Supplier object containing the email and password of the supplier for login
+     * @param response The HttpServletResponse object for setting the response status
+     * @return The logged-in Supplier object
+     * @throws RuntimeException If the supplier is not registered or password does not match
+     */
     public Supplier loginSupplier(Supplier supplier, HttpServletResponse response) {
         Supplier supplierData = supplierRepository.findSupplierByEmail(supplier.getSupEmail());
         if (supplierData == null) {
@@ -117,6 +155,12 @@ public class SupplierServiceImplementation implements SupplierService {
         return supplierData;
     }
 
+    /**
+     * Utility method to unwrap an Optional<Customer> entity
+     *
+     * @param entity The Optional<Customer> entity to be unwrapped
+     * @return The unwrapped Customer object, or null if not present
+     */
     private static Customer unwrapCustomer(Optional<Customer> entity) {
         return entity.orElse(null);
     }
