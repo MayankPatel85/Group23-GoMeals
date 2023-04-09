@@ -84,7 +84,7 @@ function SupplierPollingDetails() {
                   </ListGroup.Item>
                 </ListGroup>
               </Card.Text>
-              {poll.status == true ? (
+              {poll.status === true ? (
                 <Button
                   variant="primary"
                   onClick={() => handlePollClose(poll.pollId, poll.pollDate)}

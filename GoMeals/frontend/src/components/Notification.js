@@ -62,7 +62,7 @@ function Notification(props) {
             <div>
               {" "}
               <p className="notification-text">
-                {notification.eventType == "review" ? (
+                {notification.eventType === "review" ? (
                   <FontAwesomeIcon
                     icon={faCircle}
                     style={{ color: "yellow" }}

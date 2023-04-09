@@ -28,6 +28,7 @@ function CustomerPolling(props) {
       props.poll.item4,
       props.poll.item5,
     ]);
+    setSelectedOption(props.poll.item1);
   }, [props.poll]);
 
   const handleSubmit = (e) => {
@@ -87,7 +88,7 @@ function CustomerPolling(props) {
                 label={item}
                 checked={selectedOption === item}
                 onChange={handleOptionChange}
-                class="row-5"
+                className="row-5"
               />
             ))}
           </RadioGroup>

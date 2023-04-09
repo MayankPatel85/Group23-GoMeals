@@ -2,7 +2,6 @@ package com.gomeals.service.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doNothing;
 
 import java.util.ArrayList;
@@ -95,13 +94,13 @@ public class AddonsServiceImplTest {
                 List<Addons> expectedSupplierAddons = new ArrayList<>();
                 Mockito.when(addonsRepository.findAllBySupplierId(supplierId)).thenReturn(expectedSupplierAddons);
                 List<Addons> actualSupplierAddons = addonsServiceImpl.getAllSupplierAddons(supplierId);
-                assertNull(actualSupplierAddons);
+                assertEquals(0, actualSupplierAddons.size());
         }
 
         @Test
         void testGetAllSupplierAddonsWithNullSupplierId() {
                 int supplierId = 0;
                 List<Addons> actualSupplierAddons = addonsServiceImpl.getAllSupplierAddons(supplierId);
-                assertNull(actualSupplierAddons);
+                assertEquals(0, actualSupplierAddons.size());
         }
 }
