@@ -11,4 +11,5 @@ export const addSupplierNotification = (supplierNotification) => {
         .post(API_HEADER + "supplier-notification/create", supplierNotification)
 }
 
+
 export const API_HEADER = "http://csci5308vm23.research.cs.dal.ca:8080/";
