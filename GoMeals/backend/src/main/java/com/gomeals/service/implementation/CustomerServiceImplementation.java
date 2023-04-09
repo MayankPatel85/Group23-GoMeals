@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 
 
 import java.util.*;
-
+/**
+ * Implementation of customer service interface
+ */
 @Service
 public class CustomerServiceImplementation implements CustomerService {
     @Autowired

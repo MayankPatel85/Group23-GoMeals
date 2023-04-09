@@ -14,7 +14,9 @@ import com.gomeals.service.SubscriptionService;
 
 import jakarta.transaction.Transactional;
 import java.util.Collections;
-
+/**
+ * Implementation of subscription service interface
+ */
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
 
