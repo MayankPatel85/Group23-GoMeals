@@ -141,6 +141,7 @@ export default function SupplierDashboard() {
               axios.post(
                 `${API_HEADER}customer-notification/create-all/?message=${loggedInUser.supName} has initiated delivery for ${year}-${month}-${day}&type=delivery&supplierId=${loggedInUser.supId}`
               );
+              window.location.reload();
             })
             .catch(swal("Deliveries existing"));
         });
@@ -174,7 +175,7 @@ export default function SupplierDashboard() {
         setSubscriptionList(response.data.subscriptions);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsCustomerListLoading(false);
@@ -337,24 +338,24 @@ export default function SupplierDashboard() {
         .post(API_HEADER + "meal_chart/create", mealChart)
         .then((response) => {
           console.log(response.data);
-          alert("Data stored");
+          swal("Data stored");
           // navigate("/supplierDashboard");
         })
         .catch((error) => {
           console.log(error);
-          alert("Data was not sent");
+          swal("Data was not sent");
         });
     } else {
       axios
         .put(API_HEADER + "meal_chart/update", mealChart)
         .then((response) => {
           console.log(response.data);
-          alert("Data stored");
+          swal("Data stored");
           // navigate("/supplierDashboard");
         })
         .catch((error) => {
           console.log(error);
-          alert("Data was not sent");
+          swal("Data was not sent");
           console.log(mealChart);
         });
     }
@@ -386,7 +387,7 @@ export default function SupplierDashboard() {
         setCurrentSupplier(response.data);
       })
       .catch((e) => {
-        alert("Error getting data" + e);
+        swal("Error getting data" + e);
       })
       .finally(() => {
         setIsLoading(false);
@@ -431,7 +432,7 @@ export default function SupplierDashboard() {
       axios
         .put(API_HEADER + "supplier/update", currentSupplier)
         .catch((e) => {
-          alert("Error getting data" + e);
+          swal("Error getting data" + e);
         })
         .finally(() => {
           setIsLoading(false);
@@ -484,6 +485,7 @@ export default function SupplierDashboard() {
       )
       .then((response) => {
         console.log(response.data);
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -981,7 +983,7 @@ export default function SupplierDashboard() {
 
       {addOnAlter && (
         <div>
-          <Card>
+          <Card className="mechco">
             <Card.Body>
               <h3>Add on Details</h3>
               <table>
