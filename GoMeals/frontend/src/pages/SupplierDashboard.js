@@ -944,29 +944,30 @@ export default function SupplierDashboard() {
         </div>
       )}
       {addOns &&
-        <div className="mechco">
+        <div className="mx-4">
           <h3>Add-on details</h3>
           <hr />
-          <table>
-            {addOnData.map((data) => (
-              <div key={data.id}>
-                <tr>
-                  <td><h4>Item : </h4></td>
-                  <td style={{ width: '150px' }}> <h4>{data.item}</h4></td>
-                  <td style={{ paddingLeft: '175px' }}><h4>Price : </h4></td>
-                  <td><h4>{data.price}</h4></td>
+          <Table striped bordered responsive>
+            <tbody>
+            {addOnData.map((data) => {
+              return (
+                <tr key={data.id}>
+                  <td><h5>Item</h5></td>
+                  <td><h5>{data.item}</h5></td>
+                  <td><h5>Price</h5></td>
+                  <td><h5>{data.price}</h5></td>
                 </tr>
-                <hr />
-              </div>
-            ))}
-          </table>
+              );
+            })}
+            </tbody>
+          </Table>
         </div>
       }
 
       {addOnAlter &&
 
         <div>
-          <Card className="mechco">
+          <Card>
             <Card.Body>
               <h3>Add on Details</h3>
               <table>
@@ -996,77 +997,72 @@ export default function SupplierDashboard() {
       }
       {
         currentChart &&
-        <div className="mechco">
+        <div className="mx-4">
           <br />
           <h2> Current Meal Plan </h2>
           <hr />
           <br />
-          <table>
+          <Table striped bordered responsive>
+            <tbody>
             <tr>
-              <td style={{ width: '150px' }}><h4>Monday :</h4></td>
-              <td style={{ width: '150px' }}><h4>{datamon.item1}</h4></td>
-              <td style={{ width: '150px' }}><h4>{datamon.item2}</h4></td>
-              <td style={{ width: '150px' }}><h4>{datamon.item3}</h4></td>
-              <td style={{ width: '150px' }}><h4>{datamon.item4}</h4></td>
-              <td style={{ width: '150px' }}><h4>{datamon.item5}</h4></td>
+              <td style={{ width: '150px' }}><h5>Monday</h5></td>
+              <td style={{ width: '150px' }}><h5>{datamon.item1}</h5></td>
+              <td style={{ width: '150px' }}><h5>{datamon.item2}</h5></td>
+              <td style={{ width: '150px' }}><h5>{datamon.item3}</h5></td>
+              <td style={{ width: '150px' }}><h5>{datamon.item4}</h5></td>
+              <td style={{ width: '150px' }}><h5>{datamon.item5}</h5></td>
             </tr>
-            <hr />
             <tr>
-              <td><h4>Tuesday :</h4></td>
-              <td><h4>{datatue.item1}</h4></td>
-              <td><h4>{datatue.item2}</h4></td>
-              <td><h4>{datatue.item3}</h4></td>
-              <td><h4>{datatue.item4}</h4></td>
-              <td><h4>{datatue.item5}</h4></td>
+              <td><h5>Tuesday</h5></td>
+              <td><h5>{datatue.item1}</h5></td>
+              <td><h5>{datatue.item2}</h5></td>
+              <td><h5>{datatue.item3}</h5></td>
+              <td><h5>{datatue.item4}</h5></td>
+              <td><h5>{datatue.item5}</h5></td>
             </tr>
-            <hr />
             <tr>
-              <td><h4>Wednesday :</h4></td>
-              <td><h4>{datawed.item1}</h4></td>
-              <td><h4>{datawed.item2}</h4></td>
-              <td><h4>{datawed.item3}</h4></td>
-              <td><h4>{datawed.item4}</h4></td>
-              <td><h4>{datawed.item5}</h4></td>
+              <td><h5>Wednesday</h5></td>
+              <td><h5>{datawed.item1}</h5></td>
+              <td><h5>{datawed.item2}</h5></td>
+              <td><h5>{datawed.item3}</h5></td>
+              <td><h5>{datawed.item4}</h5></td>
+              <td><h5>{datawed.item5}</h5></td>
             </tr>
-            <hr />
             <tr>
-              <td><h4>Thursday :</h4></td>
-              <td><h4>{datathu.item1}</h4></td>
-              <td><h4>{datathu.item2}</h4></td>
-              <td><h4>{datathu.item3}</h4></td>
-              <td><h4>{datathu.item4}</h4></td>
-              <td><h4>{datathu.item5}</h4></td>
+              <td><h5>Thursday</h5></td>
+              <td><h5>{datathu.item1}</h5></td>
+              <td><h5>{datathu.item2}</h5></td>
+              <td><h5>{datathu.item3}</h5></td>
+              <td><h5>{datathu.item4}</h5></td>
+              <td><h5>{datathu.item5}</h5></td>
             </tr>
-            <hr />
             <tr>
-              <td><h4>Friday :</h4></td>
-              <td><h4>{datafri.item1}</h4></td>
-              <td><h4>{datafri.item2}</h4></td>
-              <td><h4>{datafri.item3}</h4></td>
-              <td><h4>{datafri.item4}</h4></td>
-              <td><h4>{datafri.item5}</h4></td>
+              <td><h5>Friday</h5></td>
+              <td><h5>{datafri.item1}</h5></td>
+              <td><h5>{datafri.item2}</h5></td>
+              <td><h5>{datafri.item3}</h5></td>
+              <td><h5>{datafri.item4}</h5></td>
+              <td><h5>{datafri.item5}</h5></td>
             </tr>
-            <hr />
             <tr>
-              <td><h4>Saturday :</h4></td>
-              <td><h4>{datasat.item1}</h4></td>
-              <td><h4>{datasat.item2}</h4></td>
-              <td><h4>{datasat.item3}</h4></td>
-              <td><h4>{datasat.item4}</h4></td>
-              <td><h4>{datasat.item5}</h4></td>
+              <td><h5>Saturday</h5></td>
+              <td><h5>{datasat.item1}</h5></td>
+              <td><h5>{datasat.item2}</h5></td>
+              <td><h5>{datasat.item3}</h5></td>
+              <td><h5>{datasat.item4}</h5></td>
+              <td><h5>{datasat.item5}</h5></td>
             </tr>
-            <hr />
             <tr>
-              <td><h4>Sunday :</h4></td>
-              <td><h4>{datasun.item1}</h4></td>
-              <td><h4>{datasun.item2}</h4></td>
-              <td><h4>{datasun.item3}</h4></td>
-              <td><h4>{datasun.item4}</h4></td>
-              <td><h4>{datasun.item5}</h4></td>
+              <td><h5>Sunday</h5></td>
+              <td><h5>{datasun.item1}</h5></td>
+              <td><h5>{datasun.item2}</h5></td>
+              <td><h5>{datasun.item3}</h5></td>
+              <td><h5>{datasun.item4}</h5></td>
+              <td><h5>{datasun.item5}</h5></td>
             </tr>
-            <hr />
+            </tbody>
 
-          </table>
+          </Table>
           <br />
 
           <br />
