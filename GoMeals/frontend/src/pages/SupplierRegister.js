@@ -3,6 +3,7 @@ import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function SupplierRegister() {
   const [supName, setName] = useState("");
@@ -28,7 +29,7 @@ function SupplierRegister() {
     };
     if(validateInputs()) {
       axios
-      .post("http://localhost:8080/supplier/create", supplier)
+      .post(API_HEADER + "supplier/create", supplier)
       .then((response) => {
         console.log(response.data);
         navigate("/supplierLogin");

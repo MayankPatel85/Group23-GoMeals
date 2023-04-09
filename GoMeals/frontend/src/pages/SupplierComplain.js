@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { addCustomerNotification } from "../utils";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 export default function SupplierComplain() {
   const cookies = new Cookies();
@@ -25,7 +26,7 @@ export default function SupplierComplain() {
     setIsLoading(true);
     axios
       .get(
-        `http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}`
+        `${API_HEADER}complain/get/all-supplier/${loggedInUser.supId}`
       )
       .then((response) => {
         setComplains(response.data);
@@ -57,7 +58,7 @@ export default function SupplierComplain() {
     }
     axios
       .put(
-        "http://localhost:8080/complain/update",
+        API_HEADER + "complain/update",
         complains[selectedComplainIndex]
       )
       .then(() => {

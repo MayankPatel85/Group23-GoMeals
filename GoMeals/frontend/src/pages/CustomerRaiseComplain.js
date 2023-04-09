@@ -10,6 +10,8 @@ import axios from "axios";
 import { addSupplierNotification } from "../utils.js";
 import { faUtensilSpoon } from "@fortawesome/free-solid-svg-icons";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
+
 function CustomerRaiseComplain() {
   const cookies = new Cookies();
   const [delivery, setDelivery] = useState({});
@@ -20,7 +22,7 @@ function CustomerRaiseComplain() {
   const loggedInUser = cookies.get("loggedInUser");
   useEffect(() => {
     console.log("useEffect");
-    fetch("http://localhost:8080/delivery/get/" + id)
+    fetch(API_HEADER + "delivery/get/" + id)
       .then((res) => res.json())
       .then((deliveryData) => {
         setDelivery(deliveryData);
@@ -42,7 +44,7 @@ function CustomerRaiseComplain() {
     event.preventDefault();
     try {
       fetch(
-        "http://localhost:8080/complain/get/all-customer/" +
+        API_HEADER + "complain/get/all-customer/" +
           loggedInUser.cust_id
       )
         .then((res) => res.json())
@@ -78,7 +80,7 @@ function CustomerRaiseComplain() {
       deliveryId: delivery.deliveryId,
     };
     let complain = JSON.stringify(complainObject);
-    fetch("http://localhost:8080/complain/create", {
+    fetch(API_HEADER + "complain/create", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: complain,
@@ -104,7 +106,7 @@ function CustomerRaiseComplain() {
       supplierId: delivery.supId,
     };
     axios
-      .post("http://localhost:8080/supplier-notification/create", notify)
+      .post(API_HEADER + "supplier-notification/create", notify)
       .then(console.log("Notified supplier"));
   };
 

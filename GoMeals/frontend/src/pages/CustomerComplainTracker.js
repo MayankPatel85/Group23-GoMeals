@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ComplainCard from "./CustomerComplainCard";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/CustomerComplainTracker.css";
+import { API_HEADER } from "../utils.js";
 
 function CustomerComplainTracker() {
   const cookies = new Cookies();
@@ -15,14 +16,14 @@ function CustomerComplainTracker() {
   const navigate = useNavigate();
   useEffect(() => {
     fetch(
-      "http://localhost:8080/complain/get/all-customer/" + loggedInUser.cust_id
+      API_HEADER + "complain/get/all-customer/" + loggedInUser.cust_id
     )
       .then((res) => res.json())
       .then((listOfComplains) => {
         setComplainList(listOfComplains);
         console.log(listOfComplains);
         fetch(
-          "http://localhost:8080/delivery/get/customer/" + loggedInUser.cust_id
+          API_HEADER + "delivery/get/customer/" + loggedInUser.cust_id
         )
           .then((res) => res.json())
           .then((deliveryData) => {
@@ -40,7 +41,7 @@ function CustomerComplainTracker() {
         {complainList.map((complain) =>
           deliveries.map((delivery) =>
             complain.deliveryId === delivery.deliveryId ? (
-              <ComplainCard complain={complain} delivery={delivery} />
+              <ComplainCard key={complain.complainId} complain={complain} delivery={delivery} />
             ) : (
               <></>
             )

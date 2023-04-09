@@ -6,6 +6,8 @@ import ReactStars from "react-stars";
 import NavbarComponent from "../components/NavbarComponent";
 import { addSupplierNotification } from "../utils";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
+
 function CustomerProfile() {
   const [customer, setCustomer] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,7 @@ function CustomerProfile() {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:8080/customer/get/${loggedInUser.cust_id}`)
+      .get(`${API_HEADER}customer/get/${loggedInUser.cust_id}`)
       .then((response) => {
         response.data.subscriptions.forEach((subscription) => {
           response.data.suppliers.forEach((supplier) => {
@@ -53,7 +55,7 @@ function CustomerProfile() {
 
   useEffect(() => {
     axios
-      .put("http://localhost:8080/customer/update", customer)
+      .put(API_HEADER + "customer/update", customer)
       .catch((e) => {
         swal("Error getting data" + e);
       })
@@ -141,7 +143,7 @@ function CustomerProfile() {
     }
     setIsLoading(true);
     axios
-      .post("http://localhost:8080/supplierReview/create", review)
+      .post(API_HEADER + "supplierReview/create", review)
       .catch((e) => {
         swal("Error posting review");
       })
@@ -161,7 +163,7 @@ function CustomerProfile() {
   const getCurrentSupplierReview = (customerId, supplierId) => {
     setIsLoading(true);
     axios
-      .get("http://localhost:8080/supplierReview/getById", {
+      .get(API_HEADER + "supplierReview/getById", {
         params: { customerId: customerId, supplierId: supplierId },
       })
       .then((response) => {

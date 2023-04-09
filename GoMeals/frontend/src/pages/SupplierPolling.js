@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/SupplierPolling.css";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
+
 function SupplierPolling() {
   const cookies = new Cookies();
   const [item1, setItem1] = useState({});
@@ -24,7 +26,7 @@ function SupplierPolling() {
 
   useEffect(() => {
     console.log("useEffect");
-    fetch("http://localhost:8080/polling/get/allPolls/" + loggedInUser.supId)
+    fetch(API_HEADER + "polling/get/allPolls/" + loggedInUser.supId)
       .then((res) => res.json())
       .then((supplierPollingList) => {
         setSupplierPollingList(supplierPollingList);
@@ -94,7 +96,7 @@ function SupplierPolling() {
         "The final polling data going to the backend is ::" + polling
       );
       console.log("Polling object received is ::" + polling);
-      fetch("http://localhost:8080/polling/create", {
+      fetch(API_HEADER + "polling/create", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: polling,

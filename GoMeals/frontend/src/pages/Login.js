@@ -5,6 +5,8 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
+
 function Login() {
   const cookies = new Cookies();
   const [cust_email, setEmail] = useState("");
@@ -23,7 +25,7 @@ function Login() {
       cust_password: cust_password,
     };
     axios
-      .post("http://localhost:8080/customer/login", user)
+      .post(API_HEADER + "customer/login", user)
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data);
