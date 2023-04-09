@@ -17,11 +17,11 @@ function CustomerProfile() {
   });
   const [addReview, setAddReview] = useState(false);
   const [review, setReview] = useState({
-    comment: "",
-    supplier_rating: 0,
-    customerId: 0,
-    supplierId: 0,
-    supplier_reviewcol: "",
+    "customerId": 0,
+    "supplierId": 0,
+    "comment": "",
+    "supplier_rating": 0,
+    "supplier_reviewcol": ""
   });
   const [currentSupplierReview, setCurrentSupplierReview] = useState({});
   var currentSupplierIndex = 0;
@@ -103,7 +103,6 @@ function CustomerProfile() {
       return;
     }
     setIsLoading(true);
-    console.log("before setting", JSON.stringify(editedCustomerDetail));
     setCustomer((prevValue) => ({
       ...prevValue,
       cust_email: editedCustomerDetail.email,
@@ -114,18 +113,11 @@ function CustomerProfile() {
 
   const handleAddReview = (index) => {
     setAddReview(true);
+    currentSupplierIndex = index;
     getCurrentSupplierReview(
       loggedInUser.cust_id,
       customer.subscriptions[currentSupplierIndex].supplierId
     );
-    currentSupplierIndex = index;
-    if (currentSupplierReview !== "") {
-      setReview((prevValue) => ({
-        ...prevValue,
-        customerId: loggedInUser.cust_id,
-        supplierId: customer.subscriptions[currentSupplierIndex].supplierId,
-      }));
-    }
   };
 
   const handleRating = (number) => {
@@ -143,7 +135,7 @@ function CustomerProfile() {
   };
 
   const saveReview = () => {
-    if(review.supplier_rating === 0) {
+    if (review.supplier_rating === 0) {
       swal("Please provide rating.");
       return;
     }
@@ -151,7 +143,7 @@ function CustomerProfile() {
     axios
       .post("http://localhost:8080/supplierReview/create", review)
       .catch((e) => {
-        swal("Error posting review" + e);
+        swal("Error posting review");
       })
       .finally(() => {
         setIsLoading(false);
@@ -173,10 +165,17 @@ function CustomerProfile() {
         params: { customerId: customerId, supplierId: supplierId },
       })
       .then((response) => {
-        console.log(response.data);
         setCurrentSupplierReview(response.data);
-        if (response.data !== "") {
+        if (response.data.length !== 0) {
           setReview(response.data);
+        } else {
+          setReview({
+            "customerId": customerId,
+            "supplierId": supplierId,
+            "comment": "",
+            "supplier_rating": 0,
+            "supplier_reviewcol": ""
+          });
         }
       })
       .finally(() => {
