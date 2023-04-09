@@ -37,7 +37,7 @@ function App() {
     <div className="App">
       <Router>
         <NavbarComponent />
-        <div style={{minHeight: '100vh'}}>
+        <div className="appc">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Register />} />

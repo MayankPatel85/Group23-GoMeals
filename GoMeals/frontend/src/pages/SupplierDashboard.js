@@ -607,8 +607,8 @@ export default function SupplierDashboard() {
   }
 
   return (
-    <div>
-      <Box sx={{ flex: 1, typography: "body1" }}>
+    <div className="supplier-dashboard">
+      <Box sx={{ flex: 1, typography: 'body1' }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -644,9 +644,9 @@ export default function SupplierDashboard() {
               />
             </TabList>
           </Box>
-          <TabPanel value="1"></TabPanel>
+          {/* <TabPanel value="1"></TabPanel>
           <TabPanel value="2"></TabPanel>
-          <TabPanel value="3"></TabPanel>
+          <TabPanel value="3"></TabPanel> */}
         </TabContext>
       </Box>
       <h2>Welcome {loggedInUser.supName}</h2>
@@ -1194,11 +1194,13 @@ export default function SupplierDashboard() {
         )
       ) : null}
 
-      <br />
-      <br />
       {showDeliveryTable && (
         <DeliveryTable columns={DeliveryColumns} data={deliveryData} />
       )}
+
+      <br />
+      <br />
+
       <Navbar
         bg="primary"
         variant="light"
@@ -1206,6 +1208,7 @@ export default function SupplierDashboard() {
       >
         <h3>©Go Meals</h3>
       </Navbar>
+      
     </div>
   );
 }
