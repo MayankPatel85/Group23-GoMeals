@@ -3,7 +3,11 @@ package com.gomeals.service.implementation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.gomeals.model.Customer;
+import com.gomeals.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -23,6 +27,9 @@ public class SubscriptionServiceImplTest {
     @Mock
     private SubscriptionRepository subscriptionRepository;
 
+    @Mock
+    private CustomerRepository customerRepository;
+
     @InjectMocks
     private SubscriptionServiceImpl subscriptionServiceImpl;
 
@@ -35,7 +42,7 @@ public class SubscriptionServiceImplTest {
         subscription.setMeals_remaining(10);
         subscription.setSub_date(date);
 
-        Mockito.when(subscriptionRepository.save(subscription)).thenReturn(subscription);
+        when(subscriptionRepository.save(subscription)).thenReturn(subscription);
 
         String result = subscriptionServiceImpl.addSubscription(subscription);
         assertEquals("Subscription added to the subscription table", result);
@@ -51,7 +58,7 @@ public class SubscriptionServiceImplTest {
         subscription.setMeals_remaining(10);
         subscription.setSub_date(date);
 
-        Mockito.when(subscriptionRepository.findById(1)).thenReturn(java.util.Optional.of(subscription));
+        when(subscriptionRepository.findById(1)).thenReturn(java.util.Optional.of(subscription));
 
         Subscriptions result = subscriptionServiceImpl.getSubscription(1);
         assertNotNull(result);
@@ -74,8 +81,8 @@ public class SubscriptionServiceImplTest {
         latestSubscription.setMeals_remaining(20);
         latestSubscription.setSub_date(date);
 
-        Mockito.when(subscriptionRepository.findById(1)).thenReturn(Optional.of(latestSubscription));
-        Mockito.when(subscriptionRepository.save(latestSubscription)).thenReturn(latestSubscription);
+        when(subscriptionRepository.findById(1)).thenReturn(Optional.of(latestSubscription));
+        when(subscriptionRepository.save(latestSubscription)).thenReturn(latestSubscription);
 
         String result = subscriptionServiceImpl.updateSubscription(subscription);
         assertEquals("Subscription updated successfully.", result);
@@ -99,7 +106,7 @@ public class SubscriptionServiceImplTest {
         customers.add(2);
         customers.add(3);
 
-        Mockito.when(subscriptionRepository.getCustomersIdForSupplier(1)).thenReturn(customers);
+        when(subscriptionRepository.getCustomersIdForSupplier(1)).thenReturn(customers);
 
         List<Integer> result = subscriptionServiceImpl.getCustomersIdForSupplier(1);
         assertNotNull(result);
@@ -118,7 +125,7 @@ public class SubscriptionServiceImplTest {
 
         subscriptions.add(new Subscriptions(1, 29, date, 1, customerId, 456));
         subscriptions.add(new Subscriptions(2, 13, date, 1, customerId, 789));
-        Mockito.when(subscriptionRepository.findSubscriptionsByCustomerIdAndActiveStatus(customerId, 1))
+        when(subscriptionRepository.findSubscriptionsByCustomerIdAndActiveStatus(customerId, 1))
                 .thenReturn(subscriptions);
 
         // Calling the getAllCustomerSubscriptions() under test
@@ -134,7 +141,7 @@ public class SubscriptionServiceImplTest {
     public void testGetAllCustomerSubscriptionsNoSubscriptionsFound() {
         // Set up the test data
         int customerId = 123;
-        Mockito.when(subscriptionRepository.findSubscriptionsByCustomerIdAndActiveStatus(customerId, 1))
+        when(subscriptionRepository.findSubscriptionsByCustomerIdAndActiveStatus(customerId, 1))
                 .thenReturn(Collections.emptyList());
 
         // Call the method under test
@@ -142,5 +149,61 @@ public class SubscriptionServiceImplTest {
 
         // Verify the results
         assertEquals(0, supplierIds.size());
+    }
+
+    @Test
+    public void testGetPendingSubscriptionWhenNoPendingSubscriptions() {
+        int supplierId = 1;
+        String status = "Pending";
+        int activeStatus = 0;
+
+        when(subscriptionRepository.findByActiveStatusAndStatusAndSupplierId(activeStatus, status, supplierId))
+                .thenReturn(Collections.emptyList());
+
+        List<Subscriptions> pendingSubscriptions = subscriptionServiceImpl.getPendingSubscription(1);
+
+        verify(subscriptionRepository).findByActiveStatusAndStatusAndSupplierId(activeStatus, status, supplierId);
+        assertTrue(pendingSubscriptions.isEmpty());
+    }
+
+    @Test
+    public void testGetPendingSubscriptionWhenPendingSubscriptionsExist() {
+
+        Subscriptions subscription = new Subscriptions();
+        subscription.setSub_id(1);
+        subscription.setCustomerId(2);
+        subscription.setSupplierId(3);
+        subscription.setActiveStatus(0);
+        subscription.setStatus("Pending");
+
+        int supplierId = 3;
+        String status = "Pending";
+        int activeStatus = 0;
+
+        when(subscriptionRepository.findByActiveStatusAndStatusAndSupplierId(activeStatus, status, supplierId))
+                .thenReturn(List.of(subscription));
+
+        Customer customer = new Customer();
+        customer.setCust_id(1);
+        customer.setCust_fname("Alice");
+        customer.setCust_email("alice@example.com");
+
+        when(customerRepository.findById(2)).thenReturn(java.util.Optional.of(customer));
+
+        List<Subscriptions> pendingSubscriptions = subscriptionServiceImpl.getPendingSubscription(3);
+
+        verify(subscriptionRepository).findByActiveStatusAndStatusAndSupplierId(0, "Pending", 3);
+        verify(customerRepository).findById(2);
+        assertEquals(1, pendingSubscriptions.size());
+        Subscriptions actualSubscription = pendingSubscriptions.get(0);
+        assertEquals(subscription.getSub_id(), actualSubscription.getSub_id());
+        assertEquals(subscription.getCustomerId(), actualSubscription.getCustomerId());
+        assertEquals(subscription.getSupplierId(), actualSubscription.getSupplierId());
+        assertEquals(subscription.getActiveStatus(), actualSubscription.getActiveStatus());
+        assertEquals(subscription.getStatus(), actualSubscription.getStatus());
+        Customer actualCustomer = actualSubscription.getCustomer();
+        assertEquals(customer.getCust_id(), actualCustomer.getCust_id());
+        assertEquals(customer.getCust_fname(), actualCustomer.getCust_fname());
+        assertEquals(customer.getCust_email(), actualCustomer.getCust_email());
     }
 }
