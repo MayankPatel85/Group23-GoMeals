@@ -28,16 +28,7 @@ test-services:
     - chmod +x ./gradlew
     - ./gradlew test
     - echo "Test stage completed!"
-    - pwd
-    - cp /GoMeals/backend/build/jacocoHtml/index.html /home/gitlab-runner/builds/bfh6m6xq/0/courses/2023-winter/csci-5308/group23/GoMeals/backend
-    - cd build/jacocoHtml/
-    - pwd
-    - ls
-  artifacts:
-    paths:
-      - index.html
-    
-
+   
 code-quality:
   stage: designite
   tags:
