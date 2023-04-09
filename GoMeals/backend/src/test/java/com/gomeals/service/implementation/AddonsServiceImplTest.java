@@ -37,7 +37,7 @@ public class AddonsServiceImplTest {
 
     @Test
     public void testGetAddon() {
-        Addons addon = new Addons(1, "Cheese", 9.99f, 1);
+        Addons addon = new Addons(1, "Cheese", 6.45f, 1);
         Mockito.when(addonsRepository.findById(1)).thenReturn(
                 Optional.of(addon));
 
@@ -47,18 +47,22 @@ public class AddonsServiceImplTest {
 
     @Test
     public void testCreateAddon() {
-        Addons addon = new Addons(9, "Butter", 3.19f, 2);
+        Addons addon = new Addons(1, "Butter", 6.45f, 3);
+        Addons savedAddon = new Addons(1, "Butter", 6.45f, 3);
+        when(addonsRepository.save(addon)).thenReturn(savedAddon);
         String result = addonsServiceImpl.createAddon(addon);
 
-        assertEquals("Addon added successully", result);
+        assertEquals("Addon added successfully", result);
     }
 
     @Test
     public void testUpdateAddon() {
-        Addons oldAddOn = new Addons(3, "Avocado", 2.99f, 3);
-        Addons newAddOn = new Addons(3, "Mashed Avocado", 3.99f, 3);
+        Addons oldAddOn = new Addons(1, "Avocado", 6.45f,
+                3);
+        Addons newAddOn = new Addons(1, "Mashed Avocado", 3.25f,
+                3);
 
-        Mockito.when(addonsRepository.findById(3)).thenReturn(Optional.of(oldAddOn));
+        Mockito.when(addonsRepository.findById(1)).thenReturn(Optional.of(oldAddOn));
         Mockito.when(addonsRepository.save(oldAddOn)).thenReturn(oldAddOn);
 
         String updateStatus = addonsServiceImpl.updateAddon(newAddOn);
@@ -79,9 +83,12 @@ public class AddonsServiceImplTest {
 
         Integer supplierId = 2;
         List<Addons> expectedSupplierAddons = new ArrayList<>();
-        expectedSupplierAddons.add(new Addons(1, "Jalapenos", 6.45f, supplierId));
-        expectedSupplierAddons.add(new Addons(2, "Crunchy Onions", 3.25f, supplierId));
-        expectedSupplierAddons.add(new Addons(3, "Tandoori Naan", 4.56f, supplierId));
+        expectedSupplierAddons
+                .add(new Addons(1, "Jalapenos", 6.45f, supplierId));
+        expectedSupplierAddons
+                .add(new Addons(2, "Crunchy Onions", 3.25f, supplierId));
+        expectedSupplierAddons
+                .add(new Addons(3, "Tandoori Naan", 4.56f, supplierId));
         Mockito.when(addonsRepository.findAllBySupplierId(supplierId)).thenReturn(expectedSupplierAddons);
 
         List<Addons> actualSupplierAddons = addonsServiceImpl.getAllSupplierAddons(supplierId);

@@ -66,7 +66,7 @@ public class SupplierServiceImplementationTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         supplier = new Supplier(1, "Halifax", "1234567890", "Jane Doe",
-                "janedoe@gmail.com", "94738263874683",
+                "janedoe@gmail.com", "94738",
                 "pass1234", 300.99, "paypal.me/jane.com");
         suppliers = new ArrayList<>(Arrays.asList(supplier));
         customer = new Customer(0, "John", "Bruce", "Wick", "jbw@gmail.com",

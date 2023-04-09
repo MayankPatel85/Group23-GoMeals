@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,78 +18,88 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class SupplierNotificationServiceImplementationTest {
 
-    @Mock
-    private SupplierNotificationRepository supplierNotificationRepository;
+        @Mock
+        private SupplierNotificationRepository supNotifyRepo;
 
-    @InjectMocks
-    private SupplierNotificationServiceImplementation supplierNotificationServiceImplementation;
+        @InjectMocks
+        private SupplierNotificationServiceImplementation supNotifyServiceImpl;
 
-    @Test
-    void createNotification() {
-        SupplierNotification supplierNotification = new SupplierNotification(1,"new user subscribed.",
-                "subscription",5);
-        when(supplierNotificationRepository.save((supplierNotification))).thenReturn(
-                new SupplierNotification(1,"new user subscribed.",
-                        "subscription",5)
-        );
-        SupplierNotification newSupplierNotification = supplierNotificationServiceImplementation.createNotification(
-                supplierNotification);
+        @Test
+        void createNotification() {
+                SupplierNotification supplierNotification = new SupplierNotification(1, "new user subscribed.",
+                                "subscription", 5);
 
-        assertEquals("subscription",newSupplierNotification.getEventType());
-    }
+                SupplierNotification savedSupNotification = new SupplierNotification(1, "new user subscribed.",
+                                "subscription", 5);
 
-    @Test
-    void getNotificationById() {
-        when(supplierNotificationRepository.findById(1)).thenReturn(
-                Optional.of(new SupplierNotification(1,"new user subscribed.",
-                        "subscription",5))
-        );
-        SupplierNotification supplierNotification = supplierNotificationServiceImplementation
-                .getNotificationById(1);
+                when(supNotifyRepo.save((supplierNotification))).thenReturn(savedSupNotification);
+                SupplierNotification newSupplierNotification = supNotifyServiceImpl
+                                .createNotification(
+                                                supplierNotification);
 
-        assertEquals(5,supplierNotification.getSupplierId());
-    }
+                assertEquals("subscription", newSupplierNotification.getEventType());
+        }
 
-    @Test
-    void getAllNotificationsBySupplierId() {
-        when(supplierNotificationRepository.findAllBySupplierId(5)).thenReturn(Arrays.asList(
-                new SupplierNotification(1,"new user subscribed.",
-                        "subscription",5),
-                new SupplierNotification(2,"new complain raised on the portal.",
-                        "complain",5),
-                new SupplierNotification(3,"new review added.",
-                        "review",5)
-        ));
-        List<SupplierNotification> result = supplierNotificationServiceImplementation.getAllNotificationsBySupplierId(5);
+        @Test
+        void getNotificationById() {
 
-        assertEquals("review",result.get(2).getEventType());
-        assertEquals("new user subscribed.",result.get(0).getMessage());
-    }
+                SupplierNotification supNotification = new SupplierNotification(1, "new user subscribed.",
+                                "subscription", 5);
+                when(supNotifyRepo.findById(1)).thenReturn(
+                                Optional.of(supNotification));
+                SupplierNotification supplierNotification = supNotifyServiceImpl
+                                .getNotificationById(1);
 
-    @Test
-    void updateNotification() {
+                assertEquals(5, supplierNotification.getSupplierId());
+        }
 
-        SupplierNotification supplierNotification = new SupplierNotification(1,
-                "new user subscribed.", "subscription",5);
-        SupplierNotification newSupplierNotification = new SupplierNotification(1,
-                "new user requested subscription", "subscription",5);
+        @Test
+        void getAllNotificationsBySupplierId() {
 
-        when(supplierNotificationRepository.findById(1)).thenReturn(Optional.of(supplierNotification));
-        when(supplierNotificationRepository.save(supplierNotification)).thenReturn(newSupplierNotification);
+                SupplierNotification notification1 = new SupplierNotification(1, "new user subscribed.",
+                                "subscription", 5);
 
-        SupplierNotification updatedSupplierNotification = supplierNotificationServiceImplementation
-                .updateNotification(supplierNotification);
+                SupplierNotification notification2 = new SupplierNotification(2, "new complain raised on the portal.",
+                                "complain", 5);
 
-        assertEquals("new user requested subscription",updatedSupplierNotification.getMessage());
-    }
+                SupplierNotification notification3 = new SupplierNotification(3, "new review added.",
+                                "review", 5);
+                when(supNotifyRepo.findAllBySupplierId(5)).thenReturn(Arrays.asList(
+                                notification1,
+                                notification2,
+                                notification3));
+                List<SupplierNotification> result = supNotifyServiceImpl.getAllNotificationsBySupplierId(5);
 
-    @Test
-    void deleteNotification() {
-        SupplierNotification supplierNotification = new SupplierNotification(1,
-                "new user subscribed.", "subscription",5);
+                assertEquals("review", result.get(2).getEventType());
+                assertEquals("new user subscribed.", result.get(0).getMessage());
+        }
 
-        when(supplierNotificationRepository.findById(1)).thenReturn(Optional.of(supplierNotification));
-        supplierNotificationServiceImplementation.deleteNotification(1);
-        verify(supplierNotificationRepository).deleteById(1);
-    }
+        @Test
+        void updateNotification() {
+
+                SupplierNotification supplierNotification = new SupplierNotification(1,
+                                "new user subscribed.", "subscription", 5);
+                SupplierNotification newSupplierNotification;
+
+                newSupplierNotification = new SupplierNotification(1,
+                                "new user requested subscription", "subscription", 5);
+
+                when(supNotifyRepo.findById(1)).thenReturn(Optional.of(supplierNotification));
+                when(supNotifyRepo.save(supplierNotification)).thenReturn(newSupplierNotification);
+
+                SupplierNotification updatedSupplierNotification = supNotifyServiceImpl
+                                .updateNotification(supplierNotification);
+
+                assertEquals("new user requested subscription", updatedSupplierNotification.getMessage());
+        }
+
+        @Test
+        void deleteNotification() {
+                SupplierNotification supplierNotification = new SupplierNotification(1,
+                                "new user subscribed.", "subscription", 5);
+
+                when(supNotifyRepo.findById(1)).thenReturn(Optional.of(supplierNotification));
+                supNotifyServiceImpl.deleteNotification(1);
+                verify(supNotifyRepo).deleteById(1);
+        }
 }

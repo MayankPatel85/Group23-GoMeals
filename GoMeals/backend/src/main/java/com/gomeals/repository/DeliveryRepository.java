@@ -16,6 +16,6 @@ public interface DeliveryRepository extends CrudRepository<Delivery, Integer> {
     List<Delivery> findBySupId(int supId);
 
     Delivery findBySupIdAndCustIdAndDeliveryDateAndOrderStatus(int supplierId, int customerId, LocalDate deliveryDate,
-                                                               String orderStatus);
+            String orderStatus);
 
 }
