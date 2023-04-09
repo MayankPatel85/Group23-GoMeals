@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/CustomerPaymentHistory.css";
+import { API_HEADER } from "../utils.js";
+
 function CustomerPaymentHistory() {
   const [userDetails, setUserDetails] = useState({});
   const cookies = new Cookies();
@@ -12,7 +14,7 @@ function CustomerPaymentHistory() {
   const loggedInUser = cookies.get("loggedInUser");
 
   useEffect(() => {
-    fetch("http://localhost:8080/customer/get/" + loggedInUser.cust_id)
+    fetch(API_HEADER + "customer/get/" + loggedInUser.cust_id)
       .then((res) => res.json())
       .then((val) => setUserDetails(val));
   }, []);

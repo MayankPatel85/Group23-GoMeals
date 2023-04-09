@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/meal-voting")
 @CrossOrigin(origins = "http://localhost:3000")
+/**
+ * This controller contains the methods that handles the meal voting procedure
+ */
 public class MealVotingController {
 
     private final MealVotingService mealVotingService;
@@ -19,11 +22,23 @@ public class MealVotingController {
         this.mealVotingService = mealVotingService;
     }
 
+    /**
+     * This method is used to Create an entry in the meal voting table
+     * Hence creating a poll with multiple meals
+     * @param mealVoting
+     * @return Created MealVoting object
+     */
     @PostMapping("/create")
     public ResponseEntity<MealVoting> createMealVoting(@RequestBody MealVoting mealVoting) {
         return new ResponseEntity<>(mealVotingService.createMealVoting(mealVoting), HttpStatus.CREATED);
     }
 
+    /**
+     * This method is used to extract data from the meal voting table using poll id
+     * Hence Extracting all the details of a particular meal poll
+     * @param pollId
+     * @return Retrieved MealVoting object
+     */
     @GetMapping("/get/{poll-id}")
     public ResponseEntity<MealVoting> getMealVotingByPollId(@PathVariable("poll-id") int pollId) {
         MealVoting mealVoting = mealVotingService.getMealVotingByPollingId(pollId);
@@ -33,6 +48,12 @@ public class MealVotingController {
         return new ResponseEntity<>(mealVoting, HttpStatus.OK);
     }
 
+    /**
+     * This method is used to extract a particular meal voting related to a particular customer
+     * @param pollId
+     * @param custId
+     * @return Retrieved MealVoting object
+     */
     @GetMapping("/get/{pollId}/{custId}")
     @ResponseBody
     public ResponseEntity<MealVoting> getMealVotingForCustomerByPollId(@PathVariable("pollId") int pollId,
@@ -45,6 +66,12 @@ public class MealVotingController {
         return new ResponseEntity<>(mealVoting, HttpStatus.OK);
     }
 
+    /**
+     * This method is used to extract the meal which is most voted in a poll
+     * @param pollingId
+     * @param supplierId
+     * @return String which contains the name of the most voted meal
+     */
     @GetMapping("/get/most-voted-meal/{pollingId}/{supplierId}")
     public ResponseEntity<String> getMostVotedMeal(@PathVariable("pollingId") int pollingId,
             @PathVariable("supplierId") int supplierId) {

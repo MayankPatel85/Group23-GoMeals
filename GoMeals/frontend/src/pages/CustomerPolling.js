@@ -9,6 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function CustomerPolling(props) {
   let cookies = new Cookies();
@@ -41,7 +42,7 @@ function CustomerPolling(props) {
       votedMeal: selectedOption,
     };
     let mealPoll = JSON.stringify(mealPollObject);
-    fetch("http://localhost:8080/meal-voting/create", {
+    fetch(API_HEADER + "meal-voting/create", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: mealPoll,
