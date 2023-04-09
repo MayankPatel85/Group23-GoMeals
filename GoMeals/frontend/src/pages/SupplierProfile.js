@@ -4,6 +4,7 @@ import chef from "../resources/chef.jpg";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function Profile(props) {
   const location = useLocation();
@@ -17,7 +18,7 @@ function Profile(props) {
       supplierId: location.state.id,
     };
     axios
-      .post("http://localhost:8080/supplier-notification/create", notify)
+      .post(API_HEADER + "supplier-notification/create", notify)
       .then(swal("Notification sent to the supplier"));
     const subscription = {
       meals_remaining: 30,
@@ -29,12 +30,12 @@ function Profile(props) {
     };
 
     axios
-      .post("http://localhost:8080/subscription/add", subscription)
+      .post(API_HEADER + "subscription/add", subscription)
       .then(swal("Subscription requested"));
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/supplier/get/${location.state.id}`)
+      .get(`${API_HEADER}supplier/get/${location.state.id}`)
       .then((response) => {
         setSupDetails(response.data);
       });

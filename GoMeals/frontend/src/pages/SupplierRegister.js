@@ -3,6 +3,7 @@ import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function SupplierRegister() {
   const [supName, setName] = useState("");
@@ -26,8 +27,9 @@ function SupplierRegister() {
       mealPrice: mealPrice,
       paypalLink: paypalLink,
     };
-    axios
-      .post("http://localhost:8080/supplier/create", supplier)
+    if(validateInputs()) {
+      axios
+      .post(API_HEADER + "supplier/create", supplier)
       .then((response) => {
         console.log(response.data);
         navigate("/supplierLogin");
@@ -43,7 +45,30 @@ function SupplierRegister() {
           swal("Registration failed. Please try again later.");
         }
       });
+    }
   };
+
+  const validateInputs = () => {
+    const regexForNumber = /^[0-9\b]+$/;
+    const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (supName === "" || supEmail === "" || supAddress === ""
+      || govtIssuedId === "" || supContactNumber === "" || password === ""
+      || mealPrice === "" || paypalLink === "") {
+      swal("Please provide inout for all fields.");
+      return false;
+    } else if (!regexForEmail.test(supEmail)) {
+      swal("Please provide valid email.");
+      return false;
+    } else if (supContactNumber.length !== 10 || !regexForNumber.test(supContactNumber)) {
+      swal("Please provide valid contact number");
+      return false;
+    } else if (!regexForNumber.test(mealPrice)) {
+      swal("Please provide valid meal price");
+      return false;
+    }
+    return true;
+  };
+
 
   return (
     <>

@@ -22,7 +22,7 @@ const ComplainModalComponent = (props) => {
           <h5>Meal Name: {props.delivery.deliveryMeal}</h5>
           <h5>Delivery Date: {props.delivery.deliveryDate}</h5>
           <h5>Your Comment: {props.complain.customerComment}</h5>
-          {props.complain.supplierComment == "" ? (
+          {props.complain.supplierComment === "" ? (
             <h5>Supplier has not commented yet</h5>
           ) : (
             <h5>Suppliers Comment: {props.complain.supplierComment}</h5>

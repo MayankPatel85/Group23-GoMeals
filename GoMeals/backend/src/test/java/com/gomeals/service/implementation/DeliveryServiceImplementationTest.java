@@ -34,19 +34,19 @@ public class DeliveryServiceImplementationTest {
     PollingRepository pollingRepository;
 
     @Mock
-    CustomerNotificationRepository customerNotificationRepository;
+    CustomerNotificationRepository custNotifyRepo;
 
     @InjectMocks
     DeliveryServiceImplementation deliveryServiceImplementation;
-    long millis=System.currentTimeMillis();
+    long millis = System.currentTimeMillis();
     Date date = new Date(millis);
 
     @Test
     public void testCreateDelivery() {
         Delivery delivery = new Delivery(1, date.toLocalDate().plusDays(1), "Rice", "Inprogress", 29, 12);
         List<Object[]> mockMealChart = new ArrayList<>();
-        Object[] meal1 = new Object[]{"Monday", 1, "meal1", "meal2", "meal3", "meal4", "meal5", date};
-        Object[] meal2 = new Object[]{"Tuesday", 2, "meal1", "meal2", "meal3", "meal4", "meal5", date};
+        Object[] meal1 = new Object[] { "Monday", 1, "meal1", "meal2", "meal3", "meal4", "meal5", date };
+        Object[] meal2 = new Object[] { "Tuesday", 2, "meal1", "meal2", "meal3", "meal4", "meal5", date };
         mockMealChart.add(meal1);
         mockMealChart.add(meal2);
         Subscriptions subscription = new Subscriptions();
@@ -55,15 +55,25 @@ public class DeliveryServiceImplementationTest {
         subscription.setActiveStatus(1);
         subscription.setMeals_remaining(5);
         CustomerNotification customerNotification = new CustomerNotification(null, "", "", 1);
-//        mealChartList.add( new MealChart("meal1", "meal2", "meal3", "meal4", "meal5", date, new MealChartID("Monday", 29)));
+        // mealChartList.add( new MealChart("meal1", "meal2", "meal3", "meal4", "meal5",
+        // date, new MealChartID("Monday", 29)));
 
+        Supplier testSupplier;
+
+        testSupplier = new Supplier(29, "Halifax", "57822283647",
+                "JCater", "jc@gmail.com", "12345", "password", 10.00, "paypal.me/jc.com");
+        Polling testPolling = new Polling(1, date, "1", "meal1", "meal2", "meal3", "meal4", "meal5", false, 29);
         when(deliveryRepository.save(delivery)).thenReturn(delivery);
-        when(supplierRepository.findById(29)).thenReturn(Optional.of(new Supplier(29, "123 Main St", "555-555-5555", "ABC Catering", "abc@example.com", "12345", "password", 10.00, "https://www.paypal.com/abc")));
-        when(deliveryRepository.findBySupIdAndCustIdAndDeliveryDateAndOrderStatus(29, 12, date.toLocalDate().plusDays(1), IN_PROGRESS.getStatusName())).thenReturn(null);
-        when(subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(12, 29, 1)).thenReturn(subscription);
+        when(supplierRepository.findById(29)).thenReturn(Optional.of(testSupplier));
+        when(deliveryRepository.findBySupIdAndCustIdAndDeliveryDateAndOrderStatus(29, 12,
+                date.toLocalDate().plusDays(1),
+                IN_PROGRESS.getStatusName())).thenReturn(null);
+        when(subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(12, 29, 1))
+                .thenReturn(subscription);
         when(mealChartRepository.findMealChartBySupplierId(29)).thenReturn(mockMealChart);
-        when(pollingRepository.findBySupIdAndStatus(1, true)).thenReturn(new Polling(1, date, "1", "meal1", "meal2", "meal3", "meal4", "meal5", false, 29));
-        when(customerNotificationRepository.save(customerNotification)).thenReturn(customerNotification);
+        when(pollingRepository.findBySupIdAndStatus(1, true))
+                .thenReturn(testPolling);
+        when(custNotifyRepo.save(customerNotification)).thenReturn(customerNotification);
 
         Boolean result = deliveryServiceImplementation.createDelivery(delivery);
 
@@ -162,11 +172,13 @@ public class DeliveryServiceImplementationTest {
 
     @Test
     public void testUpdateDeliveryStatusToCancelled() {
-        Delivery delivery = new Delivery(1, date.toLocalDate().plusDays(1), "Rice", IN_PROGRESS.getStatusName(), 29, 12);
-        Subscriptions subscriptions = new Subscriptions(1, 10, date, 1, 1 ,1);
+        Delivery delivery = new Delivery(1, date.toLocalDate().plusDays(1), "Rice", IN_PROGRESS.getStatusName(), 29,
+                12);
+        Subscriptions subscriptions = new Subscriptions(1, 10, date, 1, 1, 1);
 
         when(deliveryRepository.findById(1)).thenReturn(Optional.of(delivery));
-        when(subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(12, 29, 1)).thenReturn(subscriptions);
+        when(subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(12, 29, 1))
+                .thenReturn(subscriptions);
         when(subscriptionRepository.save(subscriptions)).thenReturn(subscriptions);
 
         Delivery updatedDelivery = deliveryServiceImplementation.updateDeliveryStatus(1, "cancelled");
@@ -177,10 +189,11 @@ public class DeliveryServiceImplementationTest {
     @Test
     public void testUpdateDeliveryStatusToCompleted() {
         Delivery delivery = new Delivery(1, date.toLocalDate().plusDays(1), "Rice", IN_PROGRESS.getStatusName(), 1, 1);
-        Subscriptions subscriptions = new Subscriptions(1, 10, date, 1, 1 ,1);
+        Subscriptions subscriptions = new Subscriptions(1, 10, date, 1, 1, 1);
 
         when(deliveryRepository.findById(1)).thenReturn(Optional.of(delivery));
-        when(subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(1, 1, 1)).thenReturn(subscriptions);
+        when(subscriptionRepository.findSubscriptionsByCustomerIdAndSupplierIdAndActiveStatus(1, 1, 1))
+                .thenReturn(subscriptions);
         when(subscriptionRepository.save(subscriptions)).thenReturn(subscriptions);
 
         Delivery updatedDelivery = deliveryServiceImplementation.updateDeliveryStatus(1, "completed");
@@ -189,6 +202,5 @@ public class DeliveryServiceImplementationTest {
 
         assertEquals(9, subscriptions.getMeals_remaining());
     }
-
 
 }

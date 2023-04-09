@@ -57,6 +57,8 @@ export default function NavbarComponent() {
   function handleProfile() {
     if (loggedInUser.userType === "customer") {
       navigate("/customerProfile");
+    } else if (loggedInUser.userType === "supplier") {
+      navigate("/supplierDashboard");
     }
   }
 
@@ -154,7 +156,7 @@ export default function NavbarComponent() {
                       </Dropdown.Item>
                       {loggedInUser.userType === "supplier" ? (
                         <>
-                          <Dropdown.Item>Customers</Dropdown.Item>
+                          {/* <Dropdown.Item>Customers</Dropdown.Item> */}
                           <Dropdown.Item onClick={handleSupplierComplain}>
                             Complains
                           </Dropdown.Item>

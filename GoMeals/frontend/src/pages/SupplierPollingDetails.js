@@ -7,6 +7,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/SupplierPollingDetails.css";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function SupplierPollingDetails() {
   const cookies = new Cookies();
@@ -16,7 +17,7 @@ function SupplierPollingDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/polling/get/allPolls/" + loggedInUser.supId)
+    fetch(API_HEADER + "polling/get/allPolls/" + loggedInUser.supId)
       .then((res) => res.json())
       .then((value) => {
         setPolls(value);
@@ -27,7 +28,7 @@ function SupplierPollingDetails() {
   function handlePollClose(pollId, pollDate) {
     try {
       fetch(
-        "http://localhost:8080/meal-voting/get/most-voted-meal/" +
+        API_HEADER + "meal-voting/get/most-voted-meal/" +
           pollId +
           "/" +
           loggedInUser.supId
@@ -84,7 +85,7 @@ function SupplierPollingDetails() {
                   </ListGroup.Item>
                 </ListGroup>
               </Card.Text>
-              {poll.status == true ? (
+              {poll.status === true ? (
                 <Button
                   variant="primary"
                   onClick={() => handlePollClose(poll.pollId, poll.pollDate)}

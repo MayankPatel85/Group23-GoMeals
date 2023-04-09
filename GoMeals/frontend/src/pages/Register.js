@@ -3,6 +3,7 @@ import axios from "axios";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 function Register() {
   const [cust_fname, setFname] = useState("");
@@ -26,9 +27,9 @@ function Register() {
       cust_password: cust_password,
       cust_confirm_password: cust_confirm_password,
     };
-    if (cust_password === cust_confirm_password) {
+    if (validateInputs()) {
       axios
-        .post("http://localhost:8080/customer/create", user)
+        .post(API_HEADER + "customer/create", user)
         .then((response) => {
           console.log(response.data);
           navigate("/login");
@@ -43,9 +44,28 @@ function Register() {
             swal("Registration failed. Please try again later.");
           }
         });
-    } else {
-      swal("Passwords do not match");
     }
+  };
+
+  const validateInputs = () => {
+    const regexForNumber = /^[0-9\b]+$/;
+    const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (cust_fname === "" || cust_lname === "" || cust_address === ""
+      || cust_email === "" || cust_contact_number === "" || cust_password === ""
+      || cust_confirm_password === "") {
+      swal("Please provide inout for all fields.");
+      return false;
+    } else if (!regexForEmail.test(cust_email)) {
+      swal("Please provide valid email.");
+      return false;
+    } else if (cust_contact_number.length !== 10 || !regexForNumber.test(cust_contact_number)) {
+      swal("Please provide valid contact number");
+      return false;
+    } else if (cust_password !== cust_confirm_password) {
+      swal("Password must match.");
+      return false;
+    }
+    return true;
   };
 
   return (

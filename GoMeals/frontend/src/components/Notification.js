@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/Navbar.css";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { API_HEADER } from "../utils.js";
 
 function Notification(props) {
   const [notifications, setNotifications] = useState([]);
@@ -15,11 +16,11 @@ function Notification(props) {
       try {
         if(props.userType==='customer'){
            response = await axios.get(
-          `http://localhost:8080/customer-notification/get/all-customer/${props.cust_id}`
+          `${API_HEADER}customer-notification/get/all-customer/${props.cust_id}`
         );
         }else if(props.userType==='supplier'){
            response = await axios.get(
-            `http://localhost:8080/supplier-notification/get/all-supplier/${props.supId}`
+            `${API_HEADER}supplier-notification/get/all-supplier/${props.supId}`
           );
         }
         
@@ -62,7 +63,7 @@ function Notification(props) {
             <div>
               {" "}
               <p className="notification-text">
-                {notification.eventType == "review" ? (
+                {notification.eventType === "review" ? (
                   <FontAwesomeIcon
                     icon={faCircle}
                     style={{ color: "yellow" }}

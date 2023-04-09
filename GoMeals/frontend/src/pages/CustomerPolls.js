@@ -7,6 +7,8 @@ import CustomerPolling from "./CustomerPolling";
 import NavbarComponent from "../components/NavbarComponent";
 import "../styles/CustomerPolls.css";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
+
 function CustomerPolls() {
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
@@ -19,12 +21,12 @@ function CustomerPolls() {
   useEffect(() => {
     console.log("Use Effect called");
     fetch(
-      "http://localhost:8080/subscription/get/customersSubscriptions/" +
+      API_HEADER + "subscription/get/customersSubscriptions/" +
         loggedInUser.cust_id
     )
       .then((res) => res.json())
       .then((listOfSuppliersData) => {
-        if (listOfSuppliersData.length == 0) {
+        if (listOfSuppliersData.length === 0) {
           swal("No subscriptions available");
           navigate("/dashboard");
         } else {
@@ -35,7 +37,7 @@ function CustomerPolls() {
   }, []);
 
   function getPollingList(suppliers) {
-    let url = "http://localhost:8080/polling/get/activePolls/";
+    let url = API_HEADER + "polling/get/activePolls/";
     suppliers.forEach((value) => {
       url = url + value + ",";
     });
@@ -52,7 +54,7 @@ function CustomerPolls() {
     setSelectedPoll(poll);
 
     fetch(
-      "http://localhost:8080/meal-voting/get/" +
+      API_HEADER + "meal-voting/get/" +
         poll.pollId +
         "/" +
         loggedInUser.cust_id

@@ -15,6 +15,8 @@ import { Cookies } from "react-cookie";
 import axios from "axios";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { API_HEADER } from "../utils.js";
+
 const MealAccordion = () => {
   const cookies = new Cookies();
   const loggedInUser = cookies.get("loggedInUser");
@@ -28,7 +30,7 @@ const MealAccordion = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `http://localhost:8080/delivery/get/customer/${customerId}`
+          `${API_HEADER}delivery/get/customer/${customerId}`
         );
         const sortedDeliveries = [...response.data].sort((a, b) => {
           if (a.deliveryDate < b.deliveryDate) {
@@ -79,7 +81,7 @@ const MealAccordion = () => {
           quantity: quantity,
         };
         if (quantity > 0) {
-          fetch("http://localhost:8080/deliveryAddons/update", {
+          fetch(API_HEADER + "deliveryAddons/update", {
             method: "PUT",
             body: JSON.stringify(payload),
             headers: {
@@ -119,7 +121,7 @@ const MealAccordion = () => {
   }, [deliveries]);
 
   function deleteMealById(deliveryId) {
-    const endpoint = `http://localhost:8080/delivery/delete/${deliveryId}`;
+    const endpoint = `${API_HEADER}delivery/delete/${deliveryId}`;
     axios
       .delete(endpoint)
       .then((response) => {
@@ -144,7 +146,7 @@ const MealAccordion = () => {
   }
   async function getDeliveryAddons(deliveryId, sup_id) {
     try {
-      const endpoint = `http://localhost:8080/deliveryAddons/get/${deliveryId}`;
+      const endpoint = `${API_HEADER}deliveryAddons/get/${deliveryId}`;
       const response1 = await axios.get(endpoint);
 
       const updatedDeliveries1 = deliveries.map((delivery) => {
@@ -159,7 +161,7 @@ const MealAccordion = () => {
       });
 
       const response2 = await axios.get(
-        `http://localhost:8080/Addons/get/all-supplier/${sup_id}`
+        `${API_HEADER}Addons/get/all-supplier/${sup_id}`
       );
 
       const updatedDeliveries2 = updatedDeliveries1.map((delivery) => {

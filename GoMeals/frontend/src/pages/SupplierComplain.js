@@ -9,9 +9,9 @@ import {
   Form,
   Spinner,
 } from "react-bootstrap";
-import NavbarComponent from "../components/NavbarComponent";
 import { addCustomerNotification } from "../utils";
 import swal from "sweetalert";
+import { API_HEADER } from "../utils.js";
 
 export default function SupplierComplain() {
   const cookies = new Cookies();
@@ -23,11 +23,10 @@ export default function SupplierComplain() {
   const [showComplainDetail, setShowComplainDetail] = useState(false);
 
   useEffect(() => {
-    // http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}
     setIsLoading(true);
     axios
       .get(
-        `http://localhost:8080/complain/get/all-supplier/${loggedInUser.supId}`
+        `${API_HEADER}complain/get/all-supplier/${loggedInUser.supId}`
       )
       .then((response) => {
         setComplains(response.data);
@@ -59,7 +58,7 @@ export default function SupplierComplain() {
     }
     axios
       .put(
-        "http://localhost:8080/complain/update",
+        API_HEADER + "complain/update",
         complains[selectedComplainIndex]
       )
       .then(() => {
@@ -157,9 +156,12 @@ export default function SupplierComplain() {
           >
             Close
           </Button>
-          <Button variant="primary" onClick={submitFeedback}>
-            Save Changes
-          </Button>
+          {
+            complains[selectedComplainIndex]?.status === "Initiated" &&
+              <Button variant="primary" onClick={submitFeedback}>
+                Save Changes
+              </Button> 
+          }
         </Modal.Footer>
       </Modal>
 
