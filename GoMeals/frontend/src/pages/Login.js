@@ -98,7 +98,7 @@ function Login() {
                           <NavLink
                             className=""
                             activeClassName="is-active"
-                            to="/register"
+                            to="/"
                             exact
                           >
                             Register
