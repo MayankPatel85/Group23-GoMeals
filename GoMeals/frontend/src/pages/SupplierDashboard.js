@@ -58,7 +58,7 @@ export default function SupplierDashboard() {
     supEmail: "",
     supContactNumber: "",
     supAddress: "",
-    supPaypalLink: "",
+    paypalLink: "",
   });
   const [value, setValue] = React.useState("1");
 
@@ -369,7 +369,7 @@ export default function SupplierDashboard() {
       supEmail: currentSupplier.supEmail,
       supContactNumber: currentSupplier.supContactNumber,
       supAddress: currentSupplier.supAddress,
-      supPaypalLink: currentSupplier.paypalLink,
+      paypalLink: currentSupplier.paypalLink,
     });
   };
 
@@ -452,7 +452,7 @@ export default function SupplierDashboard() {
         supEmail: editedSupplierDetail.supEmail,
         supContactNumber: editedSupplierDetail.supContactNumber,
         supAddress: editedSupplierDetail.supAddress,
-        supPaypalLink: editedSupplierDetail.supPaypalLink,
+        paypalLink: editedSupplierDetail.paypalLink,
       }));
       setUpdateSupplierData(true);
     }
@@ -551,7 +551,7 @@ export default function SupplierDashboard() {
       editedSupplierDetail.supEmail === "" ||
       editedSupplierDetail.supContactNumber === "" ||
       editedSupplierDetail.supAddress === "" ||
-      editedSupplierDetail.supPaypalLink === ""
+      editedSupplierDetail.paypalLink === ""
     ) {
       swal("Fields should not be empty.");
       return false;
@@ -564,7 +564,7 @@ export default function SupplierDashboard() {
     ) {
       swal("Please provide a valid contact number.");
       return false;
-    } else if (!editedSupplierDetail.supPaypalLink.includes("paypal.com")) {
+    } else if (!editedSupplierDetail.paypalLink.includes("paypal.com")) {
       swal("Please provide valid Paypal link.");
       return false;
     }
@@ -729,8 +729,8 @@ export default function SupplierDashboard() {
               <Form.Control
                 type="text"
                 placeholder="Your contact number"
-                name="supPaypalLink"
-                value={editedSupplierDetail.supPaypalLink}
+                name="paypalLink"
+                value={editedSupplierDetail.paypalLink}
                 onChange={handleEditingProfile}
               />
             </Form.Group>
