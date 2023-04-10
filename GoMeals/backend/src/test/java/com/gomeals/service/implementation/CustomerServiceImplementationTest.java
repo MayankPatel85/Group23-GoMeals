@@ -15,14 +15,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 public class CustomerServiceImplementationTest {
     private CustomerService customerService;
 
@@ -90,6 +96,7 @@ public class CustomerServiceImplementationTest {
         Mockito.verify(response, Mockito.never()).setStatus(HttpServletResponse.SC_OK);
     }
 
+
     @Test
     public void loginCustomerWithWrongPasswordTest() {
         // given
@@ -105,8 +112,7 @@ public class CustomerServiceImplementationTest {
         customerData.setCust_password(userSecurity.encryptData("incorrect_password"));
 
         Mockito.when(customerRepository.findByEmail(customer.getCust_email())).thenReturn(customerData);
-        Mockito.when(customerRepository.passwordMatch(customer.getCust_email()))
-                .thenReturn(customerData.getCust_password());
+        Mockito.when(customerRepository.passwordMatch(customer.getCust_email())).thenReturn(customerData.getCust_password());
 
         // when
         Customer result = customerServiceImplementation.loginCustomer(customer, response);
@@ -118,32 +124,30 @@ public class CustomerServiceImplementationTest {
         Mockito.verify(response, Mockito.times(1)).setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    // @Test
-    // public void loginCustomer() {
-    // Customer customer = new Customer();
-    // customer.setCust_email("test@example.com");
-    // customer.setCust_password(userSecurity.encryptData("password"));
-    //
-    //
-    // HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-    // when(customerRepository.findByEmail(customer.getCust_email())).thenReturn(customer);
-    // when(customerRepository.passwordMatch(customer.getCust_email())).thenReturn(customer.getCust_password());
-    //
-    // Customer loggedInCustomer =
-    // customerServiceImplementation.loginCustomer(customer, response);
-    // assertEquals(customer.getCust_id(), loggedInCustomer.getCust_id());
-    // assertEquals(customer.getCust_fname(), loggedInCustomer.getCust_fname());
-    // assertEquals(customer.getCust_email(), loggedInCustomer.getCust_email());
-    // assertEquals(customer.getCust_password(),
-    // loggedInCustomer.getCust_password());
-    // assertEquals(customer.getCust_contact_number(),
-    // loggedInCustomer.getCust_contact_number());
-    // assertEquals(customer.getCust_address(), loggedInCustomer.getCust_address());
-    // assertEquals(HttpServletResponse.SC_OK, response.getStatus());
-    //
-    // verify(customerRepository, times(1)).findByEmail(customer.getCust_email());
-    // verify(customerRepository, times(1)).passwordMatch(customer.getCust_email());
-    // }
+
+    //    @Test
+//    public void loginCustomer() {
+//        Customer customer = new Customer();
+//        customer.setCust_email("test@example.com");
+//        customer.setCust_password(userSecurity.encryptData("password"));
+//
+//
+//        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+//        when(customerRepository.findByEmail(customer.getCust_email())).thenReturn(customer);
+//        when(customerRepository.passwordMatch(customer.getCust_email())).thenReturn(customer.getCust_password());
+//
+//        Customer loggedInCustomer = customerServiceImplementation.loginCustomer(customer, response);
+//        assertEquals(customer.getCust_id(), loggedInCustomer.getCust_id());
+//        assertEquals(customer.getCust_fname(), loggedInCustomer.getCust_fname());
+//        assertEquals(customer.getCust_email(), loggedInCustomer.getCust_email());
+//        assertEquals(customer.getCust_password(), loggedInCustomer.getCust_password());
+//        assertEquals(customer.getCust_contact_number(), loggedInCustomer.getCust_contact_number());
+//        assertEquals(customer.getCust_address(), loggedInCustomer.getCust_address());
+//        assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+//
+//        verify(customerRepository, times(1)).findByEmail(customer.getCust_email());
+//        verify(customerRepository, times(1)).passwordMatch(customer.getCust_email());
+//    }
     @Test
     public void testGetCustomerById() {
         Customer mockCustomer = new Customer();

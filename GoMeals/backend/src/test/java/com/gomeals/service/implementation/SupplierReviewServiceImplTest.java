@@ -16,6 +16,9 @@ import org.mockito.MockitoAnnotations;
 import com.gomeals.model.SupplierReview;
 import com.gomeals.repository.SupplierReviewRepository;
 import com.gomeals.service.SupplierReviewService;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
 public class SupplierReviewServiceImplTest {
 
     @Mock
