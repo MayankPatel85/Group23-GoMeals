@@ -338,8 +338,9 @@ export default function SupplierDashboard() {
         .post(API_HEADER + "meal_chart/create", mealChart)
         .then((response) => {
           console.log(response.data);
-          swal("Data stored");
+          swal("Meal Chart created.");
           // navigate("/supplierDashboard");
+          window.location.reload();
         })
         .catch((error) => {
           console.log(error);
@@ -350,8 +351,9 @@ export default function SupplierDashboard() {
         .put(API_HEADER + "meal_chart/update", mealChart)
         .then((response) => {
           console.log(response.data);
-          swal("Data stored");
+          swal("Meal Chart updated.");
           // navigate("/supplierDashboard");
+          window.location.reload();
         })
         .catch((error) => {
           console.log(error);
