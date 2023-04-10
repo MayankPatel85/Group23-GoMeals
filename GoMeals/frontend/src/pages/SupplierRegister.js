@@ -32,8 +32,8 @@ function SupplierRegister() {
       .post(API_HEADER + "supplier/create", supplier)
       .then((response) => {
         console.log(response.data);
-        navigate("/supplierLogin");
         swal("Supplier registration was succesful");
+        navigate("/Supplierlogin");
       })
       .catch((error) => {
         console.log(error);
